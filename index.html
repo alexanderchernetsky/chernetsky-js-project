@@ -17,11 +17,11 @@
       var GAMEAREAHEIGHT = 600; // px height of our game area
       var PLAYERCARWIDTH = 40; // px width of user car
       var PLAYERCARHEIGHT = 80; // px height of user car
-      var OBSTACLEWIDTH = 200; // px width of obstacle
-      var OBSTACLEHEIGHT = 20; // px height of obstacle
+      var OBSTACLEWIDTH = 50; // px width of obstacle
+      var OBSTACLEHEIGHT = 100; // px height of obstacle
 
       var playerCar; // declare variable of user car
-      var obstacle; // declare variable for our obstacles
+      var obstacles = [];// variable for our obstacles
 
       // game area object
       var myGameArea = {
@@ -34,14 +34,14 @@
         },
         clear: function () {
           this.context.clearRect(0 , 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
-        }
+        },
+        frameNo: 0
       };
 
       // creating empty game area canvas with car-rectangle and obstacle-rectangle
       (function startGame() {
         myGameArea.start();
         playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500);
-        obstacle = new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, 0 , 200);
       }());
 
       // constructor for player car
@@ -88,16 +88,13 @@
         self.height = height;
         self.posX = x;
         self.posY = y;
-        self.speedX = 0;
-        self.speedY = 0;
         self.update = function () {
           var ctx = myGameArea.context;
           ctx.fillStyle = 'green';
           ctx.fillRect(self.posX, self.posY, self.width, self.height);
         };
-        self.changePos = function () {
-          self.posX += self.speedX;
-          self.posY += self.speedY;
+        self.move = function (speed) {
+          self.posY += speed;
         }
       }
 
@@ -108,19 +105,18 @@
        // to move car
        function moveCar(EO) {
          EO = EO || window.event;
-         EO.preventDefault();
          switch (EO.which) {
            case 37:
-             playerCar.speedX = -1;
+             playerCar.speedX = -3;
              break;
            case 39:
-             playerCar.speedX = 1;
+             playerCar.speedX = 3;
              break;
            case 40:
-             playerCar.speedY = 1;
+             playerCar.speedY = 3;
              break;
            case 38:
-             playerCar.speedY = -1;
+             playerCar.speedY = -3;
              break;
            default:
              break;
@@ -149,16 +145,30 @@
        requestAnimationFrame(updateGameArea);
 
        function updateGameArea() {
-         if (playerCar.crashWith(obstacle)) {
-           cancelAnimationFrame(updateGameArea);
-         } else {
-           myGameArea.clear();
-           obstacle.update();
-           playerCar.changePos();
-           playerCar.update();
-           requestAnimationFrame(updateGameArea);
+         for (var i = 0; i < obstacles.length; i += 1) {
+           if (playerCar.crashWith(obstacles[i])) {
+             cancelAnimationFrame(updateGameArea);
+             return;
+           }
          }
+         myGameArea.clear();
+         myGameArea.frameNo += 1;
+         var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
+         if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
+            obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles
+         }
+         for (var j = 0; j < obstacles.length; j += 1) {
+           obstacles[j].move(2); // speed of moving obstacle = 1
+           obstacles[j].update();
+         }
+         playerCar.changePos();
+         playerCar.update();
+         requestAnimationFrame(updateGameArea);
        }
+
+      function everyObstacleInterval(n) {
+        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer
+      }
 
     </script>
   </body>
