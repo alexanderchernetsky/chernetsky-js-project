@@ -1,10 +1,56 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>racing game project</title>
+    <style>
+      body {
+        margin: 0;
+
+      }
+      .canvas-wrapper {
+        position: relative;
+        width: 100vw;
+        max-width: 1200px;
+        height: 100vh;
+        max-height: 700px;
+      }
+      canvas {
+        border: 1px solid #d3d3d3;
+        background-color: #f1f1f1;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%,-50%);
+      }
+    </style>
   </head>
   <body>
+    <div class="canvas-wrapper"></div>
+    <script>
+      'use strict';
+      // constants
+      var GAMEAREAWIDTH = 500; // px width of our game area
+      var GAMEAREAHEIGHT = 600; // px height of our game area
 
+      // game area object
+      var myGameArea = {
+        canvas : document.createElement("canvas"),
+        start : function() {
+          this.canvas.width = GAMEAREAWIDTH;
+          this.canvas.height = GAMEAREAHEIGHT;
+          this.context = this.canvas.getContext("2d");
+          document.querySelector('.canvas-wrapper').appendChild(this.canvas);
+        }
+      };
+
+      (function startGame() {
+        myGameArea.start();
+      }());
+
+    </script>
   </body>
 </html>
