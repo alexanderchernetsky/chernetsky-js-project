@@ -21,6 +21,8 @@
       var OBSTACLEHEIGHT = 100; // px height of obstacle
       var SCORESIZE = 20; // px the size of our score
 
+      var obstacleSpeed = 2; // initial speed of moving obstacle = 2
+
       var playerCar; // declare variable of user car
       var obstacles = [];// variable for our obstacles
       var playerScore; // declare variable of user score
@@ -40,7 +42,7 @@
         frameNo: 0
       };
 
-      // creating empty game area canvas with car-rectangle and obstacle-rectangle
+      // creating empty game area canvas with car-rectangle and score
       (function startGame() {
         myGameArea.start();
         playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500);
@@ -187,7 +189,7 @@
             obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
          }
          for (var j = 0; j < obstacles.length; j += 1) {
-           obstacles[j].move(2); // speed of moving obstacle = 1
+           obstacles[j].move(obstacleSpeed);
            obstacles[j].update();
          }
          playerScore.text = 'SCORE:' + Math.floor(myGameArea.frameNo / 10); // define the speed of score increase
@@ -199,7 +201,7 @@
        }
 
       function everyObstacleInterval(n) {
-        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer
+        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
       }
 
     </script>
