@@ -27,6 +27,7 @@
       var obstacles = [];// variable for our obstacles
       var playerScore; // declare variable of user score
 
+
       // game area object
       var myGameArea = {
         canvas : document.createElement("canvas"),
@@ -38,14 +39,15 @@
         },
         clear: function () {
           this.context.clearRect(0 , 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
+          // this.context.fillRect(0, 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
         },
-        frameNo: 0
+        frameNo: 0,
       };
 
-      // creating empty game area canvas with car-rectangle and score
+      // creating empty game area canvas with car and score
       (function startGame() {
         myGameArea.start();
-        playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500);
+        playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/car8.png');
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
 
@@ -62,18 +64,21 @@
       }
 
       // constructor for player car
-       function PlayerCar (width, height, x, y) {
+       function PlayerCar (width, height, x, y, src) {
          var self = this;
+         self.image = new Image();
+         self.image.src = src;
          self.width = width;
          self.height = height;
-         self.posX = x;
-         self.posY = y;
          self.speedX = 0;
          self.speedY = 0;
+         self.posX = x;
+         self.posY = y;
          self.update = function () {
            var ctx = myGameArea.context;
-           ctx.fillStyle = 'red';
-           ctx.fillRect(self.posX, self.posY, self.width, self.height);
+           /*ctx.fillStyle = 'red';
+           ctx.fillRect(self.posX, self.posY, self.width, self.height);*/
+           ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
          };
          self.changePos = function () {
            self.posX += self.speedX;
