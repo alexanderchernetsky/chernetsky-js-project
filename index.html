@@ -21,13 +21,12 @@
       var OBSTACLEHEIGHT = 100; // px height of obstacle
       var SCORESIZE = 20; // px the size of our score
 
-      var obstacleSpeed = 2; // initial speed of moving obstacle = 2
-
       var playerCar; // declare variable of user car
       var obstacles = [];// variable for our obstacles
+      var obstacleSpeed = 2; // initial speed of moving obstacle = 2
       var playerScore; // declare variable of user score
-      var background;
-      var roadMarking = [];
+      var background; // declare variable of game background
+      var roadMarking = []; // variable for our road marking
 
 
       // game area object
@@ -45,15 +44,15 @@
         frameNo: 0,
       };
 
-      // creating empty game area canvas with car and score
+      // creating empty game area canvas with background, car and score
       (function startGame() {
         myGameArea.start();
-        background = new Component(GAMEAREAWIDTH, GAMEAREAHEIGHT, 0, 0, 'img/road2.jpg');
+        background = new Component(GAMEAREAWIDTH, GAMEAREAHEIGHT, 0, 0, 'img/roadNEW.jpg');
         playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
 
-
+      // constructor for creating road marking elements
       function RoadMarking(width, height, x, y) {
         var self = this;
         self.width = width;
@@ -209,12 +208,12 @@
              return;
            }
          }
+
          myGameArea.clear();
          background.update();
 
-
          if ((myGameArea.frameNo === 1) || everyRoadMarkingInterval(50)) {
-           roadMarking.push(new RoadMarking(6, 35, 248, -100)); // -100 for smooth appearance of obstacles from top
+           roadMarking.push(new RoadMarking(6, 35, 248, -100)); // -100 for smooth appearance of road marking elements from top
          }
          for (var z = 0; z < roadMarking.length; z += 1) {
            roadMarking[z].move(obstacleSpeed*2);
@@ -222,6 +221,7 @@
          }
 
          myGameArea.frameNo += 1;
+
          var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
          if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
            obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
@@ -230,12 +230,14 @@
            obstacles[j].move(obstacleSpeed);
            obstacles[j].update();
          }
+
          playerScore.text = 'SCORE:' + Math.floor(myGameArea.frameNo / 10); // define the speed of score increase
          playerScore.update();
+
          playerCar.changePos();
          playerCar.touchWalls();
-
          playerCar.update();
+
          requestAnimationFrame(updateGameArea);
        }
 
