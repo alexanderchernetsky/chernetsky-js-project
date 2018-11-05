@@ -15,8 +15,8 @@
       // constants
       var GAMEAREAWIDTH = 500; // px width of our game area
       var GAMEAREAHEIGHT = 600; // px height of our game area
-      var PLAYERCARWIDTH = 40; // px width of user car
-      var PLAYERCARHEIGHT = 80; // px height of user car
+      var PLAYERCARWIDTH = 50; // px width of user car
+      var PLAYERCARHEIGHT = 100; // px height of user car
       var OBSTACLEWIDTH = 50; // px width of obstacle
       var OBSTACLEHEIGHT = 100; // px height of obstacle
       var SCORESIZE = 20; // px the size of our score
@@ -47,7 +47,7 @@
       // creating empty game area canvas with car and score
       (function startGame() {
         myGameArea.start();
-        playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/car8.png');
+        playerCar = new PlayerCar(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
 
@@ -120,14 +120,17 @@
       // constructor for obstacles
       function Obstacle (width, height, x, y) {
         var self = this;
+        self.image = new Image();
+        self.image.src = 'img/obstacles/car' + (Math.floor(Math.random()*(10 - 1 + 1)) + 1) + '.png'; // generate random src for image of obstacle
         self.width = width;
         self.height = height;
         self.posX = x;
         self.posY = y;
         self.update = function () {
           var ctx = myGameArea.context;
-          ctx.fillStyle = 'green';
-          ctx.fillRect(self.posX, self.posY, self.width, self.height);
+          ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+          /*ctx.fillStyle = 'green';
+          ctx.fillRect(self.posX, self.posY, self.width, self.height);*/
         };
         self.move = function (speed) {
           self.posY += speed;
@@ -191,7 +194,7 @@
          myGameArea.frameNo += 1;
          var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
          if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
-            obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
+           obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
          }
          for (var j = 0; j < obstacles.length; j += 1) {
            obstacles[j].move(obstacleSpeed);
