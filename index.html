@@ -27,6 +27,7 @@
       var obstacles = [];// variable for our obstacles
       var playerScore; // declare variable of user score
       var background;
+      var roadMarking = [];
 
 
       // game area object
@@ -47,10 +48,27 @@
       // creating empty game area canvas with car and score
       (function startGame() {
         myGameArea.start();
-        background = new Component(GAMEAREAWIDTH, GAMEAREAHEIGHT, 0, 0, 'img/road.jpg');
+        background = new Component(GAMEAREAWIDTH, GAMEAREAHEIGHT, 0, 0, 'img/road2.jpg');
         playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
+
+
+      function RoadMarking(width, height, x, y) {
+        var self = this;
+        self.width = width;
+        self.height = height;
+        self.posX = x;
+        self.posY = y;
+        self.update = function () {
+          var ctx = myGameArea.context;
+          ctx.fillStyle = 'rgb(218, 218, 218)';
+          ctx.fillRect(self.posX, self.posY, self.width, self.height);
+        };
+        self.move = function (speed) {
+          self.posY += speed;
+        }
+      }
 
       // constructor for score counter
       function Counter (size, x, y) {
@@ -193,6 +211,16 @@
          }
          myGameArea.clear();
          background.update();
+
+
+         if ((myGameArea.frameNo === 1) || everyRoadMarkingInterval(50)) {
+           roadMarking.push(new RoadMarking(6, 35, 248, -100)); // -100 for smooth appearance of obstacles from top
+         }
+         for (var z = 0; z < roadMarking.length; z += 1) {
+           roadMarking[z].move(obstacleSpeed*2);
+           roadMarking[z].update();
+         }
+
          myGameArea.frameNo += 1;
          var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
          if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
@@ -212,6 +240,10 @@
        }
 
       function everyObstacleInterval(n) {
+        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
+      }
+
+      function everyRoadMarkingInterval(n) {
         return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
       }
 
