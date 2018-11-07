@@ -13,19 +13,21 @@
     <script>
       'use strict';
       // constants
-      var GAMEAREAWIDTH = 500; // px width of our game area
-      var GAMEAREAHEIGHT = 600; // px height of our game area
-      var PLAYERCARWIDTH = 50; // px width of user car
-      var PLAYERCARHEIGHT = 100; // px height of user car
-      var OBSTACLEWIDTH = 50; // px width of obstacle
-      var OBSTACLEHEIGHT = 100; // px height of obstacle
-      var SCORESIZE = 20; // px the size of our score
+      var GAMEAREAWIDTH = 500; // width of our game area
+      var GAMEAREAHEIGHT = 600; // height of our game area
+      var PLAYERCARWIDTH = 50; // width of user car
+      var PLAYERCARHEIGHT = 100; // height of user car
+      var OBSTACLEWIDTH = 50; // width of obstacle
+      var OBSTACLEHEIGHT = 100; // height of obstacle
+      var SCORESIZE = 20; // the size of our score
+      var BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
 
       var playerCar; // declare variable of user car
       var obstacles = [];// variable for our obstacles
       var obstacleSpeed = 2; // initial speed of moving obstacle = 2
       var playerScore; // declare variable of user score
       var background; // declare variable of game background
+      var backgroundSpeed = 1; // initial speed od background moving
 
 
       // game area object
@@ -46,8 +48,8 @@
       // creating empty game area canvas with background, car and score
       (function startGame() {
         myGameArea.start();
-        background = new Component(GAMEAREAWIDTH, GAMEAREAHEIGHT, 0, 0, 'img/roadNEW.jpg');
-        playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
+        background = new Component(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg', 'background');
+        playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png', 'image');
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
 
@@ -65,8 +67,9 @@
       }
 
       // constructor for player car and background
-       function Component (width, height, x, y, src) {
+       function Component (width, height, x, y, src, type) {
          var self = this;
+         self.type = type;
          self.image = new Image();
          self.image.src = src;
          self.width = width;
@@ -77,13 +80,21 @@
          self.posY = y;
          self.update = function () {
            var ctx = myGameArea.context;
-           /*ctx.fillStyle = 'red';
-           ctx.fillRect(self.posX, self.posY, self.width, self.height);*/
-           ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+           if (self.type === 'image' || self.type === 'background') {
+             ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+           }
+           if (self.type === 'background') { // in case we draw background, we should draw 2 images and one of them should have y = posY - height
+             ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height)
+           }
          };
          self.changePos = function () {
            self.posX += self.speedX;
            self.posY += self.speedY;
+           if (self.type === 'background') { // when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
+              if (self.posY === self.height) {
+                self.posY = 0;
+              }
+           }
          };
          self.crashWith = function (obstacleObj) {
            var myBottom = self.posY + self.height;
@@ -193,6 +204,8 @@
          }
 
          myGameArea.clear();
+         background.speedY = backgroundSpeed;
+         background.changePos();
          background.update();
 
          myGameArea.frameNo += 1;
