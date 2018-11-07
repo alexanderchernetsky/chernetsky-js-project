@@ -26,7 +26,6 @@
       var obstacleSpeed = 2; // initial speed of moving obstacle = 2
       var playerScore; // declare variable of user score
       var background; // declare variable of game background
-      var roadMarking = []; // variable for our road marking
 
 
       // game area object
@@ -52,22 +51,6 @@
         playerScore = new Counter(SCORESIZE, 20, 20);
       }());
 
-      // constructor for creating road marking elements
-      function RoadMarking(width, height, x, y) {
-        var self = this;
-        self.width = width;
-        self.height = height;
-        self.posX = x;
-        self.posY = y;
-        self.update = function () {
-          var ctx = myGameArea.context;
-          ctx.fillStyle = 'rgb(218, 218, 218)';
-          ctx.fillRect(self.posX, self.posY, self.width, self.height);
-        };
-        self.move = function (speed) {
-          self.posY += speed;
-        }
-      }
 
       // constructor for score counter
       function Counter (size, x, y) {
@@ -212,14 +195,6 @@
          myGameArea.clear();
          background.update();
 
-         if ((myGameArea.frameNo === 1) || everyRoadMarkingInterval(50)) {
-           roadMarking.push(new RoadMarking(6, 35, 248, -100)); // -100 for smooth appearance of road marking elements from top
-         }
-         for (var z = 0; z < roadMarking.length; z += 1) {
-           roadMarking[z].move(obstacleSpeed*2);
-           roadMarking[z].update();
-         }
-
          myGameArea.frameNo += 1;
 
          var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
@@ -242,10 +217,6 @@
        }
 
       function everyObstacleInterval(n) {
-        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
-      }
-
-      function everyRoadMarkingInterval(n) {
         return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
       }
 
