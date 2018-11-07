@@ -28,7 +28,8 @@
       var playerScore; // declare variable of user score
       var background; // declare variable of game background
       var backgroundSpeed = 1; // initial speed od background moving
-
+      var crashSound; //declare variable of crash car sound
+      var song; // declare variable of game music
 
       // game area object
       var myGameArea = {
@@ -51,6 +52,8 @@
         background = new Component(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg', 'background');
         playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png', 'image');
         playerScore = new Counter(SCORESIZE, 20, 20);
+        crashSound = new Sound('sounds/crash.mp3');
+        song = new Sound('sounds/song.mp3');
       }());
 
 
@@ -65,6 +68,21 @@
           ctx.fillText(self.text, x, y);
         };
       }
+
+      function Sound(src) {
+        var self = this;
+        self.sound = document.createElement('audio');
+        self.sound.src = src;
+        self.sound.style.display = 'none';
+        document.body.appendChild(self.sound);
+        self.play = function () {
+          self.sound.play();
+        };
+        self.stop = function () {
+          self.sound.pause();
+        }
+      }
+
 
       // constructor for player car and background
        function Component (width, height, x, y, src, type) {
@@ -152,10 +170,13 @@
        window.addEventListener('keydown', moveCar, false);
        window.addEventListener('keyup', stopCar, false);
 
+
+
        // functions for control our car using keypad arrow keys
        // to move car
        function moveCar(EO) {
          EO = EO || window.event;
+         song.play();
          switch (EO.which) {
            case 37:
              playerCar.speedX = -4;
@@ -195,9 +216,14 @@
        // update of our game field
        requestAnimationFrame(updateGameArea);
 
+
        function updateGameArea() {
          for (var i = 0; i < obstacles.length; i += 1) {
            if (playerCar.crashWith(obstacles[i])) {
+             crashSound.play();
+             song.stop();
+             window.removeEventListener('keydown', moveCar, false);
+             window.removeEventListener('keyup', stopCar, false);
              cancelAnimationFrame(updateGameArea);
              return;
            }
