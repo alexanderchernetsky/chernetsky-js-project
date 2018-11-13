@@ -49,8 +49,8 @@
       // creating empty game area canvas with background, car and score
       (function startGame() {
         myGameArea.start();
-        background = new Component(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg', 'background');
-        playerCar = new Component(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png', 'image');
+        background = new Background(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg');
+        playerCar = new Car(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
         playerScore = new Counter(SCORESIZE, 20, 20);
         crashSound = new Sound('sounds/crash.mp3');
         song = new Sound('sounds/song.mp3');
@@ -84,10 +84,9 @@
       }
 
 
-      // constructor for player car and background
-       function Component (width, height, x, y, src, type) {
+      // constructor for background
+       function Background (width, height, x, y, src) {
          var self = this;
-         self.type = type;
          self.image = new Image();
          self.image.src = src;
          self.width = width;
@@ -98,54 +97,70 @@
          self.posY = y;
          self.update = function () {
            var ctx = myGameArea.context;
-           if (self.type === 'image' || self.type === 'background') {
-             ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-           }
-           if (self.type === 'background') { // in case we draw background, we should draw 2 images and one of them should have y = posY - height
-             ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height)
-           }
+           ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+           ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height);
          };
          self.changePos = function () {
            self.posX += self.speedX;
            self.posY += self.speedY;
-           if (self.type === 'background') { // when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
-              if (self.posY === self.height) {
-                self.posY = 0;
-              }
-           }
-         };
-         self.crashWith = function (obstacleObj) {
-           var myBottom = self.posY + self.height;
-           var myTop = self.posY;
-           var myRight = self.posX + self.width;
-           var myLeft = self.posX;
-           var obstacleBottom = obstacleObj.posY + obstacleObj.height;
-           var obstacleTop = obstacleObj.posY;
-           var obstacleRight = obstacleObj.posX + obstacleObj.width;
-           var obstacleLeft = obstacleObj.posX;
-           var crash = false;
-           if((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
-             if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
-               crash = true;
-             }
-           }
-           return crash;
-         };
-         self.touchWalls = function () {
-           if (self.posX < 0) {
-             self.posX = 0;
-           }
-           if (self.posX + self.width > GAMEAREAWIDTH) {
-             self.posX = GAMEAREAWIDTH - self.width;
-           }
-           if (self.posY < 0) {
+           if (self.posY === self.height) {// when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
              self.posY = 0;
            }
-           if (self.posY + self.height > GAMEAREAHEIGHT) {
-             self.posY = GAMEAREAHEIGHT - self.height;
-           }
-         }
+         };
        }
+
+
+      // constructor for player car
+      function Car (width, height, x, y, src) {
+        var self = this;
+        self.image = new Image();
+        self.image.src = src;
+        self.width = width;
+        self.height = height;
+        self.speedX = 0;
+        self.speedY = 0;
+        self.posX = x;
+        self.posY = y;
+        self.update = function () {
+          var ctx = myGameArea.context;
+          ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+        };
+        self.changePos = function () {
+          self.posX += self.speedX;
+          self.posY += self.speedY;
+        };
+        self.crashWith = function (obstacleObj) {
+          var myBottom = self.posY + self.height;
+          var myTop = self.posY;
+          var myRight = self.posX + self.width;
+          var myLeft = self.posX;
+          var obstacleBottom = obstacleObj.posY + obstacleObj.height;
+          var obstacleTop = obstacleObj.posY;
+          var obstacleRight = obstacleObj.posX + obstacleObj.width;
+          var obstacleLeft = obstacleObj.posX;
+          var crash = false;
+          if((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
+            if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
+              crash = true;
+            }
+          }
+          return crash;
+        };
+        self.touchWalls = function () {
+          if (self.posX < 0) {
+            self.posX = 0;
+          }
+          if (self.posX + self.width > GAMEAREAWIDTH) {
+            self.posX = GAMEAREAWIDTH - self.width;
+          }
+          if (self.posY < 0) {
+            self.posY = 0;
+          }
+          if (self.posY + self.height > GAMEAREAHEIGHT) {
+            self.posY = GAMEAREAHEIGHT - self.height;
+          }
+        }
+      }
 
       // constructor for obstacles
       function Obstacle (width, height, x, y) {
