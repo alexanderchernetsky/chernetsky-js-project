@@ -117,27 +117,80 @@
         self.image.src = src;
         self.width = width;
         self.height = height;
-        self.speedX = 0;
-        self.speedY = 0;
+        /*self.speedX = 0;
+        self.speedY = 0;*/
+        self.speed = 0;
+        self.angle = 0;
+        self.moveAngle = 0;
+        self.actualAngle = 0;
         self.posX = x;
         self.posY = y;
         self.update = function () {
           var ctx = myGameArea.context;
-          ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
+          ctx.save(); // to save the current canvas context
+          ctx.translate(self.posX, self.posY); // we move the entire canvas to the center of the specific component
+          ctx.rotate(self.angle); // perform the wanted rotation using the rotate() method
+          ctx.drawImage(self.image, self.width / -2, self.height / -2, self.width, self.height); //context.drawImage(img,x,y,width,height);
+          /*ctx.fillRect(width / -2, height / -2, width, height);*/
+          ctx.restore(); // restore the context object back to its saved position
         };
         self.changePos = function () {
-          self.posX += self.speedX;
-          self.posY += self.speedY;
+          /*self.posX += self.speedX;
+          self.posY += self.speedY;*/
+          self.actualAngle += self.moveAngle;
+          if (self.actualAngle === 360 || self.actualAngle === -360) {
+            self.actualAngle = 0;
+          }
+          console.log(self.actualAngle);
+          self.angle += self.moveAngle * Math.PI / 180;
+          self.posX += self.speed * Math.sin(self.angle);
+          self.posY -= self.speed * Math.cos(self.angle);
         };
         self.crashWith = function (obstacleObj) {
-          var myBottom = self.posY + self.height;
-          var myTop = self.posY;
-          var myRight = self.posX + self.width;
-          var myLeft = self.posX;
+
+          switch (self.actualAngle) {
+            case 0:
+            case 180:
+            case -180:
+              var myLeft = self.posX - self.width / 2;
+              var myRight = self.posX + self.width / 2;
+              var myTop = self.posY - self.height / 2;
+              var myBottom = self.posY + self.height / 2;
+              break;
+            case 90:
+            case -90:
+              var myLeft = self.posX - self.height / 2;
+              var myRight = self.posX + self.height / 2;
+              var myTop = self.posY - self.width / 2;
+              var myBottom = self.posY + self.width / 2;
+              break;
+          }
+        /*  if (self.actualAngle === 0 || self.actualAngle === 180 || self.actualAngle === -180) {
+            var myLeft = self.posX - self.width / 2;
+            var myRight = self.posX + self.width / 2;
+            var myTop = self.posY - self.height / 2;
+            var myBottom = self.posY + self.height / 2;
+          }
+
+          if (self.actualAngle === 90 || self.actualAngle === -90) {
+            var myLeft = self.posX - self.height / 2;
+            var myRight = self.posX + self.height / 2;
+            var myTop = self.posY - self.width / 2;
+            var myBottom = self.posY + self.width / 2;
+          }
+*/
+          /*var myLeft = self.posX - self.width / 2;
+          var myRight = self.posX + self.width / 2;
+          var myTop = self.posY - self.height / 2;
+          var myBottom = self.posY + self.height / 2;*/
+          var myCenterX = self.posX;
+          var myCenterY = self.posY;
           var obstacleBottom = obstacleObj.posY + obstacleObj.height;
           var obstacleTop = obstacleObj.posY;
           var obstacleRight = obstacleObj.posX + obstacleObj.width;
           var obstacleLeft = obstacleObj.posX;
+          var obstacleCenterY = obstacleObj.posY + obstacleObj.height / 2;
+          var obstacleCenterX = obstacleObj.posX + obstacleObj.width / 2;
           var crash = false;
           if((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
             if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
@@ -194,16 +247,21 @@
          song.play();
          switch (EO.which) {
            case 37:
-             playerCar.speedX = -4;
+             /*playerCar.speedX = -4;*/
+             playerCar.moveAngle = -1;
              break;
            case 39:
-             playerCar.speedX = 4;
+             /*playerCar.speedX = 4;*/
+             playerCar.moveAngle = 1;
              break;
            case 40:
-             playerCar.speedY = 4;
+             /*playerCar.speedY = 4;*/
+
+             playerCar.speed= -3;
              break;
            case 38:
-             playerCar.speedY = -4;
+             /*playerCar.speedY = -4;*/
+             playerCar.speed= 3;
              break;
            default:
              break;
@@ -217,11 +275,13 @@
          switch (EO.which) {
            case 39:
            case 37:
-             playerCar.speedX = 0;
+             /*playerCar.speedX = 0;*/
+             playerCar.moveAngle = 0;
              break;
            case 40:
            case 38:
-             playerCar.speedY = 0;
+             /*playerCar.speedY = 0;*/
+             playerCar.speed= 0;
              break;
            default:
              break;
