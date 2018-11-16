@@ -10,6 +10,18 @@
   </head>
   <body>
     <div class="canvas-wrapper"></div>
+    <div class="game-end-wrapper">
+      <p class="info">
+        <span>game over!</span><br>
+        <span id="score"></span>
+      </p>
+      <input id="player-name" type="text" placeholder="enter your name"><br>
+      <input type="button" value="save result"><br>
+      <input type="button" value="high scores"><br>
+      <input type="button" value="new game"><br>
+      <input type="button" value="main menu"><br>
+    </div>
+    <div class="game-end-background"></div>
     <script>
       'use strict';
       // constants
@@ -21,19 +33,19 @@
       var OBSTACLEHEIGHT = 100; // height of obstacle
       var SCORESIZE = 20; // the size of our score
       var BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
+      var ACCELERATION = 0.001; // game speed acceleration
+
 
       var playerCar; // declare variable of user car
       var obstacles = [];// variable for our obstacles
       var obstacleSpeed = 2; // initial speed of moving obstacle = 2
-
       var playerScore; // declare variable of user score
       var background; // declare variable of game background
       var backgroundSpeed = 1; // initial speed od background moving
-
       var crashSound; //declare variable of crash car sound
       var song; // declare variable of game music
 
-      var ACCELERATION = 0.001;
+
 
       // game area object
       var myGameArea = {
@@ -105,14 +117,9 @@
          };
          self.changePos = function () {
            self.posY += self.speedY;
-         /*  if (Math.round(self.posY) === self.height) {// when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
+           if (self.posY >= self.height) { // more flexible option it's necessary when speed of background is high
              self.posY = 0;
-           }*/
-
-             if (self.posY >= self.height) { // more flexible option it's necessary when speed of background is high
-               self.posY = 0;
-             }
-
+           }
          };
        }
 
@@ -138,17 +145,13 @@
           ctx.translate(self.posX, self.posY); // we move the entire canvas to the center of the specific component
           ctx.rotate(self.angle); // perform the wanted rotation using the rotate() method
           ctx.drawImage(self.image, self.width / -2, self.height / -2, self.width, self.height); //context.drawImage(img,x,y,width,height);
-          /*ctx.fillRect(width / -2, height / -2, width, height);*/
           ctx.restore(); // restore the context object back to its saved position
         };
         self.changePos = function () {
-          /*self.posX += self.speedX;
-          self.posY += self.speedY;*/
           self.actualAngle += self.moveAngle;
           if (self.actualAngle >= 360 || self.actualAngle <= -360) {
             self.actualAngle = 0;
           }
-          console.log(self.actualAngle);
           self.angle += self.moveAngle * Math.PI / 180;
           self.posX += self.speed * Math.sin(self.angle);
           self.posY -= self.speed * Math.cos(self.angle);
@@ -172,8 +175,6 @@
           var obstacleTop = obstacleObj.posY;
           var obstacleRight = obstacleObj.posX + obstacleObj.width;
           var obstacleLeft = obstacleObj.posX;
-          var obstacleCenterY = obstacleObj.posY + obstacleObj.height / 2;
-          var obstacleCenterX = obstacleObj.posX + obstacleObj.width / 2;
           var crash = false;
           if((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
             if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
@@ -210,8 +211,6 @@
         self.update = function () {
           var ctx = myGameArea.context;
           ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-          /*ctx.fillStyle = 'green';
-          ctx.fillRect(self.posX, self.posY, self.width, self.height);*/
         };
         self.move = function (speed) {
           self.posY += speed;
@@ -271,11 +270,7 @@
        function updateGameArea() {
          for (var i = 0; i < obstacles.length; i += 1) {
            if (playerCar.crashWith(obstacles[i])) {
-             crashSound.play();
-             song.stop();
-             window.removeEventListener('keydown', moveCar, false);
-             window.removeEventListener('keyup', stopCar, false);
-             cancelAnimationFrame(updateGameArea);
+             stopGame();
              return;
            }
          }
@@ -306,16 +301,27 @@
          obstacleSpeed += ACCELERATION;
          backgroundSpeed += ACCELERATION;
 
-         console.log(backgroundSpeed);
-
-         console.log(background.posY);
-
          requestAnimationFrame(updateGameArea);
        }
 
       function everyObstacleInterval(n) {
         return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
       }
+
+      function stopGame() {
+        crashSound.play();
+        song.stop();
+        window.removeEventListener('keydown', moveCar, false);
+        window.removeEventListener('keyup', stopCar, false);
+        cancelAnimationFrame(updateGameArea);
+        var gameEndMenu = document.querySelector('.game-end-wrapper');
+        gameEndMenu.style.display = 'block';
+        var scoreEl = document.getElementById('score');
+        scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
+        var backgroundEl = document.querySelector('.game-end-background');
+        backgroundEl.style.display = 'block';
+      }
+
 
     </script>
   </body>
