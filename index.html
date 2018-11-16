@@ -25,11 +25,15 @@
       var playerCar; // declare variable of user car
       var obstacles = [];// variable for our obstacles
       var obstacleSpeed = 2; // initial speed of moving obstacle = 2
+
       var playerScore; // declare variable of user score
       var background; // declare variable of game background
       var backgroundSpeed = 1; // initial speed od background moving
+
       var crashSound; //declare variable of crash car sound
       var song; // declare variable of game music
+
+      var ACCELERATION = 0.001;
 
       // game area object
       var myGameArea = {
@@ -91,7 +95,6 @@
          self.image.src = src;
          self.width = width;
          self.height = height;
-         self.speedX = 0;
          self.speedY = 0;
          self.posX = x;
          self.posY = y;
@@ -101,11 +104,15 @@
            ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height);
          };
          self.changePos = function () {
-           self.posX += self.speedX;
            self.posY += self.speedY;
-           if (self.posY === self.height) {// when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
+         /*  if (Math.round(self.posY) === self.height) {// when our background reached the y coordinate equal it's height(the end of the image) the loop should start from the beginning
              self.posY = 0;
-           }
+           }*/
+
+             if (self.posY >= self.height) { // more flexible option it's necessary when speed of background is high
+               self.posY = 0;
+             }
+
          };
        }
 
@@ -138,7 +145,7 @@
           /*self.posX += self.speedX;
           self.posY += self.speedY;*/
           self.actualAngle += self.moveAngle;
-          if (self.actualAngle === 360 || self.actualAngle === -360) {
+          if (self.actualAngle >= 360 || self.actualAngle <= -360) {
             self.actualAngle = 0;
           }
           console.log(self.actualAngle);
@@ -148,43 +155,19 @@
         };
         self.crashWith = function (obstacleObj) {
 
-          switch (self.actualAngle) {
-            case 0:
-            case 180:
-            case -180:
-              var myLeft = self.posX - self.width / 2;
-              var myRight = self.posX + self.width / 2;
-              var myTop = self.posY - self.height / 2;
-              var myBottom = self.posY + self.height / 2;
-              break;
-            case 90:
-            case -90:
-              var myLeft = self.posX - self.height / 2;
-              var myRight = self.posX + self.height / 2;
-              var myTop = self.posY - self.width / 2;
-              var myBottom = self.posY + self.width / 2;
-              break;
-          }
-        /*  if (self.actualAngle === 0 || self.actualAngle === 180 || self.actualAngle === -180) {
+          if (((self.actualAngle > -45) && (self.actualAngle < 45)) || ((self.actualAngle > 135) && (self.actualAngle < 225)) ||
+              ((self.actualAngle < -135) && (self.actualAngle > -225)) || (self.actualAngle > 315)) {
             var myLeft = self.posX - self.width / 2;
             var myRight = self.posX + self.width / 2;
             var myTop = self.posY - self.height / 2;
             var myBottom = self.posY + self.height / 2;
-          }
-
-          if (self.actualAngle === 90 || self.actualAngle === -90) {
+          } else {
             var myLeft = self.posX - self.height / 2;
             var myRight = self.posX + self.height / 2;
             var myTop = self.posY - self.width / 2;
             var myBottom = self.posY + self.width / 2;
           }
-*/
-          /*var myLeft = self.posX - self.width / 2;
-          var myRight = self.posX + self.width / 2;
-          var myTop = self.posY - self.height / 2;
-          var myBottom = self.posY + self.height / 2;*/
-          var myCenterX = self.posX;
-          var myCenterY = self.posY;
+
           var obstacleBottom = obstacleObj.posY + obstacleObj.height;
           var obstacleTop = obstacleObj.posY;
           var obstacleRight = obstacleObj.posX + obstacleObj.width;
@@ -247,21 +230,16 @@
          song.play();
          switch (EO.which) {
            case 37:
-             /*playerCar.speedX = -4;*/
-             playerCar.moveAngle = -1;
+             playerCar.moveAngle = -1 - backgroundSpeed / 2; // it should be connected with background speed, because without it player car will become uncontrollable at a high speed
              break;
            case 39:
-             /*playerCar.speedX = 4;*/
-             playerCar.moveAngle = 1;
+             playerCar.moveAngle = 1 + backgroundSpeed / 2;
              break;
            case 40:
-             /*playerCar.speedY = 4;*/
-
-             playerCar.speed= -3;
+             playerCar.speed= -2 - backgroundSpeed / 2;
              break;
            case 38:
-             /*playerCar.speedY = -4;*/
-             playerCar.speed= 3;
+             playerCar.speed= 4 + backgroundSpeed / 2;
              break;
            default:
              break;
@@ -275,12 +253,10 @@
          switch (EO.which) {
            case 39:
            case 37:
-             /*playerCar.speedX = 0;*/
              playerCar.moveAngle = 0;
              break;
            case 40:
            case 38:
-             /*playerCar.speedY = 0;*/
              playerCar.speed= 0;
              break;
            default:
@@ -326,6 +302,13 @@
          playerCar.changePos();
          playerCar.touchWalls();
          playerCar.update();
+
+         obstacleSpeed += ACCELERATION;
+         backgroundSpeed += ACCELERATION;
+
+         console.log(backgroundSpeed);
+
+         console.log(background.posY);
 
          requestAnimationFrame(updateGameArea);
        }
