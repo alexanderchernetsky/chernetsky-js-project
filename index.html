@@ -22,11 +22,16 @@
       <input type="button" value="main menu"><br>
     </div>
     <div class="game-end-background"></div>
-    <input id='game' type="button" value="new game">
-    <input id='controls' type="button" value="rules and controls">
-    <input id='leaderboard' type="button" value="high scores">
-    <input id='about' type="button" value="about">
+    
+    <div class="wallpaper"></div>
+    <div class="buttons-container">
+      <input id='game' type="button" value="new game">
+      <input id='controls' type="button" value="rules and controls">
+      <input id='leaderboard' type="button" value="high scores">
+      <input id='about' type="button" value="about">
+    </div>
 
+    <script src="jquery-3.3.1.min.js"></script>
     <script>
       function switchToState(state) {
         return location.hash = encodeURIComponent(JSON.stringify(state));
@@ -65,32 +70,63 @@
         (state === '') ? (state = {page: 'main'}) : (state = JSON.parse(state));
         switch (state.page) {
           case 'main':
-
+            createMainPage();
+            break;
+          case 'game':
+            createGamePage();
+            break;
+          case 'controls':
+            createControlsPage();
+            break;
+          case 'leaderboard':
+            createLeaderboardPage();
+            break;
+          case 'about':
+            createAboutPage();
+            break;
         }
       }
 
       renderNewState();
 
       function createMainPage() {
+        console.log('main page render');
+
 
       }
 
       function createGamePage() {
+        console.log('game page render');
+        document.querySelector('.canvas-wrapper').style.display = 'block';
 
+
+        $.ajax(
+            {
+              url: 'game.js',
+              type: 'GET',
+              dataType: 'script',
+              success: function (EO) {
+                console.log('success!!!')
+              },
+              error: function (EO) {
+                console.log('fail!!!')
+              }
+            })
       }
 
       function createControlsPage() {
-
+        console.log('controls page render');
       }
 
       function createLeaderboardPage() {
-
+        console.log('high scores page render');
       }
 
       function createAboutPage() {
-
+        console.log('about page render');
       }
 
     </script>
+    <!--<script src="game.js"></script>-->
   </body>
 </html>

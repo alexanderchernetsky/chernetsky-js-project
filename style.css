@@ -1,5 +1,6 @@
-body {
+html, body {
   margin: 0;
+  height: 100%;
 }
 
 .canvas-wrapper {
@@ -85,3 +86,42 @@ canvas {
   display: none;
 }
 
+.wallpaper {
+  background-image: url("img/menu/menu.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+
+.buttons-container  {
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+
+}
+
+.buttons-container  > input[type='button'] {
+  width: 60%;
+  font-size: 20px;
+}
+
+.buttons-container  > input {
+  border-radius: 10px;
+  height: 12%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+}
