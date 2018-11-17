@@ -31,6 +31,79 @@
       <input id='about' type="button" value="about">
     </div>
 
+    <div class="controls">
+      <input type="button" value="back to menu">
+      <p>Rules: move your car to avoid obstacles as long as you can to get a high score.</p>
+      <p>Controls: use keyboard arrow keys to move the car.</p>
+    </div>
+
+    <div class="leaderboard">
+      <input type="button" value="back to menu">
+      <table id="score-table">
+        <tr>
+          <th>Place</th>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+        <tr>
+          <td>1</td>
+          <td>Maria Anders</td>
+          <td>1000</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Christina Berglund</td>
+          <td>899</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Francisco Chang</td>
+          <td>600</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Roland Mendel</td>
+          <td>555</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Helen Bennett</td>
+          <td>399</td>
+        </tr>
+        <tr>
+          <td>6</td>
+          <td>Philip Cramer</td>
+          <td>300</td>
+        </tr>
+        <tr>
+          <td>7</td>
+          <td>Yoshi Tannamuri</td>
+          <td>280</td>
+        </tr>
+        <tr>
+          <td>8</td>
+          <td>Giovanni Rovelli</td>
+          <td>267</td>
+        </tr>
+        <tr>
+          <td>9</td>
+          <td>Simon Crowther</td>
+          <td>200</td>
+        </tr>
+        <tr>
+          <td>10</td>
+          <td>Marie Bertrand</td>
+          <td>18</td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="about">
+      <input type="button" value="back to menu">
+      <p>Designed and developed by Alexander Chernetsky.</p>
+      <p>Mentor - Alexander Stashkevich.</p>
+    </div>
+
     <script src="jquery-3.3.1.min.js"></script>
     <script>
       function switchToState(state) {
@@ -91,15 +164,16 @@
 
       function createMainPage() {
         console.log('main page render');
-
-
+        document.querySelector('.buttons-container').style.display = 'block';
+        document.querySelector('.controls').style.display = 'none';
+        document.querySelector('.leaderboard').style.display = 'none';
+        document.querySelector('.about').style.display = 'none';
       }
 
       function createGamePage() {
         console.log('game page render');
+        document.querySelector('.buttons-container').style.display = 'none';
         document.querySelector('.canvas-wrapper').style.display = 'block';
-
-
         $.ajax(
             {
               url: 'game.js',
@@ -116,14 +190,23 @@
 
       function createControlsPage() {
         console.log('controls page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.controls').style.display = 'block';
+        document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);
       }
 
       function createLeaderboardPage() {
         console.log('high scores page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.leaderboard').style.display = 'block';
+        document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false);
       }
 
       function createAboutPage() {
         console.log('about page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.about').style.display = 'block';
+        document.querySelector('.about input').addEventListener('click', switchToMainPage, false);
       }
 
     </script>

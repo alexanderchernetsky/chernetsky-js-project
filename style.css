@@ -107,15 +107,15 @@ canvas {
   border-radius: 20px;
   text-transform: uppercase;
   z-index: 3;
-
+  display: none;
 }
 
-.buttons-container  > input[type='button'] {
+.buttons-container  > input[type='button'], .controls > input, .leaderboard > input, .about > input {
   width: 60%;
   font-size: 20px;
 }
 
-.buttons-container  > input {
+.buttons-container  > input, .leaderboard > input {
   border-radius: 10px;
   height: 12%;
   margin-top: 3%;
@@ -125,3 +125,81 @@ canvas {
   border: 2px solid black;
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
 }
+
+.controls > input, .about > input {
+  border-radius: 10px;
+  height: 20%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+}
+
+.controls, .about {
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+  width: 50%;
+  height: 30%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+
+.leaderboard {
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+  width: 50%;
+  height: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+
+#score-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
+
+#score-table th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #A8D39B;;
+  color: white;
+}
+
+#score-table td, #score-table th {
+  border: 1px solid #A8D39B;
+  padding: 6px;
+}
+
+#score-table tr:nth-child(even){
+  background-color: #95E6F9;
+}
+
+#score-table tr:hover {
+  background-color: #A8D39B;
+}
+
