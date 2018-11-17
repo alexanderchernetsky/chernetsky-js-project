@@ -1,51 +1,27 @@
 'use strict';
-// constants
-const GAMEAREAWIDTH = 500; // width of our game area
-const GAMEAREAHEIGHT = 600; // height of our game area
-const PLAYERCARWIDTH = 50; // width of user car
-const PLAYERCARHEIGHT = 100; // height of user car
-const OBSTACLEWIDTH = 50; // width of obstacle
-const OBSTACLEHEIGHT = 100; // height of obstacle
-const SCORESIZE = 20; // the size of our score
-const BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
-const ACCELERATION = 0.001; // game speed acceleration
-
-
-let playerCar; // declare variable of user car
-const obstacles = [];// variable for our obstacles
-let obstacleSpeed = 2; // initial speed of moving obstacle = 2
-let playerScore; // declare variable of user score
-let background; // declare variable of game background
-let backgroundSpeed = 1; // initial speed od background moving
-let crashSound; // declare variable of crash car sound
-let song; // declare variable of game music
-
-
-// game area object
-const myGameArea = {
-  canvas: document.createElement('canvas'),
-  start() {
-    this.canvas.width = GAMEAREAWIDTH;
-    this.canvas.height = GAMEAREAHEIGHT;
-    this.context = this.canvas.getContext('2d');
-    document.querySelector('.canvas-wrapper').appendChild(this.canvas);
-  },
-  clear() {
-    this.context.clearRect(0, 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
-  },
-  frameNo: 0,
-};
 
 // creating empty game area canvas with background, car and score
-(function startGame() {
+function startGame() {
   myGameArea.start();
   background = new Background(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg');
   playerCar = new Car(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
   playerScore = new Counter(SCORESIZE, 20, 20);
   crashSound = new Sound('sounds/crash.mp3');
   song = new Sound('sounds/song.mp3');
-}());
+  obstacles = [];
+  obstacleSpeed = 2;
+  backgroundSpeed = 1;
+  myGameArea.frameNo = 0;
 
+  document.querySelector('.game-end-background').style.display = 'none';
+  document.querySelector('.game-end-wrapper').style.display = 'none';
+
+// update of our game field
+  requestAnimationFrame(updateGameArea);
+
+  window.addEventListener('keydown', moveCar, false);
+  window.addEventListener('keyup', stopCar, false);
+}
 
 // constructor for score counter
 function Counter(size, x, y) {
@@ -105,8 +81,6 @@ function Car(width, height, x, y, src) {
   self.image.src = src;
   self.width = width;
   self.height = height;
-  /* self.speedX = 0;
-  self.speedY = 0; */
   self.speed = 0;
   self.angle = 0;
   self.moveAngle = 0;
@@ -190,8 +164,7 @@ function Obstacle(width, height, x, y) {
   };
 }
 
-window.addEventListener('keydown', moveCar, false);
-window.addEventListener('keyup', stopCar, false);
+
 
 
 // functions for control our car using keypad arrow keys
@@ -235,8 +208,6 @@ function stopCar(EO) {
   }
 }
 
-// update of our game field
-requestAnimationFrame(updateGameArea);
 
 
 function updateGameArea() {
@@ -286,10 +257,12 @@ function stopGame() {
   window.removeEventListener('keydown', moveCar, false);
   window.removeEventListener('keyup', stopCar, false);
   cancelAnimationFrame(updateGameArea);
-  const gameEndMenu = document.querySelector('.game-end-wrapper');
-  gameEndMenu.style.display = 'block';
   const scoreEl = document.getElementById('score');
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
-  const backgroundEl = document.querySelector('.game-end-background');
-  backgroundEl.style.display = 'block';
+
+  document.querySelector('.game-end-background').style.display = 'block';
+  document.querySelector('.game-end-wrapper').style.display = 'block';
+  document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
+  document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
+  document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
 }

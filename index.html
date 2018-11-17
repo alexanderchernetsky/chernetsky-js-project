@@ -9,7 +9,8 @@
     <title>racing game project</title>
   </head>
   <body>
-    <div class="canvas-wrapper"></div>
+    <script src="variables.js"></script>
+
     <div class="game-end-wrapper">
       <p class="info">
         <span>game over!</span><br>
@@ -106,6 +107,9 @@
 
     <script src="jquery-3.3.1.min.js"></script>
     <script>
+
+      let loaded = false;
+
       function switchToState(state) {
         return location.hash = encodeURIComponent(JSON.stringify(state));
       }
@@ -168,25 +172,44 @@
         document.querySelector('.controls').style.display = 'none';
         document.querySelector('.leaderboard').style.display = 'none';
         document.querySelector('.about').style.display = 'none';
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
       }
 
       function createGamePage() {
         console.log('game page render');
         document.querySelector('.buttons-container').style.display = 'none';
-        document.querySelector('.canvas-wrapper').style.display = 'block';
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
+
+        if(loaded) {
+          startGame();
+          return
+        }
+
         $.ajax(
             {
               url: 'game.js',
               type: 'GET',
+              cache: true,
               dataType: 'script',
-              success: function (EO) {
-                console.log('success!!!')
+              success: function () {
+                console.log('success!!!');
+                loaded = true;
+                startGame();
               },
-              error: function (EO) {
-                console.log('fail!!!')
-              }
+              error: errorHandler
             })
       }
+
 
       function createControlsPage() {
         console.log('controls page render');
@@ -200,6 +223,12 @@
         document.querySelector('.buttons-container').style.display = 'none';
         document.querySelector('.leaderboard').style.display = 'block';
         document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false);
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
       }
 
       function createAboutPage() {
@@ -209,7 +238,10 @@
         document.querySelector('.about input').addEventListener('click', switchToMainPage, false);
       }
 
+      function errorHandler(jqXHR, StatusStr, ErrorStr) {
+        alert(StatusStr + ' ' + ErrorStr);
+      }
     </script>
-    <!--<script src="game.js"></script>-->
+
   </body>
 </html>
