@@ -8,7 +8,7 @@ const OBSTACLEHEIGHT = 100; // height of obstacle
 const SCORESIZE = 20; // the size of our score
 const BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
 const ACCELERATION = 0.001; // game speed acceleration
-
+// variables
 let background; // declare variable of game background
 let playerCar; // declare variable of user car
 let playerScore; // declare variable of user score
@@ -17,7 +17,6 @@ let song; // declare variable of game music
 let obstacles;// variable for our obstacles
 let obstacleSpeed; // initial speed of moving obstacle = 2
 let backgroundSpeed; // initial speed od background moving
-
 // game area object
 const myGameArea = {
   canvas: document.createElement('canvas'),

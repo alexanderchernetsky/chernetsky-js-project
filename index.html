@@ -46,55 +46,55 @@
           <th>Name</th>
           <th>Score</th>
         </tr>
-        <tr>
+        <tr id="place-1">
           <td>1</td>
-          <td>Maria Anders</td>
-          <td>1000</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-2">
           <td>2</td>
-          <td>Christina Berglund</td>
-          <td>899</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-3">
           <td>3</td>
-          <td>Francisco Chang</td>
-          <td>600</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-4">
           <td>4</td>
-          <td>Roland Mendel</td>
-          <td>555</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-5">
           <td>5</td>
-          <td>Helen Bennett</td>
-          <td>399</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-6">
           <td>6</td>
-          <td>Philip Cramer</td>
-          <td>300</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-7">
           <td>7</td>
-          <td>Yoshi Tannamuri</td>
-          <td>280</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-8">
           <td>8</td>
-          <td>Giovanni Rovelli</td>
-          <td>267</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-9">
           <td>9</td>
-          <td>Simon Crowther</td>
-          <td>200</td>
+          <td></td>
+          <td></td>
         </tr>
-        <tr>
+        <tr id="place-10">
           <td>10</td>
-          <td>Marie Bertrand</td>
-          <td>18</td>
+          <td></td>
+          <td></td>
         </tr>
       </table>
     </div>
@@ -109,6 +109,7 @@
     <script>
 
       let loaded = false;
+      let leaderboardArray;
 
       function switchToState(state) {
         return location.hash = encodeURIComponent(JSON.stringify(state));
@@ -229,6 +230,49 @@
         }
         document.querySelector('.game-end-wrapper').style.display = 'none';
         document.querySelector('.game-end-background').style.display = 'none';
+
+        refreshLeaderboard();
+
+        function refreshLeaderboard() {
+          $.ajax(
+              {
+                url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+                type: 'POST',
+                data: {f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD'},
+                cache: false,
+                success: readReady,
+                error: errorHandler
+              }
+          );
+        }
+
+        function readReady(ResultH) {
+          if (ResultH.error !== undefined)
+            alert(ResultH.error);
+          else {
+            leaderboardArray = [];
+            if (ResultH.result !== "") {
+              leaderboardArray = JSON.parse(ResultH.result);
+              if (!leaderboardArray.length)
+                leaderboardArray = [];
+            }
+            showLeaderboard();
+          }
+        }
+
+        function showLeaderboard() {
+
+          let ordered = leaderboardArray.sort((first, second) => (+first.score <= +second.score) ? 1 : -1);
+          
+          /*for (let i = 0; i < leaderboardArray.length; i++) {
+            let onePlayerInfoHash = leaderboardArray[i];
+            let currentTrElement = document.getElementById(`place-${i + 1}`);
+            let currentTdNameEl = currentTrElement.getElementsByTagName('td')[1];
+            let currentTdScoreEl = currentTrElement.getElementsByTagName('td')[2];
+            currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
+            currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
+          }*/
+        }
       }
 
       function createAboutPage() {
@@ -241,6 +285,67 @@
       function errorHandler(jqXHR, StatusStr, ErrorStr) {
         alert(StatusStr + ' ' + ErrorStr);
       }
+
+
+
+ /*     //the code below is necessary only for the first time to push array with some random players and scores to the server
+
+      let updatePassword;
+
+      
+      function sendMessage() {
+        updatePassword = Math.random();
+        $.ajax(
+            {
+              url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+              type: 'POST',
+              data: {
+                f: 'LOCKGET',
+                n: 'CHERNETSKY_RACING_LEADERBOARD',
+                p: updatePassword
+              },
+              cache: false,
+              success: lockGetReady,
+              error: errorHandler
+            }
+        );
+      }
+
+      function lockGetReady(resultH) {
+        if (resultH.error !== undefined)
+          alert(resultH.error);
+        else {
+          if (resultH.result != "") {
+            leaderboardArray = [{name: 'maria', score: '800'}, {name: 'christina', score: '789'}, {name: 'francisco', score: '29'}, {name: 'roland', score: '612'}, {name: 'helen', score: '513'}, {name: 'philip', score: '470'}, {name: 'ivan', score: '88'}, {name: 'giovanni', score: '678'}, {name: 'simon', score: '96'}, {name: 'marie', score: '100'}];
+            if (!leaderboardArray.length)
+              leaderboardArray = [];
+          }
+
+          $.ajax(
+              {
+                url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+                type: 'POST',
+                data: {
+                  f: 'UPDATE',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  v: JSON.stringify(leaderboardArray),
+                  p: updatePassword
+                },
+                cache: false,
+                success: updateReady,
+                error: errorHandler
+              }
+          );
+        }
+      }
+
+      function updateReady(resultH) {
+        if (resultH.error != undefined)
+          alert(resultH.error);
+      }
+
+      sendMessage();*/
+      
     </script>
 
   </body>
