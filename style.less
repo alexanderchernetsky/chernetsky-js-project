@@ -38,6 +38,10 @@ html, body {
   width: 64%;
   height: 20%;
   font-size: 20px;
+  cursor: pointer;
+  &:hover {
+    background-color: lightskyblue;
+  }
   @media (max-width: 768px) {
     font-size: 16px;
     width: 70%;
@@ -181,6 +185,7 @@ canvas {
   transform: translate(-50%,-50%);
   width: 38%;
   height: 90%;
+  cursor: none;
   @media (max-width: 1200px) {
     width: 50%;
   }
@@ -236,6 +241,9 @@ canvas {
   }
   input[type='text'] {
     width: 60%;
+    &:focus {
+      background-color: lightskyblue;
+    }
   }
   input {
     font-size: 20px;
@@ -247,6 +255,10 @@ canvas {
     background-color: yellow;
     border: 2px solid black;
     box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+    cursor: pointer;
+    &:hover {
+      background-color: lightskyblue;
+    }
     @media (max-width: 768px) {
       font-size: 16px;
     }
