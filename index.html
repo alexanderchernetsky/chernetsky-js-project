@@ -5,11 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet/less" type="text/css" href="style.less"/>
     <title>racing game project</title>
   </head>
   <body>
-    <div class="canvas-wrapper"></div>
+
+    <script src="variables.js"></script>
+
     <div class="game-end-wrapper">
       <p class="info">
         <span>game over!</span><br>
@@ -22,307 +24,409 @@
       <input type="button" value="main menu"><br>
     </div>
     <div class="game-end-background"></div>
+
+    <div class="wallpaper"></div>
+    <div class="buttons-container">
+      <input id='game' type="button" value="new game">
+      <input id='controls' type="button" value="rules and controls">
+      <input id='leaderboard' type="button" value="high scores">
+      <input id='about' type="button" value="about">
+    </div>
+
+    <div class="controls">
+      <input type="button" value="back to menu">
+      <p><b>Rules:</b> move your car to avoid obstacles as long as you can to get a high score.</p>
+      <p><b>Controls:</b> use keyboard arrow keys to move the car.</p>
+    </div>
+
+    <div class="leaderboard">
+      <input type="button" value="back to menu">
+      <table id="score-table">
+        <tr>
+          <th>Place</th>
+          <th>Name</th>
+          <th>Score</th>
+        </tr>
+        <tr id="place-1">
+          <td>1</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-2">
+          <td>2</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-3">
+          <td>3</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-4">
+          <td>4</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-5">
+          <td>5</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-6">
+          <td>6</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-7">
+          <td>7</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-8">
+          <td>8</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-9">
+          <td>9</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr id="place-10">
+          <td>10</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+
+    <div class="about">
+      <input type="button" value="back to menu">
+      <p>Designed and developed by Alexander Chernetsky.</p>
+      <p>Mentor - Alexander Stashkevich.</p>
+    </div>
+
+    <div class="result-save-window">
+      <p>Your result has been recorded!</p>
+      <input type="button" value="ok">
+    </div>
+
+
+    <script src="jquery-3.3.1.min.js"></script>
     <script>
-      'use strict';
-      // constants
-      var GAMEAREAWIDTH = 500; // width of our game area
-      var GAMEAREAHEIGHT = 600; // height of our game area
-      var PLAYERCARWIDTH = 50; // width of user car
-      var PLAYERCARHEIGHT = 100; // height of user car
-      var OBSTACLEWIDTH = 50; // width of obstacle
-      var OBSTACLEHEIGHT = 100; // height of obstacle
-      var SCORESIZE = 20; // the size of our score
-      var BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
-      var ACCELERATION = 0.001; // game speed acceleration
 
+      let loaded = false;
+      let leaderboardArray;
 
-      var playerCar; // declare variable of user car
-      var obstacles = [];// variable for our obstacles
-      var obstacleSpeed = 2; // initial speed of moving obstacle = 2
-      var playerScore; // declare variable of user score
-      var background; // declare variable of game background
-      var backgroundSpeed = 1; // initial speed od background moving
-      var crashSound; //declare variable of crash car sound
-      var song; // declare variable of game music
-
-
-
-      // game area object
-      var myGameArea = {
-        canvas : document.createElement("canvas"),
-        start : function() {
-          this.canvas.width = GAMEAREAWIDTH;
-          this.canvas.height = GAMEAREAHEIGHT;
-          this.context = this.canvas.getContext("2d");
-          document.querySelector('.canvas-wrapper').appendChild(this.canvas);
-        },
-        clear: function () {
-          this.context.clearRect(0 , 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
-        },
-        frameNo: 0,
-      };
-
-      // creating empty game area canvas with background, car and score
-      (function startGame() {
-        myGameArea.start();
-        background = new Background(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg');
-        playerCar = new Car(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
-        playerScore = new Counter(SCORESIZE, 20, 20);
-        crashSound = new Sound('sounds/crash.mp3');
-        song = new Sound('sounds/song.mp3');
-      }());
-
-
-      // constructor for score counter
-      function Counter (size, x, y) {
-        var self = this;
-        self.text = 'SCORE:';
-        self.update = function () {
-          var ctx = myGameArea.context;
-          ctx.fillStyle = 'white';
-          ctx.font = 'italic bold ' + size + 'px Arial';
-          ctx.fillText(self.text, x, y);
-        };
+      function switchToState(state) {
+        return location.hash = encodeURIComponent(JSON.stringify(state));
+      }
+      
+      function switchToMainPage() {
+        switchToState({page: 'main'});
       }
 
-      function Sound(src) {
-        var self = this;
-        self.sound = document.createElement('audio');
-        self.sound.src = src;
-        self.sound.style.display = 'none';
-        document.body.appendChild(self.sound);
-        self.play = function () {
-          self.sound.play();
-        };
-        self.stop = function () {
-          self.sound.pause();
+      function switchToGamePage() {
+        switchToState({page: 'game'});
+      }
+      
+      function switchToControlsPage() {
+        switchToState({page: 'controls'})
+      }
+      
+      function switchToLeaderboardPage() {
+        switchToState({page: 'leaderboard'})
+      }
+
+      function switchToAboutPage() {
+        switchToState({page: 'about'})
+      }
+
+      window.addEventListener('hashchange', renderNewState, false);
+
+      document.getElementById('game').addEventListener('click', switchToGamePage, false);
+      document.getElementById('controls').addEventListener('click', switchToControlsPage, false);
+      document.getElementById('leaderboard').addEventListener('click', switchToLeaderboardPage, false);
+      document.getElementById('about').addEventListener('click', switchToAboutPage, false);
+
+      function renderNewState() {
+        let hash = window.location.hash;
+        let state = decodeURIComponent(hash.substr(1));
+        (state === '') ? (state = {page: 'main'}) : (state = JSON.parse(state));
+        switch (state.page) {
+          case 'main':
+            createMainPage();
+            break;
+          case 'game':
+            createGamePage();
+            break;
+          case 'controls':
+            createControlsPage();
+            break;
+          case 'leaderboard':
+            createLeaderboardPage();
+            break;
+          case 'about':
+            createAboutPage();
+            break;
         }
       }
 
+      renderNewState();
 
-      // constructor for background
-       function Background (width, height, x, y, src) {
-         var self = this;
-         self.image = new Image();
-         self.image.src = src;
-         self.width = width;
-         self.height = height;
-         self.speedY = 0;
-         self.posX = x;
-         self.posY = y;
-         self.update = function () {
-           var ctx = myGameArea.context;
-           ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-           ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height);
-         };
-         self.changePos = function () {
-           self.posY += self.speedY;
-           if (self.posY >= self.height) { // more flexible option it's necessary when speed of background is high
-             self.posY = 0;
-           }
-         };
-       }
+      function createMainPage() {
+        console.log('main page render');
+        document.querySelector('.buttons-container').style.display = 'block';
+        document.querySelector('.controls').style.display = 'none';
+        document.querySelector('.leaderboard').style.display = 'none';
+        document.querySelector('.about').style.display = 'none';
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
+      }
+
+      function createGamePage() {
+        console.log('game page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
+
+        if(loaded) {
+          startGame();
+          return
+        }
+
+        $.ajax(
+            {
+              url: 'game.js',
+              type: 'GET',
+              cache: true,
+              dataType: 'script',
+              success: function () {
+                console.log('success!!!');
+                loaded = true;
+                startGame();
+              },
+              error: errorHandler
+            })
+      }
 
 
-      // constructor for player car
-      function Car (width, height, x, y, src) {
-        var self = this;
-        self.image = new Image();
-        self.image.src = src;
-        self.width = width;
-        self.height = height;
-        /*self.speedX = 0;
-        self.speedY = 0;*/
-        self.speed = 0;
-        self.angle = 0;
-        self.moveAngle = 0;
-        self.actualAngle = 0;
-        self.posX = x;
-        self.posY = y;
-        self.update = function () {
-          var ctx = myGameArea.context;
-          ctx.save(); // to save the current canvas context
-          ctx.translate(self.posX, self.posY); // we move the entire canvas to the center of the specific component
-          ctx.rotate(self.angle); // perform the wanted rotation using the rotate() method
-          ctx.drawImage(self.image, self.width / -2, self.height / -2, self.width, self.height); //context.drawImage(img,x,y,width,height);
-          ctx.restore(); // restore the context object back to its saved position
-        };
-        self.changePos = function () {
-          self.actualAngle += self.moveAngle;
-          if (self.actualAngle >= 360 || self.actualAngle <= -360) {
-            self.actualAngle = 0;
+      function createControlsPage() {
+        console.log('controls page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.controls').style.display = 'block';
+        document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);
+      }
+
+      function createLeaderboardPage() {
+        console.log('high scores page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.leaderboard').style.display = 'block';
+        document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false);
+        const canvas = document.getElementsByTagName('canvas')[0];
+        if (canvas) {
+          document.body.removeChild(canvas);
+        }
+        document.querySelector('.game-end-wrapper').style.display = 'none';
+        document.querySelector('.game-end-background').style.display = 'none';
+
+        refreshLeaderboard();
+
+        function refreshLeaderboard() {
+          $.ajax(
+              {
+                url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+                type: 'POST',
+                data: {f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD'},
+                cache: false,
+                success: readReady,
+                error: errorHandler
+              }
+          );
+        }
+
+        function readReady(ResultH) {
+          if (ResultH.error !== undefined)
+            alert(ResultH.error);
+          else {
+            leaderboardArray = [];
+            if (ResultH.result !== "") {
+              leaderboardArray = JSON.parse(ResultH.result);
+              if (!leaderboardArray.length)
+                leaderboardArray = [];
+            }
+            showLeaderboard();
           }
-          self.angle += self.moveAngle * Math.PI / 180;
-          self.posX += self.speed * Math.sin(self.angle);
-          self.posY -= self.speed * Math.cos(self.angle);
-        };
-        self.crashWith = function (obstacleObj) {
+        }
 
-          if (((self.actualAngle > -45) && (self.actualAngle < 45)) || ((self.actualAngle > 135) && (self.actualAngle < 225)) ||
-              ((self.actualAngle < -135) && (self.actualAngle > -225)) || (self.actualAngle > 315)) {
-            var myLeft = self.posX - self.width / 2;
-            var myRight = self.posX + self.width / 2;
-            var myTop = self.posY - self.height / 2;
-            var myBottom = self.posY + self.height / 2;
+        function showLeaderboard() {
+          let ordered = leaderboardArray.sort((first, second) => (+first.score <= +second.score) ? 1 : -1);
+          for (let i = 0; i < 10; i++) {
+            let onePlayerInfoHash = ordered[i];
+            let currentTrElement = document.getElementById(`place-${i + 1}`);
+            let currentTdNameEl = currentTrElement.getElementsByTagName('td')[1];
+            let currentTdScoreEl = currentTrElement.getElementsByTagName('td')[2];
+            currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
+            currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
+          }
+        }
+      }
+
+      function createAboutPage() {
+        console.log('about page render');
+        document.querySelector('.buttons-container').style.display = 'none';
+        document.querySelector('.about').style.display = 'block';
+        document.querySelector('.about input').addEventListener('click', switchToMainPage, false);
+      }
+
+      function errorHandler(jqXHR, StatusStr, ErrorStr) {
+        alert(StatusStr + ' ' + ErrorStr);
+      }
+
+      function pushResult() {
+        let playerName = document.getElementById('player-name').value;
+        if (playerName === '') {
+          playerName = 'unknown';
+        }
+        if (playerName.length > 10) {
+          playerName = playerName.substr(0, 10);
+        }
+        const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
+
+        let updatePassword;
+
+        sendMessage();
+
+        function sendMessage() {
+          updatePassword = Math.random();
+          $.ajax(
+              {
+                url: 'http://fe.it-academy.by/AjaxStringStorage2.php',
+                type: 'POST',
+                data: {
+                  f: 'LOCKGET',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  p: updatePassword,
+                },
+                cache: false,
+                success: lockGetReady,
+                error: errorHandler,
+              },
+          );
+        }
+        // to get relevant results array from server
+        function lockGetReady(resultH) {
+          if (resultH.error !== undefined) {
+            alert(resultH.error);
           } else {
-            var myLeft = self.posX - self.height / 2;
-            var myRight = self.posX + self.height / 2;
-            var myTop = self.posY - self.width / 2;
-            var myBottom = self.posY + self.width / 2;
-          }
-
-          var obstacleBottom = obstacleObj.posY + obstacleObj.height;
-          var obstacleTop = obstacleObj.posY;
-          var obstacleRight = obstacleObj.posX + obstacleObj.width;
-          var obstacleLeft = obstacleObj.posX;
-          var crash = false;
-          if((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
-            if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
-              crash = true;
+            leaderboardArray = [];
+            if (resultH.result != '') {
+              leaderboardArray = JSON.parse(resultH.result);
+              leaderboardArray.push(newResultHash);
+              if (!leaderboardArray.length) { // if there is a garbage instead of CHERNETSKY_RACING_LEADERBOARD
+                leaderboardArray = [];
+              }
             }
           }
-          return crash;
-        };
-        self.touchWalls = function () {
-          if (self.posX < 0) {
-            self.posX = 0;
-          }
-          if (self.posX + self.width > GAMEAREAWIDTH) {
-            self.posX = GAMEAREAWIDTH - self.width;
-          }
-          if (self.posY < 0) {
-            self.posY = 0;
-          }
-          if (self.posY + self.height > GAMEAREAHEIGHT) {
-            self.posY = GAMEAREAHEIGHT - self.height;
-          }
+          // to send results to the server
+          $.ajax(
+              {
+                url: 'http://fe.it-academy.by/AjaxStringStorage2.php',
+                type: 'POST',
+                data: {
+                  f: 'UPDATE',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  v: JSON.stringify(leaderboardArray),
+                  p: updatePassword,
+                },
+                cache: false,
+                success: updateReady,
+                error: errorHandler,
+              },
+          );
         }
       }
 
-      // constructor for obstacles
-      function Obstacle (width, height, x, y) {
-        var self = this;
-        self.image = new Image();
-        self.image.src = 'img/obstacles/car' + (Math.floor(Math.random()*(10 - 1 + 1)) + 1) + '.png'; // generate random src for image of obstacle
-        self.width = width;
-        self.height = height;
-        self.posX = x;
-        self.posY = y;
-        self.update = function () {
-          var ctx = myGameArea.context;
-          ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-        };
-        self.move = function (speed) {
-          self.posY += speed;
+      function updateReady(resultH) {
+        if (resultH.error != undefined) {
+          alert(resultH.error);
+        } else {
+          document.querySelector('.result-save-window').style.display = 'block';
+          document.querySelector('.result-save-window input').addEventListener('click', function () {
+            document.querySelector('.result-save-window').style.display = 'none';
+          }, false)
         }
       }
 
-       window.addEventListener('keydown', moveCar, false);
-       window.addEventListener('keyup', stopCar, false);
 
 
+      /*//the code below is necessary only for the first time to push array with some random players and scores to the server
 
-       // functions for control our car using keypad arrow keys
-       // to move car
-       function moveCar(EO) {
-         EO = EO || window.event;
-         song.play();
-         switch (EO.which) {
-           case 37:
-             playerCar.moveAngle = -1 - backgroundSpeed / 2; // it should be connected with background speed, because without it player car will become uncontrollable at a high speed
-             break;
-           case 39:
-             playerCar.moveAngle = 1 + backgroundSpeed / 2;
-             break;
-           case 40:
-             playerCar.speed= -2 - backgroundSpeed / 2;
-             break;
-           case 38:
-             playerCar.speed= 4 + backgroundSpeed / 2;
-             break;
-           default:
-             break;
-         }
-       }
+      let updatePassword;
 
-       // to stop car
-       function stopCar(EO) {
-         EO = EO || window.event;
-         EO.preventDefault();
-         switch (EO.which) {
-           case 39:
-           case 37:
-             playerCar.moveAngle = 0;
-             break;
-           case 40:
-           case 38:
-             playerCar.speed= 0;
-             break;
-           default:
-             break;
-         }
-       }
-
-       // update of our game field
-       requestAnimationFrame(updateGameArea);
-
-
-       function updateGameArea() {
-         for (var i = 0; i < obstacles.length; i += 1) {
-           if (playerCar.crashWith(obstacles[i])) {
-             stopGame();
-             return;
-           }
-         }
-
-         myGameArea.clear();
-         background.speedY = backgroundSpeed;
-         background.changePos();
-         background.update();
-
-         myGameArea.frameNo += 1;
-
-         var xObstaclePos = Math.floor(Math.random()*(GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
-         if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
-           obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
-         }
-         for (var j = 0; j < obstacles.length; j += 1) {
-           obstacles[j].move(obstacleSpeed);
-           obstacles[j].update();
-         }
-
-         playerScore.text = 'SCORE:' + Math.floor(myGameArea.frameNo / 10); // define the speed of score increase
-         playerScore.update();
-
-         playerCar.changePos();
-         playerCar.touchWalls();
-         playerCar.update();
-
-         obstacleSpeed += ACCELERATION;
-         backgroundSpeed += ACCELERATION;
-
-         requestAnimationFrame(updateGameArea);
-       }
-
-      function everyObstacleInterval(n) {
-        return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
+      
+      function sendMessage() {
+        updatePassword = Math.random();
+        $.ajax(
+            {
+              url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+              type: 'POST',
+              data: {
+                f: 'LOCKGET',
+                n: 'CHERNETSKY_RACING_LEADERBOARD',
+                p: updatePassword
+              },
+              cache: false,
+              success: lockGetReady,
+              error: errorHandler
+            }
+        );
       }
 
-      function stopGame() {
-        crashSound.play();
-        song.stop();
-        window.removeEventListener('keydown', moveCar, false);
-        window.removeEventListener('keyup', stopCar, false);
-        cancelAnimationFrame(updateGameArea);
-        var gameEndMenu = document.querySelector('.game-end-wrapper');
-        gameEndMenu.style.display = 'block';
-        var scoreEl = document.getElementById('score');
-        scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
-        var backgroundEl = document.querySelector('.game-end-background');
-        backgroundEl.style.display = 'block';
+      function lockGetReady(resultH) {
+        if (resultH.error !== undefined)
+          alert(resultH.error);
+        else {
+          if (resultH.result != "") {
+            leaderboardArray = [{name: 'maria', score: '800'}, {name: 'christina', score: '789'}, {name: 'francisco', score: '29'}, {name: 'roland', score: '612'}, {name: 'helen', score: '513'}, {name: 'philip', score: '470'}, {name: 'ivan', score: '88'}, {name: 'giovanni', score: '678'}, {name: 'simon', score: '96'}, {name: 'marie', score: '100'}];
+            if (!leaderboardArray.length)
+              leaderboardArray = [];
+          }
+
+          $.ajax(
+              {
+                url: "http://fe.it-academy.by/AjaxStringStorage2.php",
+                type: 'POST',
+                data: {
+                  f: 'UPDATE',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  v: JSON.stringify(leaderboardArray),
+                  p: updatePassword
+                },
+                cache: false,
+                success: updateReady,
+                error: errorHandler
+              }
+          );
+        }
       }
 
+      function updateReady(resultH) {
+        if (resultH.error != undefined)
+          alert(resultH.error);
+      }
+
+      sendMessage();*/
 
     </script>
+    <script src="less.min.js"></script>
   </body>
 </html>
