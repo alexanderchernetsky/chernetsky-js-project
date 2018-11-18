@@ -5,25 +5,13 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet/less" type="text/css" href="style.less"/>
     <title>racing game project</title>
   </head>
   <body>
+
     <script src="variables.js"></script>
 
-    <div class="game-end-wrapper">
-      <p class="info">
-        <span>game over!</span><br>
-        <span id="score"></span>
-      </p>
-      <input id="player-name" type="text" placeholder="enter your name"><br>
-      <input type="button" value="save result"><br>
-      <input type="button" value="high scores"><br>
-      <input type="button" value="new game"><br>
-      <input type="button" value="main menu"><br>
-    </div>
-    <div class="game-end-background"></div>
-    
     <div class="wallpaper"></div>
     <div class="buttons-container">
       <input id='game' type="button" value="new game">
@@ -103,6 +91,19 @@
       <input type="button" value="back to menu">
       <p>Designed and developed by Alexander Chernetsky.</p>
       <p>Mentor - Alexander Stashkevich.</p>
+    </div>
+
+    <div class="game-end-background"></div>
+    <div class="game-end-wrapper">
+      <p class="info">
+        <span>game over!</span><br>
+        <span id="score"></span>
+      </p>
+      <input id="player-name" type="text" placeholder="enter your name"><br>
+      <input type="button" value="save result"><br>
+      <input type="button" value="high scores"><br>
+      <input type="button" value="new game"><br>
+      <input type="button" value="main menu"><br>
     </div>
 
     <div class="result-save-window">
@@ -423,8 +424,8 @@
       }
 
       sendMessage();*/
-      
-    </script>
 
+    </script>
+    <script src="less.min.js"></script>
   </body>
 </html>
