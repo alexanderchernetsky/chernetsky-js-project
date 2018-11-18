@@ -101,7 +101,7 @@ canvas {
   display: none;
 }
 
-.buttons-container  > input[type='button'], .controls > input, .leaderboard > input, .about > input {
+.buttons-container  > input[type='button'], .controls > input, .leaderboard > input, .about > input, .result-save-window > input {
   width: 60%;
   font-size: 20px;
 }
@@ -117,7 +117,7 @@ canvas {
   box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
 }
 
-.controls > input, .about > input {
+.controls > input, .about > input, .result-save-window > input {
   border-radius: 10px;
   height: 20%;
   margin-top: 3%;
@@ -194,3 +194,22 @@ canvas {
   background-color: #A8D39B;
 }
 
+.result-save-window {
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 100);
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}

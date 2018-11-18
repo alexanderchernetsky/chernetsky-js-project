@@ -1,4 +1,4 @@
-'use strict';
+
 
 // creating empty game area canvas with background, car and score
 function startGame() {
@@ -16,7 +16,7 @@ function startGame() {
   document.querySelector('.game-end-background').style.display = 'none';
   document.querySelector('.game-end-wrapper').style.display = 'none';
 
-// update of our game field
+  // update of our game field
   requestAnimationFrame(updateGameArea);
 
   window.addEventListener('keydown', moveCar, false);
@@ -165,8 +165,6 @@ function Obstacle(width, height, x, y) {
 }
 
 
-
-
 // functions for control our car using keypad arrow keys
 // to move car
 function moveCar(EO) {
@@ -207,7 +205,6 @@ function stopCar(EO) {
       break;
   }
 }
-
 
 
 function updateGameArea() {
@@ -265,4 +262,5 @@ function stopGame() {
   document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
+  document.querySelector('input[value="save result"]').addEventListener('click', pushResult, false);
 }

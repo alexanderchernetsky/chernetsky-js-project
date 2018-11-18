@@ -105,6 +105,11 @@
       <p>Mentor - Alexander Stashkevich.</p>
     </div>
 
+    <div class="result-save-window">
+      <p>Your result has been recorded!</p>
+      <input type="button" value="ok">
+    </div>
+
     <script src="jquery-3.3.1.min.js"></script>
     <script>
 
@@ -261,17 +266,15 @@
         }
 
         function showLeaderboard() {
-
           let ordered = leaderboardArray.sort((first, second) => (+first.score <= +second.score) ? 1 : -1);
-          
-          /*for (let i = 0; i < leaderboardArray.length; i++) {
-            let onePlayerInfoHash = leaderboardArray[i];
+          for (let i = 0; i < 10; i++) {
+            let onePlayerInfoHash = ordered[i];
             let currentTrElement = document.getElementById(`place-${i + 1}`);
             let currentTdNameEl = currentTrElement.getElementsByTagName('td')[1];
             let currentTdScoreEl = currentTrElement.getElementsByTagName('td')[2];
             currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
             currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
-          }*/
+          }
         }
       }
 
@@ -286,9 +289,84 @@
         alert(StatusStr + ' ' + ErrorStr);
       }
 
+      function pushResult() {
+        let playerName = document.getElementById('player-name').value;
+        if (playerName === '') {
+          playerName = 'unknown';
+        }
+        if (playerName.length > 10) {
+          playerName = playerName.substr(0, 10);
+        }
+        const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
+
+        let updatePassword;
+
+        sendMessage();
+
+        function sendMessage() {
+          updatePassword = Math.random();
+          $.ajax(
+              {
+                url: 'http://fe.it-academy.by/AjaxStringStorage2.php',
+                type: 'POST',
+                data: {
+                  f: 'LOCKGET',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  p: updatePassword,
+                },
+                cache: false,
+                success: lockGetReady,
+                error: errorHandler,
+              },
+          );
+        }
+        // to get relevant results array from server
+        function lockGetReady(resultH) {
+          if (resultH.error !== undefined) {
+            alert(resultH.error);
+          } else {
+            leaderboardArray = [];
+            if (resultH.result != '') {
+              leaderboardArray = JSON.parse(resultH.result);
+              leaderboardArray.push(newResultHash);
+              if (!leaderboardArray.length) { // if there is a garbage instead of CHERNETSKY_RACING_LEADERBOARD
+                leaderboardArray = [];
+              }
+            }
+          }
+          // to send results to the server
+          $.ajax(
+              {
+                url: 'http://fe.it-academy.by/AjaxStringStorage2.php',
+                type: 'POST',
+                data: {
+                  f: 'UPDATE',
+                  n: 'CHERNETSKY_RACING_LEADERBOARD',
+                  v: JSON.stringify(leaderboardArray),
+                  p: updatePassword,
+                },
+                cache: false,
+                success: updateReady,
+                error: errorHandler,
+              },
+          );
+        }
+      }
+
+      function updateReady(resultH) {
+        if (resultH.error != undefined) {
+          alert(resultH.error);
+        } else {
+          document.querySelector('.result-save-window').style.display = 'block';
+          document.querySelector('.result-save-window input').addEventListener('click', function () {
+            document.querySelector('.result-save-window').style.display = 'none';
+          }, false)
+        }
+      }
 
 
- /*     //the code below is necessary only for the first time to push array with some random players and scores to the server
+
+      /*//the code below is necessary only for the first time to push array with some random players and scores to the server
 
       let updatePassword;
 
