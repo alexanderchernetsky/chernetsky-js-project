@@ -173,12 +173,32 @@ html, body {
 }
 
 canvas {
+  min-width: 300px;
   border: 1px solid #d3d3d3;
-  background-color: #f1f1f1;
   position: absolute;
   left: 50%;
   top: 50%;
   transform: translate(-50%,-50%);
+  width: 38%;
+  height: 90%;
+  @media (max-width: 1200px) {
+    width: 50%;
+  }
+  @media (max-width: 992px) {
+    width: 56%;
+  }
+  @media (max-width: 768px) {
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+  @media (max-width: 400px) {
+    height: 80%;
+  }
+  @media (max-width: 350px) {
+    height: 70%;
+  }
 }
 
 .game-end-background {
