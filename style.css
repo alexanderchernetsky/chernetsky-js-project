@@ -1,0 +1,423 @@
+/* Connecting Amatic SC*/
+@font-face {
+  font-family: "Amatic SC";
+  src: url("fonts/Amatic_SC/AmaticSC-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Amatic SC";
+  src: url("fonts/Amatic_SC/AmaticSC-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+/* Connecting Josefin Sans */
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("fonts/Josefin_Sans/JosefinSans-Regular.ttf");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("fonts/Josefin_Sans/JosefinSans-Bold.ttf");
+  font-weight: bold;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("fonts/Josefin_Sans/JosefinSans-BoldItalic.ttf");
+  font-weight: bold;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Josefin Sans";
+  src: url("fonts/Josefin_Sans/JosefinSans-Italic.ttf");
+  font-weight: normal;
+  font-style: italic;
+}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  min-width: 300px;
+}
+.wallpaper {
+  background-image: url("img/menu/menu.jpg");
+  height: 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.buttons-container {
+  min-width: 300px;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+@media (max-width: 768px) {
+  .buttons-container {
+    width: 60%;
+  }
+}
+@media (max-width: 300px) {
+  .buttons-container {
+    width: 90%;
+  }
+}
+.buttons-container > input[type='button'],
+.controls > input,
+.leaderboard > input,
+.about > input,
+.result-save-window > input {
+  font-family: "Josefin Sans", 'sans-serif';
+  width: 64%;
+  height: 20%;
+  font-size: 20px;
+  cursor: pointer;
+}
+.buttons-container > input[type='button']:hover,
+.controls > input:hover,
+.leaderboard > input:hover,
+.about > input:hover,
+.result-save-window > input:hover {
+  background-color: lightskyblue;
+}
+@media (max-width: 768px) {
+  .buttons-container > input[type='button'],
+  .controls > input,
+  .leaderboard > input,
+  .about > input,
+  .result-save-window > input {
+    font-size: 16px;
+    width: 70%;
+  }
+}
+@media (max-width: 576px) {
+  .buttons-container > input[type='button'],
+  .controls > input,
+  .leaderboard > input,
+  .about > input,
+  .result-save-window > input {
+    font-size: 14px;
+    width: 80%;
+  }
+}
+.buttons-container > input,
+.leaderboard > input {
+  border-radius: 10px;
+  height: 12%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+.controls,
+.about {
+  font-family: "Amatic SC", serif;
+  min-width: 300px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+  width: 50%;
+  height: 30%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+@media (max-width: 768px) {
+  .controls,
+  .about {
+    width: 60%;
+  }
+}
+@media (max-width: 300px) {
+  .controls,
+  .about {
+    width: 90%;
+  }
+}
+.controls p,
+.about p {
+  margin: 20px 5px;
+}
+@media (max-width: 768px) {
+  .controls p,
+  .about p {
+    font-size: 16px;
+  }
+}
+@media (max-width: 576px) {
+  .controls p,
+  .about p {
+    font-size: 14px;
+  }
+}
+@media (max-width: 992px) {
+  .controls {
+    width: 70%;
+  }
+}
+.controls > input,
+.about > input,
+.result-save-window > input {
+  border-radius: 10px;
+  height: 20%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+.leaderboard {
+  min-width: 300px;
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+  width: 50%;
+  height: 80%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+@media (max-width: 1200px) {
+  .leaderboard {
+    width: 60%;
+  }
+}
+@media (max-width: 992px) {
+  .leaderboard {
+    width: 70%;
+  }
+}
+@media (max-width: 768px) {
+  .leaderboard {
+    width: 80%;
+    height: 70%;
+    font-size: 16px;
+  }
+}
+@media (max-width: 576px) {
+  .leaderboard {
+    width: 90%;
+    height: 70%;
+    font-size: 14px;
+  }
+}
+#score-table {
+  font-family: "Amatic SC", serif;
+  min-width: 300px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+}
+#score-table th {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  background-color: #A8D39B;
+  color: white;
+}
+#score-table td,
+#score-table th {
+  border: 1px solid #A8D39B;
+  padding: 6px;
+}
+#score-table tr:nth-child(even) {
+  background-color: #95E6F9;
+}
+#score-table tr:hover {
+  background-color: #A8D39B;
+}
+canvas {
+  min-width: 300px;
+  border: 1px solid #d3d3d3;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 38%;
+  height: 90%;
+  cursor: none;
+}
+@media (max-width: 1200px) {
+  canvas {
+    width: 50%;
+  }
+}
+@media (max-width: 992px) {
+  canvas {
+    width: 56%;
+  }
+}
+@media (max-width: 768px) {
+  canvas {
+    width: 70%;
+  }
+}
+@media (max-width: 576px) {
+  canvas {
+    width: 100%;
+  }
+}
+@media (max-width: 400px) {
+  canvas {
+    height: 80%;
+  }
+}
+@media (max-width: 350px) {
+  canvas {
+    height: 70%;
+  }
+}
+.game-end-background {
+  min-width: 300px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: none;
+}
+.game-end-wrapper {
+  min-width: 300px;
+  width: 50%;
+  height: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -60%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+@media (max-width: 576px) {
+  .game-end-wrapper {
+    width: 70%;
+  }
+}
+.game-end-wrapper input[type='button'] {
+  width: 60%;
+}
+.game-end-wrapper input[type='text'] {
+  width: 60%;
+}
+.game-end-wrapper input[type='text']:focus {
+  background-color: lightskyblue;
+}
+.game-end-wrapper input {
+  font-family: "Josefin Sans", 'sans-serif';
+  font-size: 20px;
+  border-radius: 10px;
+  height: 12%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+  cursor: pointer;
+}
+.game-end-wrapper input:hover {
+  background-color: lightskyblue;
+}
+@media (max-width: 768px) {
+  .game-end-wrapper input {
+    font-size: 16px;
+  }
+}
+@media (max-width: 576px) {
+  .game-end-wrapper input {
+    font-size: 14px;
+  }
+}
+.game-end-wrapper .info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 50%;
+  font-weight: bold;
+  background-color: yellow;
+  color: white;
+  font-size: 36px;
+  text-shadow: 2px 2px 1px black;
+  border-radius: 10px;
+  margin: 0;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+@media (max-width: 768px) {
+  .game-end-wrapper .info {
+    font-size: 26px;
+  }
+}
+.result-save-window {
+  font-family: "Josefin Sans", 'sans-serif';
+  font-size: 20px;
+  font-weight: bold;
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+  width: 30%;
+  height: 30%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
+@media (max-width: 768px) {
+  .result-save-window {
+    font-size: 16px;
+    width: 50%;
+    height: 20%;
+  }
+}
+@media (max-width: 576px) {
+  .result-save-window {
+    font-size: 14px;
+    width: 50%;
+    height: 20%;
+  }
+}
