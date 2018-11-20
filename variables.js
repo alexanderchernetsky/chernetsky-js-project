@@ -17,6 +17,12 @@ let song; // declare variable of game music
 let obstacles;// variable for our obstacles
 let obstacleSpeed; // initial speed of moving obstacle = 2
 let backgroundSpeed; // initial speed od background moving
+let myUpBtn;
+let myDownBtn;
+let myLeftBtn;
+let myRightBtn;
+
+
 // game area object
 const myGameArea = {
   canvas: document.createElement('canvas'),
@@ -25,6 +31,30 @@ const myGameArea = {
     this.canvas.height = GAMEAREAHEIGHT;
     this.context = this.canvas.getContext('2d');
     document.body.appendChild(this.canvas);
+      /*window.addEventListener('touchstart', function (EO) {
+      console.log('touchstart');
+      console.log(EO);
+      console.log(EO.pageX, EO.pageY);
+      myGameArea.x = EO.pageX;
+      myGameArea.y = EO.pageY;
+    }, false);
+    window.addEventListener('touchend', function (EO) {
+      console.log('touchend');
+      myGameArea.x = false;
+      myGameArea.y = false;
+    }, false);*/
+    window.addEventListener('mousedown', function (EO) {
+      console.log('mousedown');
+      if (EO.target.tagName === 'CANVAS') {
+        myGameArea.x = EO.offsetX;
+        myGameArea.y = EO.offsetY;
+      }
+    }, false);
+    window.addEventListener('mouseup', function (EO) {
+      console.log('mouseup');
+      myGameArea.x = false;
+      myGameArea.y = false;
+    }, false);
   },
   clear() {
     this.context.clearRect(0, 0, GAMEAREAWIDTH, GAMEAREAHEIGHT);
