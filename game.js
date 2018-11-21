@@ -9,11 +9,16 @@ function startGame() {
   crashSound = new Sound('sounds/crash.mp3');
   song = new Sound('sounds/song.mp3');
 
-  myUpBtn = new ControlButton(30, 30, 50, 10);
-  myDownBtn = new ControlButton(30, 30, 50, 70);
-  myLeftBtn = new ControlButton(30, 30, 20, 40);
-  myRightBtn = new ControlButton(30, 30, 80, 40);
-
+  if (window.navigator.maxTouchPoints) {
+    const canvas = document.querySelector('canvas');
+    myUpBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 450);
+    myDownBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 550);
+    myLeftBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 30, 500);
+    myRightBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 420, 500);
+    touch = true;
+    ratioX = canvas.offsetWidth / GAMEAREAWIDTH;
+    ratioY = canvas.offsetHeight / GAMEAREAHEIGHT;
+  }
 
 
   obstacles = [];
@@ -172,7 +177,7 @@ function Obstacle(width, height, x, y) {
   };
 }
 
-function ControlButton (width, height, x, y) {
+function ControlButton(width, height, x, y) {
   const self = this;
   self.width = width;
   self.height = height;
@@ -180,15 +185,15 @@ function ControlButton (width, height, x, y) {
   self.y = y;
   self.update = function () {
     const ctx = myGameArea.context;
-    ctx.fillStyle = 'blue';
+    ctx.fillStyle = 'rgba(98,198,222,0.5)';
     ctx.fillRect(self.x, self.y, self.width, self.height);
   };
   self.clicked = function () {
     let clicked = true;
-    const myLeft = self.x;
-    const myRight = self.x + self.width;
-    const myTop = self.y;
-    const myBottom = self.y + self.height;
+    const myLeft = self.x * ratioX;
+    const myRight = (self.x + self.width) * ratioX;
+    const myTop = self.y * ratioY;
+    const myBottom = (self.y + self.height) * ratioY;;
     if ((myLeft > myGameArea.x) || (myRight < myGameArea.x) || (myTop > myGameArea.y) || (myBottom < myGameArea.y)) {
       clicked = false;
     }
@@ -265,39 +270,42 @@ function updateGameArea() {
   playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
   playerScore.update();
 
-// the code below is necessary to control car movement using touch
-  if (myGameArea.x && myGameArea.y) {
-    if (myUpBtn.clicked()) {
-      /*myGamePiece.y -= 1;*/
-      playerCar.speed = 4 + backgroundSpeed / 2;
+
+  if (touch) {
+    // the code below is necessary to control car movement using touch
+    if (myGameArea.x && myGameArea.y) {
+      if (myUpBtn.clicked()) {
+        /* myGamePiece.y -= 1; */
+        playerCar.speed = 4 + backgroundSpeed / 2;
+      }
+      if (myDownBtn.clicked()) {
+        /* myGamePiece.y += 1; */
+        playerCar.speed = -2 - backgroundSpeed / 2;
+      }
+      if (myLeftBtn.clicked()) {
+        /* myGamePiece.x += -1; */
+        playerCar.moveAngle = -1 - backgroundSpeed / 2;
+      }
+      if (myRightBtn.clicked()) {
+        /* myGamePiece.x += 1; */
+        playerCar.moveAngle = 1 + backgroundSpeed / 2;
+      }
+    } else {
+      playerCar.moveAngle = 0;
+      playerCar.speed = 0;
     }
-    if (myDownBtn.clicked()) {
-      /*myGamePiece.y += 1;*/
-      playerCar.speed = -2 - backgroundSpeed / 2;
-    }
-    if (myLeftBtn.clicked()) {
-      /*myGamePiece.x += -1;*/
-      playerCar.moveAngle = -1 - backgroundSpeed / 2;
-    }
-    if (myRightBtn.clicked()) {
-      /*myGamePiece.x += 1;*/
-      playerCar.moveAngle = 1 + backgroundSpeed / 2;
-    }
-  } else {
-    playerCar.moveAngle = 0;
-    playerCar.speed = 0;
   }
-
-  myUpBtn.update();
-  myDownBtn.update();
-  myLeftBtn.update();
-  myRightBtn.update();
-
-
 
   playerCar.changePos();
   playerCar.touchWalls();
   playerCar.update();
+
+  if (touch) {
+    myUpBtn.update();
+    myDownBtn.update();
+    myLeftBtn.update();
+    myRightBtn.update();
+  }
 
   obstacleSpeed += ACCELERATION;
   backgroundSpeed += ACCELERATION;
