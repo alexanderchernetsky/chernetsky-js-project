@@ -332,4 +332,9 @@ function stopGame() {
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
   document.querySelector('input[value="save result"]').addEventListener('click', pushResult, false);
+
+  if (window.navigator.vibrate) {
+    window.navigator.vibrate(300);
+  }
 }
+
