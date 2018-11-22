@@ -10,10 +10,10 @@ function startGame() {
   if (window.navigator.maxTouchPoints) {
     // this code is necessary only for devices with touch
     touch = true;
-    myUpBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 450);
-    myDownBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 550);
-    myLeftBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 30, 500);
-    myRightBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 420, 500);
+    myUpBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 450, CONTROLBUTTONCOLOR);
+    myDownBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 550, CONTROLBUTTONCOLOR);
+    myLeftBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 30, 500, CONTROLBUTTONCOLOR);
+    myRightBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 420, 500, CONTROLBUTTONCOLOR);
     const canvas = document.querySelector('canvas');
     [ratioX, ratioY] = [canvas.offsetWidth / GAMEAREAWIDTH, canvas.offsetHeight / GAMEAREAHEIGHT];
   } else {
@@ -328,7 +328,36 @@ class Obstacle {
   };
 } */
 
-function ControlButton(width, height, x, y) {
+// constructor for control buttons which are necessary to move car using touch device
+class ControlButton {
+  constructor(width, height, x, y, color) {
+    this.width = width;
+    this.height = height;
+    this.x = x;
+    this.y = y;
+    this.color = color;
+  }
+
+  update() {
+    const ctx = myGameArea.context;
+    ctx.fillStyle = this.color;
+    ctx.fillRect(this.x, this.y, this.width, this.height);
+  }
+
+  clicked() {
+    let clicked = true;
+    const myLeft = this.x * ratioX;
+    const myRight = (this.x + this.width) * ratioX;
+    const myTop = this.y * ratioY;
+    const myBottom = (this.y + this.height) * ratioY;
+    if ((myLeft > myGameArea.x) || (myRight < myGameArea.x) || (myTop > myGameArea.y) || (myBottom < myGameArea.y)) {
+      clicked = false;
+    }
+    return clicked;
+  }
+}
+
+/* function ControlButton(width, height, x, y) {
   const self = this;
   self.width = width;
   self.height = height;
@@ -350,12 +379,12 @@ function ControlButton(width, height, x, y) {
     }
     return clicked;
   };
-}
+} */
 
-// functions for control our car using keypad arrow keys
-// to move car
+
+// to move our car using keypad arrow keys
 function moveCar(EO) {
-  EO = EO || window.event;
+  EO = EO || window.event; // there is no preventDefault because we need f12 default behavior
   song.play();
   switch (EO.which) {
     case 37:
@@ -375,7 +404,7 @@ function moveCar(EO) {
   }
 }
 
-// to stop car
+// to stop our car when we don't push keypad arrow keys
 function stopCar(EO) {
   EO = EO || window.event;
   EO.preventDefault();
@@ -395,50 +424,51 @@ function stopCar(EO) {
 
 
 function updateGameArea() {
+  //check if player car crashed
   for (let i = 0; i < obstacles.length; i += 1) {
     if (playerCar.crashWith(obstacles[i])) {
       stopGame();
       return;
     }
   }
-
+  //clear our canvas
   myGameArea.clear();
+  // set speed to background, change it's position and update view
   background.speedY = backgroundSpeed;
   background.changePos();
   background.update();
-
+  //we increase frame number by one every requestAnimationFrame
   myGameArea.frameNo += 1;
-
-  const xObstaclePos = Math.floor(Math.random() * (GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
-  if ((myGameArea.frameNo === 1) || everyObstacleInterval(100)) {
-    obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, xObstaclePos, -100)); // -100 for smooth appearance of obstacles from top
+  // production of obstacles
+  const ObstaclePosX = Math.floor(Math.random() * (GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
+  if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
+    obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, ObstaclePosX, -100)); // -100 for smooth appearance of obstacles from top
   }
-  for (let j = 0; j < obstacles.length; j += 1) {
+  obstacles.forEach(obstacle => {
+    obstacle.move(obstacleSpeed);
+    obstacle.update();
+  });
+  /*for (let j = 0; j < obstacles.length; j += 1) {
     obstacles[j].move(obstacleSpeed);
     obstacles[j].update();
-  }
+  }*/
 
   playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
   playerScore.update();
 
-
+// the code below is necessary to control car movement using touch
   if (touch) {
-    // the code below is necessary to control car movement using touch
     if (myGameArea.x && myGameArea.y) {
       if (myUpBtn.clicked()) {
-        /* myGamePiece.y -= 1; */
         playerCar.speed = 4 + backgroundSpeed / 2;
       }
       if (myDownBtn.clicked()) {
-        /* myGamePiece.y += 1; */
         playerCar.speed = -2 - backgroundSpeed / 2;
       }
       if (myLeftBtn.clicked()) {
-        /* myGamePiece.x += -1; */
         playerCar.moveAngle = -1 - backgroundSpeed / 2;
       }
       if (myRightBtn.clicked()) {
-        /* myGamePiece.x += 1; */
         playerCar.moveAngle = 1 + backgroundSpeed / 2;
       }
     } else {
@@ -446,26 +476,22 @@ function updateGameArea() {
       playerCar.speed = 0;
     }
   }
-
+//  change player car position, check if it within the canvas borders and render it
   playerCar.changePos();
   playerCar.touchWalls();
   playerCar.update();
-
+// render buttons if we use device with touch
   if (touch) {
     myUpBtn.update();
     myDownBtn.update();
     myLeftBtn.update();
     myRightBtn.update();
   }
-
+// increase game speed
   obstacleSpeed += ACCELERATION;
   backgroundSpeed += ACCELERATION;
 
   requestAnimationFrame(updateGameArea);
-}
-
-function everyObstacleInterval(n) {
-  return (myGameArea.frameNo / n) % 1 == 0; // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
 }
 
 function stopGame() {
@@ -476,14 +502,13 @@ function stopGame() {
   cancelAnimationFrame(updateGameArea);
   const scoreEl = document.getElementById('score');
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
-
   document.querySelector('.game-end-background').style.display = 'block';
   document.querySelector('.game-end-wrapper').style.display = 'block';
   document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
   document.querySelector('input[value="save result"]').addEventListener('click', pushResult, false);
-
+// vibration for mobile phones
   if (window.navigator.vibrate) {
     window.navigator.vibrate(300);
   }

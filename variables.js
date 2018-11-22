@@ -8,7 +8,8 @@ const OBSTACLEHEIGHT = 100; // height of obstacle
 const SCORESIZE = 20; // the size of our score
 const BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
 const ACCELERATION = 0.001; // game speed acceleration
-const CONTROLBUTTONSIZE = 50; // size of buttons that are visible only when you use devices with touch
+const CONTROLBUTTONSIZE = 50; // the size of buttons that are visible only when you use devices with touch
+const CONTROLBUTTONCOLOR = 'rgba(98,198,222,0.5)'; // the color of buttons that are visible only when you use devices with touch
 
 // variables
 let background; // declare variable of game background
