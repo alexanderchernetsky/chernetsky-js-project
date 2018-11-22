@@ -34,7 +34,22 @@ function startGame() {
 }
 
 // constructor for score counter
-function Counter(size, x, y) {
+class Counter {
+  constructor(size, x, y) {
+    this.size = size;
+    this.x = x;
+    this.y = y;
+    this.text = 'SCORE:';
+  }
+
+  update() {
+    const ctx = myGameArea.context;
+    ctx.fillStyle = 'white';
+    ctx.font = `italic bold ${this.size}px Arial`;
+    ctx.fillText(this.text, this.x, this.y);
+  }
+}
+/* function Counter(size, x, y) {
   const self = this;
   self.text = 'SCORE:';
   self.update = function () {
@@ -43,9 +58,27 @@ function Counter(size, x, y) {
     ctx.font = `italic bold ${size}px Arial`;
     ctx.fillText(self.text, x, y);
   };
-}
+} */
 
-function Sound(src) {
+
+// constructor for our music and sound effects
+class Sound {
+  constructor(src) {
+    this.sound = document.createElement('audio');
+    this.sound.src = src;
+    this.sound.style.display = 'none';
+    document.body.appendChild(this.sound);
+  }
+
+  play() {
+    this.sound.play();
+  }
+
+  stop() {
+    this.sound.pause();
+  }
+}
+/* function Sound(src) {
   const self = this;
   self.sound = document.createElement('audio');
   self.sound.src = src;
@@ -57,11 +90,35 @@ function Sound(src) {
   self.stop = function () {
     self.sound.pause();
   };
-}
+} */
 
 
 // constructor for background
-function Background(width, height, x, y, src) {
+class Background {
+  constructor(width, height, x, y, src) {
+    this.width = width;
+    this.height = height;
+    this.posX = x;
+    this.posY = y;
+    this.speedY = 0;
+    this.image = new Image();
+    this.image.src = src;
+  }
+
+  update() {
+    const ctx = myGameArea.context;
+    ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height);
+    ctx.drawImage(this.image, this.posX, this.posY - this.height, this.width, this.height);
+  }
+
+  changePos() {
+    this.posY += this.speedY;
+    if (this.posY >= this.height) { // more flexible option it's necessary when speed of background is high
+      this.posY = 0;
+    }
+  }
+}
+/* function Background(width, height, x, y, src) {
   const self = this;
   self.image = new Image();
   self.image.src = src;
@@ -81,11 +138,89 @@ function Background(width, height, x, y, src) {
       self.posY = 0;
     }
   };
-}
+} */
 
 
 // constructor for player car
-function Car(width, height, x, y, src) {
+class Car {
+  constructor(width, height, x, y, src) {
+    this.image = new Image();
+    this.image.src = src;
+    this.width = width;
+    this.height = height;
+    this.speed = 0;
+    this.moveAngle = 0; // the rotation angle which we will change when push keyboard button left/right keys, in deg
+    this.angle = 0; // the same angle,but in radians
+    this.actualAngle = 0; // current rotation angle of the car from -360 to 360, in degrees
+    this.posX = x;
+    this.posY = y;
+  }
+
+  update() {
+    const ctx = myGameArea.context;
+    ctx.save(); // to save the current canvas context
+    ctx.translate(this.posX, this.posY); // we move the entire canvas to the center of the specific component
+    ctx.rotate(this.angle); // perform the wanted rotation using the rotate() method
+    ctx.drawImage(this.image, this.width / -2, this.height / -2, this.width, this.height); // context.drawImage(img,x,y,width,height);
+    ctx.restore(); // restore the context object back to its saved position
+  }
+
+  changePos() {
+    this.actualAngle += this.moveAngle;
+    if (this.actualAngle >= 360 || this.actualAngle <= -360) {
+      this.actualAngle = 0;
+    }
+    this.angle += this.moveAngle * Math.PI / 180;
+    this.posX += this.speed * Math.sin(this.angle);
+    this.posY -= this.speed * Math.cos(this.angle);
+  }
+
+  crashWith(obstacleObj) {
+    let myLeft;
+    let myRight;
+    let myTop;
+    let myBottom;
+    if (((this.actualAngle > -45) && (this.actualAngle < 45)) || ((this.actualAngle > 135) && (this.actualAngle < 225))
+        || ((this.actualAngle < -135) && (this.actualAngle > -225)) || (this.actualAngle > 315)) {
+      myLeft = this.posX - this.width / 2;
+      myRight = this.posX + this.width / 2;
+      myTop = this.posY - this.height / 2;
+      myBottom = this.posY + this.height / 2;
+    } else {
+      myLeft = this.posX - this.height / 2;
+      myRight = this.posX + this.height / 2;
+      myTop = this.posY - this.width / 2;
+      myBottom = this.posY + this.width / 2;
+    }
+    const obstacleBottom = obstacleObj.posY + obstacleObj.height;
+    const obstacleTop = obstacleObj.posY;
+    const obstacleRight = obstacleObj.posX + obstacleObj.width;
+    const obstacleLeft = obstacleObj.posX;
+    let crash = false;
+    if ((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
+      if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
+        crash = true;
+      }
+    }
+    return crash;
+  }
+
+  touchWalls() {
+    if (this.posX < this.width) {
+      this.posX = this.width;
+    }
+    if (this.posX + this.width > GAMEAREAWIDTH) {
+      this.posX = GAMEAREAWIDTH - this.width;
+    }
+    if (this.posY < this.height / 2) {
+      this.posY = this.height / 2;
+    }
+    if (this.posY + this.height / 2 > GAMEAREAHEIGHT) {
+      this.posY = GAMEAREAHEIGHT - this.height / 2;
+    }
+  }
+}
+/* function Car(width, height, x, y, src) {
   const self = this;
   self.image = new Image();
   self.image.src = src;
@@ -154,10 +289,29 @@ function Car(width, height, x, y, src) {
       self.posY = GAMEAREAHEIGHT - self.height;
     }
   };
-}
+} */
 
 // constructor for obstacles
-function Obstacle(width, height, x, y) {
+class Obstacle {
+  constructor(width, height, x, y) {
+    this.image = new Image();
+    this.image.src = `img/obstacles/car${Math.floor(Math.random() * (10 - 1 + 1)) + 1}.png`; // generate random src for image of obstacle
+    this.width = width;
+    this.height = height;
+    this.posX = x;
+    this.posY = y;
+  }
+
+  update() {
+    const ctx = myGameArea.context;
+    ctx.drawImage(this.image, this.posX, this.posY, this.width, this.height);
+  }
+
+  move(speed) {
+    this.posY += speed;
+  }
+}
+/* function Obstacle(width, height, x, y) {
   const self = this;
   self.image = new Image();
   self.image.src = `img/obstacles/car${Math.floor(Math.random() * (10 - 1 + 1)) + 1}.png`; // generate random src for image of obstacle
@@ -172,7 +326,7 @@ function Obstacle(width, height, x, y) {
   self.move = function (speed) {
     self.posY += speed;
   };
-}
+} */
 
 function ControlButton(width, height, x, y) {
   const self = this;
