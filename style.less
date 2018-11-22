@@ -1,3 +1,4 @@
+@import "css-reset";
 @import "fonts";
 
 html, body {
@@ -190,7 +191,7 @@ canvas {
   transform: translate(-50%,-50%);
   width: 38%;
   height: 90%;
-  /*cursor: none;*/
+  cursor: none;
   @media (max-width: 1200px) {
     width: 50%;
   }
@@ -294,6 +295,7 @@ canvas {
 }
 
 .result-save-window {
+  min-width: 90px;
   font-family: "Josefin Sans", 'sans-serif';
   font-size: 20px;
   font-weight: bold;
@@ -312,6 +314,9 @@ canvas {
   text-transform: uppercase;
   z-index: 3;
   display: none;
+  p {
+    margin-top: 20px;
+  }
   @media (max-width: 768px) {
     font-size: 16px;
     width: 50%;

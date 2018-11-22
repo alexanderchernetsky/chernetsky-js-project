@@ -1,6 +1,4 @@
-
-
-// creating empty game area canvas with background, car and score
+// creating empty game area canvas with background, car, score and etc
 function startGame() {
   myGameArea.start();
   background = new Background(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg');
@@ -10,30 +8,29 @@ function startGame() {
   song = new Sound('sounds/song.mp3');
 
   if (window.navigator.maxTouchPoints) {
-    const canvas = document.querySelector('canvas');
+    // this code is necessary only for devices with touch
+    touch = true;
     myUpBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 450);
     myDownBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 550);
     myLeftBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 30, 500);
     myRightBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 420, 500);
-    touch = true;
-    ratioX = canvas.offsetWidth / GAMEAREAWIDTH;
-    ratioY = canvas.offsetHeight / GAMEAREAHEIGHT;
+    const canvas = document.querySelector('canvas');
+    [ratioX, ratioY] = [canvas.offsetWidth / GAMEAREAWIDTH, canvas.offsetHeight / GAMEAREAHEIGHT];
+  } else {
+    window.addEventListener('keydown', moveCar, false);
+    window.addEventListener('keyup', stopCar, false);
   }
 
-
   obstacles = [];
-  obstacleSpeed = 2;
-  backgroundSpeed = 1;
-  myGameArea.frameNo = 0;
+  obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
+  backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
+  myGameArea.frameNo = 0; // every request animation frame it will increase by 1
 
   document.querySelector('.game-end-background').style.display = 'none';
   document.querySelector('.game-end-wrapper').style.display = 'none';
 
   // update of our game field
   requestAnimationFrame(updateGameArea);
-
-  window.addEventListener('keydown', moveCar, false);
-  window.addEventListener('keyup', stopCar, false);
 }
 
 // constructor for score counter
@@ -193,7 +190,7 @@ function ControlButton(width, height, x, y) {
     const myLeft = self.x * ratioX;
     const myRight = (self.x + self.width) * ratioX;
     const myTop = self.y * ratioY;
-    const myBottom = (self.y + self.height) * ratioY;;
+    const myBottom = (self.y + self.height) * ratioY;
     if ((myLeft > myGameArea.x) || (myRight < myGameArea.x) || (myTop > myGameArea.y) || (myBottom < myGameArea.y)) {
       clicked = false;
     }
@@ -337,4 +334,3 @@ function stopGame() {
     window.navigator.vibrate(300);
   }
 }
-

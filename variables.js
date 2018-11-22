@@ -9,6 +9,7 @@ const SCORESIZE = 20; // the size of our score
 const BACKGROUNDIMAGEHEIGHT = 1349; //  it should be equal to full height of our background image
 const ACCELERATION = 0.001; // game speed acceleration
 const CONTROLBUTTONSIZE = 50; // size of buttons that are visible only when you use devices with touch
+
 // variables
 let background; // declare variable of game background
 let playerCar; // declare variable of user car
@@ -18,13 +19,14 @@ let song; // declare variable of game music
 let obstacles;// variable for our obstacles
 let obstacleSpeed; // initial speed of moving obstacle = 2
 let backgroundSpeed; // initial speed od background moving
-let myUpBtn; // our control buttons for mobile phones with touch
-let myDownBtn;
-let myLeftBtn;
-let myRightBtn;
+let myUpBtn; // UP control button for mobile devices with touch
+let myDownBtn; // DOWN control button for mobile devices with touch
+let myLeftBtn; // LEFT control button for mobile devices with touch
+let myRightBtn; // RIGHT control button for mobile devices with touch
 let touch; // if our device had touch it would be true
 let ratioX; // it's the coefficient that shows quotient of canvas.offsetWidth to GAMEAREAWIDTH (it's value will be different on different devices)
-let ratioY;
+let ratioY; // it's the coefficient that shows quotient of canvas.offsetHeight to GAMEAREAHEIGHT (it's value will be different on different devices)
+
 // game area object
 const myGameArea = {
   canvas: document.createElement('canvas'),
