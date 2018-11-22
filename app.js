@@ -58,7 +58,6 @@ function renderNewState() {
 renderNewState();
 
 function createMainPage() {
-  console.log('main page render');
   document.querySelector('.buttons-container').style.display = 'block';
   document.querySelector('.controls').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'none';
@@ -72,7 +71,6 @@ function createMainPage() {
 }
 
 function createGamePage() {
-  console.log('game page render');
   document.querySelector('.buttons-container').style.display = 'none';
   const canvas = document.getElementsByTagName('canvas')[0];
   if (canvas) {
@@ -102,16 +100,13 @@ function createGamePage() {
   );
 }
 
-
 function createControlsPage() {
-  console.log('controls page render');
   document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.controls').style.display = 'block';
   document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);
 }
 
 function createLeaderboardPage() {
-  console.log('high scores page render');
   document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'block';
   document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false);
@@ -138,7 +133,9 @@ function createLeaderboardPage() {
   }
 
   function readReady(ResultH) {
-    if (ResultH.error !== undefined) { alert(ResultH.error); } else {
+    if (ResultH.error !== undefined) {
+      alert(ResultH.error);
+    } else {
       leaderboardArray = [];
       if (ResultH.result !== '') {
         leaderboardArray = JSON.parse(ResultH.result);
@@ -150,19 +147,21 @@ function createLeaderboardPage() {
 
   function showLeaderboard() {
     const ordered = leaderboardArray.sort((first, second) => ((+first.score <= +second.score) ? 1 : -1));
-    for (let i = 0; i < 10; i++) {
+    const cutted = ordered.slice(0, 10);
+    const trElArray = Array.from(document.querySelectorAll('#score-table tr'));
+    trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${cutted[i].name}</td><td>${cutted[i].score}</td>`);
+    /*for (let i = 0; i < 10; i++) {
       const onePlayerInfoHash = ordered[i];
       const currentTrElement = document.getElementById(`place-${i + 1}`);
       const currentTdNameEl = currentTrElement.getElementsByTagName('td')[1];
       const currentTdScoreEl = currentTrElement.getElementsByTagName('td')[2];
       currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
       currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
-    }
+    }*/
   }
 }
 
 function createAboutPage() {
-  console.log('about page render');
   document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.about').style.display = 'block';
   document.querySelector('.about input').addEventListener('click', switchToMainPage, false);
