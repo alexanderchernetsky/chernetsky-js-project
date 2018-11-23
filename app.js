@@ -25,12 +25,17 @@ function switchToAboutPage() {
   switchToState({ page: 'about' });
 }
 
-window.addEventListener('hashchange', renderNewState, false);
+$(window).bind('hashchange', renderNewState);
+/*window.addEventListener('hashchange', renderNewState, false);*/
 
-document.getElementById('game').addEventListener('click', switchToGamePage, false);
+$('#game').bind('click', switchToGamePage);
+$('#controls').bind('click', switchToControlsPage);
+$('#leaderboard').bind('click', switchToLeaderboardPage);
+$('#about').bind('click', switchToAboutPage);
+/*document.getElementById('game').addEventListener('click', switchToGamePage, false);
 document.getElementById('controls').addEventListener('click', switchToControlsPage, false);
 document.getElementById('leaderboard').addEventListener('click', switchToLeaderboardPage, false);
-document.getElementById('about').addEventListener('click', switchToAboutPage, false);
+document.getElementById('about').addEventListener('click', switchToAboutPage, false);*/
 
 function renderNewState() {
   const hash = window.location.hash;
@@ -58,10 +63,15 @@ function renderNewState() {
 renderNewState();
 
 function createMainPage() {
-  document.querySelector('.buttons-container').style.display = 'block';
+  $('.buttons-container').fadeIn(1000);
+  $('.controls').hide();
+  $('.leaderboard').hide();
+  $('.about').hide();
+  /*document.querySelector('.buttons-container').style.display = 'block';
   document.querySelector('.controls').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'none';
-  document.querySelector('.about').style.display = 'none';
+  document.querySelector('.about').style.display = 'none';*/
+  
   const canvas = document.getElementsByTagName('canvas')[0];
   if (canvas) {
     document.body.removeChild(canvas);
