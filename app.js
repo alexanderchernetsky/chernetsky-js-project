@@ -71,23 +71,30 @@ function createMainPage() {
   document.querySelector('.controls').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'none';
   document.querySelector('.about').style.display = 'none';*/
-  
-  const canvas = document.getElementsByTagName('canvas')[0];
+
+  const canvas = $('canvas').first();
+    /*const canvas = document.getElementsByTagName('canvas')[0];*/
   if (canvas) {
-    document.body.removeChild(canvas);
+    canvas.remove();
+    /*document.body.removeChild(canvas);*/
   }
-  document.querySelector('.game-end-wrapper').style.display = 'none';
-  document.querySelector('.game-end-background').style.display = 'none';
+  $('.game-end-wrapper').hide();
+  $('.game-end-background').hide();
+  /*document.querySelector('.game-end-wrapper').style.display = 'none';
+  document.querySelector('.game-end-background').style.display = 'none';*/
 }
 
 function createGamePage() {
-  document.querySelector('.buttons-container').style.display = 'none';
-  const canvas = document.getElementsByTagName('canvas')[0];
+  $('.buttons-container').hide();
+  /*document.querySelector('.buttons-container').style.display = 'none';*/
+  const canvas = $('canvas').first();
   if (canvas) {
-    document.body.removeChild(canvas);
+    canvas.remove();
   }
-  document.querySelector('.game-end-wrapper').style.display = 'none';
-  document.querySelector('.game-end-background').style.display = 'none';
+  $('.game-end-wrapper').hide();
+  $('.game-end-background').hide();
+  /*document.querySelector('.game-end-wrapper').style.display = 'none';
+  document.querySelector('.game-end-background').style.display = 'none';*/
 
   if (loaded) {
     startGame();
@@ -111,9 +118,12 @@ function createGamePage() {
 }
 
 function createControlsPage() {
-  document.querySelector('.buttons-container').style.display = 'none';
+  $('.buttons-container').hide();
+  $('.controls').fadeIn(1000);
+  $('.controls input').bind('click', switchToMainPage);
+  /*document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.controls').style.display = 'block';
-  document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);
+  document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);*/
 }
 
 function createLeaderboardPage() {
