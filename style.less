@@ -328,3 +328,15 @@ canvas {
     height: 20%;
   }
 }
+
+.leaderboard span {
+  position: relative;
+  display: inline-block;
+  transition: transform 0.1s;
+  cursor:url('click.png'), default;
+}
+
+.leaderboard span:hover {
+  transform:translateY(-20px) scale(2) rotate(10deg);
+  z-index: 1;
+}

@@ -502,8 +502,10 @@ function stopGame() {
   cancelAnimationFrame(updateGameArea);
   const scoreEl = document.getElementById('score');
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
-  document.querySelector('.game-end-background').style.display = 'block';
-  document.querySelector('.game-end-wrapper').style.display = 'block';
+  $('.game-end-background').show();
+  $('.game-end-wrapper').slideDown(1000);
+  /*document.querySelector('.game-end-background').style.display = 'block';
+  document.querySelector('.game-end-wrapper').style.display = 'block';*/
   document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);

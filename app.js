@@ -26,16 +26,16 @@ function switchToAboutPage() {
 }
 
 $(window).bind('hashchange', renderNewState);
-/*window.addEventListener('hashchange', renderNewState, false);*/
+/* window.addEventListener('hashchange', renderNewState, false); */
 
 $('#game').bind('click', switchToGamePage);
 $('#controls').bind('click', switchToControlsPage);
 $('#leaderboard').bind('click', switchToLeaderboardPage);
 $('#about').bind('click', switchToAboutPage);
-/*document.getElementById('game').addEventListener('click', switchToGamePage, false);
+/* document.getElementById('game').addEventListener('click', switchToGamePage, false);
 document.getElementById('controls').addEventListener('click', switchToControlsPage, false);
 document.getElementById('leaderboard').addEventListener('click', switchToLeaderboardPage, false);
-document.getElementById('about').addEventListener('click', switchToAboutPage, false);*/
+document.getElementById('about').addEventListener('click', switchToAboutPage, false); */
 
 function renderNewState() {
   const hash = window.location.hash;
@@ -67,34 +67,34 @@ function createMainPage() {
   $('.controls').hide();
   $('.leaderboard').hide();
   $('.about').hide();
-  /*document.querySelector('.buttons-container').style.display = 'block';
+  /* document.querySelector('.buttons-container').style.display = 'block';
   document.querySelector('.controls').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'none';
-  document.querySelector('.about').style.display = 'none';*/
+  document.querySelector('.about').style.display = 'none'; */
 
   const canvas = $('canvas').first();
-    /*const canvas = document.getElementsByTagName('canvas')[0];*/
+  /* const canvas = document.getElementsByTagName('canvas')[0]; */
   if (canvas) {
     canvas.remove();
-    /*document.body.removeChild(canvas);*/
+    /* document.body.removeChild(canvas); */
   }
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
-  /*document.querySelector('.game-end-wrapper').style.display = 'none';
-  document.querySelector('.game-end-background').style.display = 'none';*/
+  /* document.querySelector('.game-end-wrapper').style.display = 'none';
+  document.querySelector('.game-end-background').style.display = 'none'; */
 }
 
 function createGamePage() {
   $('.buttons-container').hide();
-  /*document.querySelector('.buttons-container').style.display = 'none';*/
+  /* document.querySelector('.buttons-container').style.display = 'none'; */
   const canvas = $('canvas').first();
   if (canvas) {
     canvas.remove();
   }
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
-  /*document.querySelector('.game-end-wrapper').style.display = 'none';
-  document.querySelector('.game-end-background').style.display = 'none';*/
+  /* document.querySelector('.game-end-wrapper').style.display = 'none';
+  document.querySelector('.game-end-background').style.display = 'none'; */
 
   if (loaded) {
     startGame();
@@ -121,21 +121,26 @@ function createControlsPage() {
   $('.buttons-container').hide();
   $('.controls').fadeIn(1000);
   $('.controls input').bind('click', switchToMainPage);
-  /*document.querySelector('.buttons-container').style.display = 'none';
+  /* document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.controls').style.display = 'block';
-  document.querySelector('.controls input').addEventListener('click', switchToMainPage, false);*/
+  document.querySelector('.controls input').addEventListener('click', switchToMainPage, false); */
 }
 
 function createLeaderboardPage() {
-  document.querySelector('.buttons-container').style.display = 'none';
+  $('.buttons-container').hide();
+  $('.leaderboard').fadeIn(1000);
+  $('.leaderboard input').bind('click', switchToMainPage);
+  /* document.querySelector('.buttons-container').style.display = 'none';
   document.querySelector('.leaderboard').style.display = 'block';
-  document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false);
-  const canvas = document.getElementsByTagName('canvas')[0];
+  document.querySelector('.leaderboard input').addEventListener('click', switchToMainPage, false); */
+  const canvas = $('canvas').first();
   if (canvas) {
-    document.body.removeChild(canvas);
+    canvas.remove();
   }
-  document.querySelector('.game-end-wrapper').style.display = 'none';
-  document.querySelector('.game-end-background').style.display = 'none';
+  $('.game-end-wrapper').hide();
+  $('.game-end-background').hide();
+  /* document.querySelector('.game-end-wrapper').style.display = 'none';
+  document.querySelector('.game-end-background').style.display = 'none'; */
 
   refreshLeaderboard();
 
@@ -170,21 +175,36 @@ function createLeaderboardPage() {
     const cutted = ordered.slice(0, 10);
     const trElArray = Array.from(document.querySelectorAll('#score-table tr'));
     trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${cutted[i].name}</td><td>${cutted[i].score}</td>`);
-    /*for (let i = 0; i < 10; i++) {
+    /* for (let i = 0; i < 10; i++) {
       const onePlayerInfoHash = ordered[i];
       const currentTrElement = document.getElementById(`place-${i + 1}`);
       const currentTdNameEl = currentTrElement.getElementsByTagName('td')[1];
       const currentTdScoreEl = currentTrElement.getElementsByTagName('td')[2];
       currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
       currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
-    }*/
+    } */
+    const heading = $('.leaderboard td');
+    heading.each(function () {
+      $(this).html(spanWrap($(this).text()));
+    });
+  }
+
+  function spanWrap(word) {
+    return [...word].map(letter => `<span>${letter}</span>`).join('');
   }
 }
 
 function createAboutPage() {
-  document.querySelector('.buttons-container').style.display = 'none';
-  document.querySelector('.about').style.display = 'block';
-  document.querySelector('.about input').addEventListener('click', switchToMainPage, false);
+  $('.buttons-container').hide();
+  $('.about').fadeIn(1000);
+  $('.about input').bind('click', switchToMainPage);
+  /* document.querySelector('.buttons-container').style.display = 'none';
+    document.querySelector('.about').style.display = 'block';
+    document.querySelector('.about input').addEventListener('click', switchToMainPage, false); */
+
+  let fontSize = parseInt($('body').css('font-size'));
+  fontSize += 10;
+  $('.about p span').animate({ 'font-size': fontSize, margin: 2 }, 2000);
 }
 
 function errorHandler(jqXHR, StatusStr, ErrorStr) {
@@ -192,7 +212,8 @@ function errorHandler(jqXHR, StatusStr, ErrorStr) {
 }
 
 function pushResult() {
-  let playerName = document.getElementById('player-name').value;
+  let playerName = $('#player-name').val();
+  /* let playerName = document.getElementById('player-name').value; */
   if (playerName === '') {
     playerName = 'unknown';
   }
