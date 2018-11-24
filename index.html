@@ -10,6 +10,7 @@
   </head>
   <body>
     <script src="variables.js"></script>
+    <script src="gamearea.js"></script>
 
     <div class="game-end-wrapper">
       <p class="info">
@@ -24,18 +25,18 @@
     </div>
     <div class="game-end-background"></div>
     <div class="wallpaper"></div>
-    <div class="buttons-container">
+    <section class="buttons-container">
       <input id='game' type="button" value="new game">
       <input id='controls' type="button" value="rules and controls">
       <input id='leaderboard' type="button" value="high scores">
       <input id='about' type="button" value="about">
-    </div>
-    <div class="controls">
+    </section>
+    <section class="controls">
       <input type="button" value="back to menu">
       <p><b>Rules:</b> move your car to avoid obstacles as long as you can to get a high score.</p>
       <p><b>Controls:</b> use keyboard arrow keys to move the car.</p>
-    </div>
-    <div class="leaderboard">
+    </section>
+    <section class="leaderboard">
       <input type="button" value="back to menu">
       <table id="score-table">
         <tr>
@@ -94,12 +95,12 @@
           <td></td>-->
         </tr>
       </table>
-    </div>
-    <div class="about">
+    </section>
+    <section class="about">
       <input type="button" value="back to menu">
       <p>Designed and developed by Alexander Chernetsky.</p>
       <p>Mentor - Alexander Stashkevich.</p>
-    </div>
+    </section>
     <div class="result-save-window">
       <p>Your result has been recorded!</p>
       <input type="button" value="ok">

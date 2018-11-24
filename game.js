@@ -1,29 +1,29 @@
 // creating empty game area canvas with background, car, score and etc
 function startGame() {
   myGameArea.start();
-  background = new Background(GAMEAREAWIDTH, BACKGROUNDIMAGEHEIGHT, 0, 0, 'img/road.jpg');
-  playerCar = new Car(PLAYERCARWIDTH, PLAYERCARHEIGHT, 230, 500, 'img/player-car.png');
-  playerScore = new Counter(SCORESIZE, 20, 20);
-  crashSound = new Sound('sounds/crash.mp3');
-  song = new Sound('sounds/song.mp3');
+  raceGame.background = new Background(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg'); //  1349 background image height - it should be equal to full height of our background image
+  raceGame.playerCar = new Car({width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png'});
+  raceGame.playerScore = new Counter(20, 20, 20);
+  raceGame.crashSound = new Sound('sounds/crash.mp3');
+  raceGame.song = new Sound('sounds/song.mp3');
 
   if (window.navigator.maxTouchPoints) {
     // this code is necessary only for devices with touch
-    touch = true;
-    myUpBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 450, CONTROLBUTTONCOLOR);
-    myDownBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 225, 550, CONTROLBUTTONCOLOR);
-    myLeftBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 30, 500, CONTROLBUTTONCOLOR);
-    myRightBtn = new ControlButton(CONTROLBUTTONSIZE, CONTROLBUTTONSIZE, 420, 500, CONTROLBUTTONCOLOR);
+    raceGame.touch = true;
+    raceGame.myUpBtn = new ControlButton(50, 50, 225, 450, 'rgba(98,198,222,0.5)'); // 50 - the size of buttons that are visible only when you use devices with touch
+    raceGame.myDownBtn = new ControlButton(50, 50, 225, 550, 'rgba(98,198,222,0.5)');
+    raceGame.myLeftBtn = new ControlButton(50, 50, 30, 500, 'rgba(98,198,222,0.5)');
+    raceGame.myRightBtn = new ControlButton(50, 50, 420, 500, 'rgba(98,198,222,0.5)');
     const canvas = document.querySelector('canvas');
-    [ratioX, ratioY] = [canvas.offsetWidth / GAMEAREAWIDTH, canvas.offsetHeight / GAMEAREAHEIGHT];
+    [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
   } else {
     window.addEventListener('keydown', moveCar, false);
     window.addEventListener('keyup', stopCar, false);
   }
 
-  obstacles = [];
-  obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
-  backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
+  raceGame.obstacles = [];
+  raceGame.obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
+  raceGame.backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
   myGameArea.frameNo = 0; // every request animation frame it will increase by 1
 
   document.querySelector('.game-end-background').style.display = 'none';
@@ -99,17 +99,19 @@ class Background {
 
 // constructor for player car
 class Car {
-  constructor(width, height, x, y, src) {
+  constructor(obj) {
     this.image = new Image();
-    this.image.src = src;
-    this.width = width;
-    this.height = height;
+    /*let {this.image.src, this.width, this.height, this.posX, this.posY} = obj;*/
+    this.image.src = obj.src;
+    this.width = obj.width;
+    this.height = obj.height;
+    this.posX = obj.x;
+    this.posY = obj.y;
     this.speed = 0;
     this.moveAngle = 0; // the rotation angle which we will change when push keyboard button left/right keys, in deg
     this.angle = 0; // the same angle,but in radians
     this.actualAngle = 0; // current rotation angle of the car from -360 to 360, in degrees
-    this.posX = x;
-    this.posY = y;
+
   }
 
   update() {
@@ -165,14 +167,14 @@ class Car {
     if (this.posX < this.width) {
       this.posX = this.width;
     }
-    if (this.posX + this.width > GAMEAREAWIDTH) {
-      this.posX = GAMEAREAWIDTH - this.width;
+    if (this.posX + this.width > raceGame.GAMEAREAWIDTH) {
+      this.posX = raceGame.GAMEAREAWIDTH - this.width;
     }
     if (this.posY < this.height / 2) {
       this.posY = this.height / 2;
     }
-    if (this.posY + this.height / 2 > GAMEAREAHEIGHT) {
-      this.posY = GAMEAREAHEIGHT - this.height / 2;
+    if (this.posY + this.height / 2 > raceGame.GAMEAREAHEIGHT) {
+      this.posY = raceGame.GAMEAREAHEIGHT - this.height / 2;
     }
   }
 }
@@ -216,10 +218,10 @@ class ControlButton {
 
   clicked() {
     let clicked = true;
-    const myLeft = this.x * ratioX;
-    const myRight = (this.x + this.width) * ratioX;
-    const myTop = this.y * ratioY;
-    const myBottom = (this.y + this.height) * ratioY;
+    const myLeft = this.x * raceGame.ratioX;
+    const myRight = (this.x + this.width) * raceGame.ratioX;
+    const myTop = this.y * raceGame.ratioY;
+    const myBottom = (this.y + this.height) * raceGame.ratioY;
     if ((myLeft > myGameArea.x) || (myRight < myGameArea.x) || (myTop > myGameArea.y) || (myBottom < myGameArea.y)) {
       clicked = false;
     }
@@ -231,19 +233,19 @@ class ControlButton {
 // to move our car using keypad arrow keys
 function moveCar(EO) {
   EO = EO || window.event; // there is no preventDefault because we need f12 default behavior
-  song.play();
+  raceGame.song.play();
   switch (EO.which) {
     case 37:
-      playerCar.moveAngle = -1 - backgroundSpeed / 2; // it should be connected with background speed, because without it player car will become uncontrollable at a high speed
+      raceGame.playerCar.moveAngle = -1 - raceGame.backgroundSpeed / 2; // it should be connected with background speed, because without it player car will become uncontrollable at a high speed
       break;
     case 39:
-      playerCar.moveAngle = 1 + backgroundSpeed / 2;
+      raceGame.playerCar.moveAngle = 1 + raceGame.backgroundSpeed / 2;
       break;
     case 40:
-      playerCar.speed = -2 - backgroundSpeed / 2;
+      raceGame.playerCar.speed = -2 - raceGame.backgroundSpeed / 2;
       break;
     case 38:
-      playerCar.speed = 4 + backgroundSpeed / 2;
+      raceGame.playerCar.speed = 4 + raceGame.backgroundSpeed / 2;
       break;
     default:
       break;
@@ -257,11 +259,11 @@ function stopCar(EO) {
   switch (EO.which) {
     case 39:
     case 37:
-      playerCar.moveAngle = 0;
+      raceGame.playerCar.moveAngle = 0;
       break;
     case 40:
     case 38:
-      playerCar.speed = 0;
+      raceGame.playerCar.speed = 0;
       break;
     default:
       break;
@@ -271,8 +273,8 @@ function stopCar(EO) {
 
 function updateGameArea() {
   //check if player car crashed
-  for (let i = 0; i < obstacles.length; i += 1) {
-    if (playerCar.crashWith(obstacles[i])) {
+  for (let i = 0; i < raceGame.obstacles.length; i += 1) {
+    if (raceGame.playerCar.crashWith(raceGame.obstacles[i])) {
       stopGame();
       return;
     }
@@ -280,65 +282,67 @@ function updateGameArea() {
   //clear our canvas
   myGameArea.clear();
   // set speed to background, change it's position and update view
-  background.speedY = backgroundSpeed;
-  background.changePos();
-  background.update();
+  raceGame.background.speedY = raceGame.backgroundSpeed;
+  raceGame.background.changePos();
+  raceGame.background.update();
   //we increase frame number by one every requestAnimationFrame
   myGameArea.frameNo += 1;
   // production of obstacles
-  const ObstaclePosX = Math.floor(Math.random() * (GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
+  const OBSTACLEWIDTH = 50;
+  const OBSTACLEHEIGHT = 100;
+  const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - OBSTACLEWIDTH) + 1); // for random x coordinate for obstacles
   if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
-    obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, ObstaclePosX, -100)); // -100 for smooth appearance of obstacles from top
+    raceGame.obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, ObstaclePosX, -100)); // -100 for smooth appearance of obstacles from top
   }
-  obstacles.forEach(obstacle => {
-    obstacle.move(obstacleSpeed);
+  raceGame.obstacles.forEach(obstacle => {
+    obstacle.move(raceGame.obstacleSpeed);
     obstacle.update();
   });
 
-  playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
-  playerScore.update();
+  raceGame.playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
+  raceGame.playerScore.update();
 
 // the code below is necessary to control car movement using touch
-  if (touch) {
+  if (raceGame.touch) {
     if (myGameArea.x && myGameArea.y) {
-      if (myUpBtn.clicked()) {
-        playerCar.speed = 4 + backgroundSpeed / 2;
+      if (raceGame.myUpBtn.clicked()) {
+        raceGame.playerCar.speed = 4 + raceGame.backgroundSpeed / 2;
       }
-      if (myDownBtn.clicked()) {
-        playerCar.speed = -2 - backgroundSpeed / 2;
+      if (raceGame.myDownBtn.clicked()) {
+        raceGame.playerCar.speed = -2 - raceGame.backgroundSpeed / 2;
       }
-      if (myLeftBtn.clicked()) {
-        playerCar.moveAngle = -1 - backgroundSpeed / 2;
+      if (raceGame.myLeftBtn.clicked()) {
+        raceGame.playerCar.moveAngle = -1 - raceGame.backgroundSpeed / 2;
       }
-      if (myRightBtn.clicked()) {
-        playerCar.moveAngle = 1 + backgroundSpeed / 2;
+      if (raceGame.myRightBtn.clicked()) {
+        raceGame.playerCar.moveAngle = 1 + raceGame.backgroundSpeed / 2;
       }
     } else {
-      playerCar.moveAngle = 0;
-      playerCar.speed = 0;
+      raceGame.playerCar.moveAngle = 0;
+      raceGame.playerCar.speed = 0;
     }
   }
 //  change player car position, check if it within the canvas borders and render it
-  playerCar.changePos();
-  playerCar.touchWalls();
-  playerCar.update();
+  raceGame.playerCar.changePos();
+  raceGame.playerCar.touchWalls();
+  raceGame.playerCar.update();
 // render buttons if we use device with touch
-  if (touch) {
-    myUpBtn.update();
-    myDownBtn.update();
-    myLeftBtn.update();
-    myRightBtn.update();
+  if (raceGame.touch) {
+    raceGame.myUpBtn.update();
+    raceGame.myDownBtn.update();
+    raceGame.myLeftBtn.update();
+    raceGame.myRightBtn.update();
   }
 // increase game speed
-  obstacleSpeed += ACCELERATION;
-  backgroundSpeed += ACCELERATION;
+  raceGame.obstacleSpeed += 0.001; // game speed acceleration
+  raceGame.backgroundSpeed += 0.001;
 
   requestAnimationFrame(updateGameArea);
 }
 
 function stopGame() {
-  crashSound.play();
-  song.stop();
+  raceGame.crashSound.play();
+  raceGame.song.stop();
   window.removeEventListener('keydown', moveCar, false);
   window.removeEventListener('keyup', stopCar, false);
   cancelAnimationFrame(updateGameArea);
