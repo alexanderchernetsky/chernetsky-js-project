@@ -49,16 +49,6 @@ class Counter {
     ctx.fillText(this.text, this.x, this.y);
   }
 }
-/* function Counter(size, x, y) {
-  const self = this;
-  self.text = 'SCORE:';
-  self.update = function () {
-    const ctx = myGameArea.context;
-    ctx.fillStyle = 'white';
-    ctx.font = `italic bold ${size}px Arial`;
-    ctx.fillText(self.text, x, y);
-  };
-} */
 
 
 // constructor for our music and sound effects
@@ -78,19 +68,6 @@ class Sound {
     this.sound.pause();
   }
 }
-/* function Sound(src) {
-  const self = this;
-  self.sound = document.createElement('audio');
-  self.sound.src = src;
-  self.sound.style.display = 'none';
-  document.body.appendChild(self.sound);
-  self.play = function () {
-    self.sound.play();
-  };
-  self.stop = function () {
-    self.sound.pause();
-  };
-} */
 
 
 // constructor for background
@@ -118,27 +95,6 @@ class Background {
     }
   }
 }
-/* function Background(width, height, x, y, src) {
-  const self = this;
-  self.image = new Image();
-  self.image.src = src;
-  self.width = width;
-  self.height = height;
-  self.speedY = 0;
-  self.posX = x;
-  self.posY = y;
-  self.update = function () {
-    const ctx = myGameArea.context;
-    ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-    ctx.drawImage(self.image, self.posX, self.posY - self.height, self.width, self.height);
-  };
-  self.changePos = function () {
-    self.posY += self.speedY;
-    if (self.posY >= self.height) { // more flexible option it's necessary when speed of background is high
-      self.posY = 0;
-    }
-  };
-} */
 
 
 // constructor for player car
@@ -220,76 +176,6 @@ class Car {
     }
   }
 }
-/* function Car(width, height, x, y, src) {
-  const self = this;
-  self.image = new Image();
-  self.image.src = src;
-  self.width = width;
-  self.height = height;
-  self.speed = 0;
-  self.angle = 0;
-  self.moveAngle = 0;
-  self.actualAngle = 0;
-  self.posX = x;
-  self.posY = y;
-  self.update = function () {
-    const ctx = myGameArea.context;
-    ctx.save(); // to save the current canvas context
-    ctx.translate(self.posX, self.posY); // we move the entire canvas to the center of the specific component
-    ctx.rotate(self.angle); // perform the wanted rotation using the rotate() method
-    ctx.drawImage(self.image, self.width / -2, self.height / -2, self.width, self.height); // context.drawImage(img,x,y,width,height);
-    ctx.restore(); // restore the context object back to its saved position
-  };
-  self.changePos = function () {
-    self.actualAngle += self.moveAngle;
-    if (self.actualAngle >= 360 || self.actualAngle <= -360) {
-      self.actualAngle = 0;
-    }
-    self.angle += self.moveAngle * Math.PI / 180;
-    self.posX += self.speed * Math.sin(self.angle);
-    self.posY -= self.speed * Math.cos(self.angle);
-  };
-  self.crashWith = function (obstacleObj) {
-    if (((self.actualAngle > -45) && (self.actualAngle < 45)) || ((self.actualAngle > 135) && (self.actualAngle < 225))
-        || ((self.actualAngle < -135) && (self.actualAngle > -225)) || (self.actualAngle > 315)) {
-      var myLeft = self.posX - self.width / 2;
-      var myRight = self.posX + self.width / 2;
-      var myTop = self.posY - self.height / 2;
-      var myBottom = self.posY + self.height / 2;
-    } else {
-      var myLeft = self.posX - self.height / 2;
-      var myRight = self.posX + self.height / 2;
-      var myTop = self.posY - self.width / 2;
-      var myBottom = self.posY + self.width / 2;
-    }
-
-    const obstacleBottom = obstacleObj.posY + obstacleObj.height;
-    const obstacleTop = obstacleObj.posY;
-    const obstacleRight = obstacleObj.posX + obstacleObj.width;
-    const obstacleLeft = obstacleObj.posX;
-    let crash = false;
-    if ((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
-      if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
-        crash = true;
-      }
-    }
-    return crash;
-  };
-  self.touchWalls = function () {
-    if (self.posX < 0) {
-      self.posX = 0;
-    }
-    if (self.posX + self.width > GAMEAREAWIDTH) {
-      self.posX = GAMEAREAWIDTH - self.width;
-    }
-    if (self.posY < 0) {
-      self.posY = 0;
-    }
-    if (self.posY + self.height > GAMEAREAHEIGHT) {
-      self.posY = GAMEAREAHEIGHT - self.height;
-    }
-  };
-} */
 
 // constructor for obstacles
 class Obstacle {
@@ -311,22 +197,6 @@ class Obstacle {
     this.posY += speed;
   }
 }
-/* function Obstacle(width, height, x, y) {
-  const self = this;
-  self.image = new Image();
-  self.image.src = `img/obstacles/car${Math.floor(Math.random() * (10 - 1 + 1)) + 1}.png`; // generate random src for image of obstacle
-  self.width = width;
-  self.height = height;
-  self.posX = x;
-  self.posY = y;
-  self.update = function () {
-    const ctx = myGameArea.context;
-    ctx.drawImage(self.image, self.posX, self.posY, self.width, self.height);
-  };
-  self.move = function (speed) {
-    self.posY += speed;
-  };
-} */
 
 // constructor for control buttons which are necessary to move car using touch device
 class ControlButton {
@@ -356,30 +226,6 @@ class ControlButton {
     return clicked;
   }
 }
-
-/* function ControlButton(width, height, x, y) {
-  const self = this;
-  self.width = width;
-  self.height = height;
-  self.x = x;
-  self.y = y;
-  self.update = function () {
-    const ctx = myGameArea.context;
-    ctx.fillStyle = 'rgba(98,198,222,0.5)';
-    ctx.fillRect(self.x, self.y, self.width, self.height);
-  };
-  self.clicked = function () {
-    let clicked = true;
-    const myLeft = self.x * ratioX;
-    const myRight = (self.x + self.width) * ratioX;
-    const myTop = self.y * ratioY;
-    const myBottom = (self.y + self.height) * ratioY;
-    if ((myLeft > myGameArea.x) || (myRight < myGameArea.x) || (myTop > myGameArea.y) || (myBottom < myGameArea.y)) {
-      clicked = false;
-    }
-    return clicked;
-  };
-} */
 
 
 // to move our car using keypad arrow keys
@@ -448,10 +294,6 @@ function updateGameArea() {
     obstacle.move(obstacleSpeed);
     obstacle.update();
   });
-  /*for (let j = 0; j < obstacles.length; j += 1) {
-    obstacles[j].move(obstacleSpeed);
-    obstacles[j].update();
-  }*/
 
   playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
   playerScore.update();
@@ -504,8 +346,6 @@ function stopGame() {
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
   $('.game-end-background').show();
   $('.game-end-wrapper').slideDown(1000);
-  /*document.querySelector('.game-end-background').style.display = 'block';
-  document.querySelector('.game-end-wrapper').style.display = 'block';*/
   document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);

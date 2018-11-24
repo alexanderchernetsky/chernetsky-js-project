@@ -203,7 +203,8 @@ body {
 .controls > input,
 .leaderboard > input,
 .about > input,
-.result-save-window > input {
+.result-save-window > input,
+.result-noname-window > input {
   font-family: "Josefin Sans", 'sans-serif';
   width: 64%;
   height: 20%;
@@ -214,7 +215,8 @@ body {
 .controls > input:hover,
 .leaderboard > input:hover,
 .about > input:hover,
-.result-save-window > input:hover {
+.result-save-window > input:hover,
+.result-noname-window > input:hover {
   background-color: lightskyblue;
 }
 @media (max-width: 768px) {
@@ -222,7 +224,8 @@ body {
   .controls > input,
   .leaderboard > input,
   .about > input,
-  .result-save-window > input {
+  .result-save-window > input,
+  .result-noname-window > input {
     font-size: 16px;
     width: 70%;
   }
@@ -232,7 +235,8 @@ body {
   .controls > input,
   .leaderboard > input,
   .about > input,
-  .result-save-window > input {
+  .result-save-window > input,
+  .result-noname-window > input {
     font-size: 14px;
     width: 80%;
   }
@@ -305,7 +309,8 @@ body {
 }
 .controls > input,
 .about > input,
-.result-save-window > input {
+.result-save-window > input,
+.result-noname-window > input {
   border-radius: 10px;
   height: 20%;
   margin-top: 3%;
@@ -515,7 +520,8 @@ canvas {
     font-size: 26px;
   }
 }
-.result-save-window {
+.result-save-window,
+.result-noname-window {
   min-width: 90px;
   font-family: "Josefin Sans", 'sans-serif';
   font-size: 20px;
@@ -536,18 +542,21 @@ canvas {
   z-index: 3;
   display: none;
 }
-.result-save-window p {
+.result-save-window p,
+.result-noname-window p {
   margin-top: 20px;
 }
 @media (max-width: 768px) {
-  .result-save-window {
+  .result-save-window,
+  .result-noname-window {
     font-size: 16px;
     width: 50%;
     height: 20%;
   }
 }
 @media (max-width: 576px) {
-  .result-save-window {
+  .result-save-window,
+  .result-noname-window {
     font-size: 14px;
     width: 50%;
     height: 20%;
