@@ -2,7 +2,9 @@
 function startGame() {
   myGameArea.start();
   raceGame.background = new Background(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg'); //  1349 background image height - it should be equal to full height of our background image
-  raceGame.playerCar = new Car({width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png'});
+  raceGame.playerCar = new Car({
+    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
+  });
   raceGame.playerScore = new Counter(20, 20, 20);
   raceGame.crashSound = new Sound('sounds/crash.mp3');
   raceGame.song = new Sound('sounds/song.mp3');
@@ -101,7 +103,7 @@ class Background {
 class Car {
   constructor(obj) {
     this.image = new Image();
-    /*let {this.image.src, this.width, this.height, this.posX, this.posY} = obj;*/
+    /* let {this.image.src, this.width, this.height, this.posX, this.posY} = obj; */
     this.image.src = obj.src;
     this.width = obj.width;
     this.height = obj.height;
@@ -111,7 +113,6 @@ class Car {
     this.moveAngle = 0; // the rotation angle which we will change when push keyboard button left/right keys, in deg
     this.angle = 0; // the same angle,but in radians
     this.actualAngle = 0; // current rotation angle of the car from -360 to 360, in degrees
-
   }
 
   update() {
@@ -272,20 +273,20 @@ function stopCar(EO) {
 
 
 function updateGameArea() {
-  //check if player car crashed
+  // check if player car crashed
   for (let i = 0; i < raceGame.obstacles.length; i += 1) {
     if (raceGame.playerCar.crashWith(raceGame.obstacles[i])) {
       stopGame();
       return;
     }
   }
-  //clear our canvas
+  // clear our canvas
   myGameArea.clear();
   // set speed to background, change it's position and update view
   raceGame.background.speedY = raceGame.backgroundSpeed;
   raceGame.background.changePos();
   raceGame.background.update();
-  //we increase frame number by one every requestAnimationFrame
+  // we increase frame number by one every requestAnimationFrame
   myGameArea.frameNo += 1;
   // production of obstacles
   const OBSTACLEWIDTH = 50;
@@ -294,7 +295,7 @@ function updateGameArea() {
   if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
     raceGame.obstacles.push(new Obstacle(OBSTACLEWIDTH, OBSTACLEHEIGHT, ObstaclePosX, -100)); // -100 for smooth appearance of obstacles from top
   }
-  raceGame.obstacles.forEach(obstacle => {
+  raceGame.obstacles.forEach((obstacle) => {
     obstacle.move(raceGame.obstacleSpeed);
     obstacle.update();
   });
@@ -302,7 +303,7 @@ function updateGameArea() {
   raceGame.playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
   raceGame.playerScore.update();
 
-// the code below is necessary to control car movement using touch
+  // the code below is necessary to control car movement using touch
   if (raceGame.touch) {
     if (myGameArea.x && myGameArea.y) {
       if (raceGame.myUpBtn.clicked()) {
@@ -322,18 +323,18 @@ function updateGameArea() {
       raceGame.playerCar.speed = 0;
     }
   }
-//  change player car position, check if it within the canvas borders and render it
+  //  change player car position, check if it within the canvas borders and render it
   raceGame.playerCar.changePos();
   raceGame.playerCar.touchWalls();
   raceGame.playerCar.update();
-// render buttons if we use device with touch
+  // render buttons if we use device with touch
   if (raceGame.touch) {
     raceGame.myUpBtn.update();
     raceGame.myDownBtn.update();
     raceGame.myLeftBtn.update();
     raceGame.myRightBtn.update();
   }
-// increase game speed
+  // increase game speed
   raceGame.obstacleSpeed += 0.001; // game speed acceleration
   raceGame.backgroundSpeed += 0.001;
 
@@ -354,7 +355,7 @@ function stopGame() {
   document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
   document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
   document.querySelector('input[value="save result"]').addEventListener('click', pushResult, false);
-// vibration for mobile phones
+  // vibration for mobile phones
   if (window.navigator.vibrate) {
     window.navigator.vibrate(300);
   }
