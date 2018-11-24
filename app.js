@@ -183,14 +183,6 @@ function createLeaderboardPage() {
       currentTdNameEl.innerHTML = `${onePlayerInfoHash.name}`;
       currentTdScoreEl.innerHTML = `${onePlayerInfoHash.score}`;
     } */
-    const heading = $('.leaderboard td');
-    heading.each(function () {
-      $(this).html(spanWrap($(this).text()));
-    });
-  }
-
-  function spanWrap(word) {
-    return [...word].map(letter => `<span>${letter}</span>`).join('');
   }
 }
 
@@ -204,7 +196,7 @@ function createAboutPage() {
 
   let fontSize = parseInt($('body').css('font-size'));
   fontSize += 10;
-  $('.about p span').animate({ 'font-size': fontSize, margin: 2 }, 2000);
+  $('.about p').first().animate({ 'font-size': fontSize}, 2000);
 }
 
 function errorHandler(jqXHR, StatusStr, ErrorStr) {

@@ -208,7 +208,7 @@ body {
   width: 64%;
   height: 20%;
   font-size: 20px;
-  cursor: pointer;
+  cursor: url('img/menu/hand.png'), default;
 }
 .buttons-container > input[type='button']:hover,
 .controls > input:hover,
@@ -476,7 +476,7 @@ canvas {
   background-color: yellow;
   border: 2px solid black;
   box-shadow: 0 0 0 3px #ffffff;
-  cursor: pointer;
+  cursor: url('img/menu/hand.png'), default;
 }
 .game-end-wrapper input:hover {
   background-color: lightskyblue;
@@ -549,14 +549,4 @@ canvas {
     width: 50%;
     height: 20%;
   }
-}
-.leaderboard span {
-  position: relative;
-  display: inline-block;
-  transition: transform 0.1s;
-  cursor: url('click.png'), default;
-}
-.leaderboard span:hover {
-  transform: translateY(-20px) scale(2) rotate(10deg);
-  z-index: 1;
 }
