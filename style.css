@@ -252,7 +252,7 @@ body {
 .about {
   font-family: "Amatic SC", serif;
   min-width: 300px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   background-color: yellow;
   border: 2px solid black;
@@ -289,13 +289,13 @@ body {
 @media (max-width: 768px) {
   .controls p,
   .about p {
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 @media (max-width: 576px) {
   .controls p,
   .about p {
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 @media (max-width: 992px) {
@@ -317,7 +317,7 @@ body {
 }
 .leaderboard {
   min-width: 300px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   background-color: yellow;
   border: 2px solid black;
@@ -349,14 +349,14 @@ body {
   .leaderboard {
     width: 80%;
     height: 70%;
-    font-size: 16px;
+    font-size: 18px;
   }
 }
 @media (max-width: 576px) {
   .leaderboard {
     width: 90%;
     height: 70%;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 #score-table {
@@ -490,6 +490,9 @@ canvas {
   .game-end-wrapper input {
     font-size: 14px;
   }
+}
+.game-end-wrapper input::placeholder {
+  padding-left: 10px;
 }
 .game-end-wrapper .info {
   display: flex;

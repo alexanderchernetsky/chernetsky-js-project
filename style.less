@@ -70,7 +70,7 @@ html, body {
 .controls, .about {
   font-family: "Amatic SC", serif;
   min-width: 300px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   background-color: yellow;
   border: 2px solid black;
@@ -96,10 +96,10 @@ html, body {
   p {
     margin: 20px 5px;
     @media (max-width: 768px) {
-      font-size: 16px;
+      font-size: 18px;
     }
     @media (max-width: 576px) {
-      font-size: 14px;
+      font-size: 16px;
     }
   }
 }
@@ -123,7 +123,7 @@ html, body {
 
 .leaderboard {
   min-width: 300px;
-  font-size: 20px;
+  font-size: 22px;
   font-weight: bold;
   background-color: yellow;
   border: 2px solid black;
@@ -149,12 +149,12 @@ html, body {
   @media (max-width: 768px) {
     width: 80%;
     height: 70%;
-    font-size: 16px;
+    font-size: 18px;
   }
   @media (max-width: 576px) {
     width: 90%;
     height: 70%;
-    font-size: 14px;
+    font-size: 16px;
   }
 }
 
@@ -271,6 +271,9 @@ canvas {
     }
     @media (max-width: 576px) {
       font-size: 14px;
+    }
+    &::placeholder {
+      padding-left: 10px;
     }
   }
   .info {

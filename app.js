@@ -108,7 +108,6 @@ function createGamePage() {
       cache: true,
       dataType: 'script',
       success() {
-        console.log('success!!!');
         loaded = true;
         startGame();
       },
@@ -195,7 +194,7 @@ function createAboutPage() {
     document.querySelector('.about input').addEventListener('click', switchToMainPage, false); */
 
   let fontSize = parseInt($('body').css('font-size'));
-  fontSize += 10;
+  fontSize += 8;
   $('.about p').first().animate({ 'font-size': fontSize}, 2000);
 }
 
