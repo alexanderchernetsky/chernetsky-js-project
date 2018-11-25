@@ -21,16 +21,16 @@
       EO = EO || window.event; // there is no preventDefault because we need f12 default behavior
       switch (EO.which) {
         case 37:
-          this.myModel.changeMoveAngle(-1); // контроллер вызывает только методы модели
+          this.myModel.changeMoveAngle(-1 - raceGame.backgroundSpeed / 2); // контроллер вызывает только методы модели
           break;
         case 39:
-          this.myModel.changeMoveAngle(1);
+          this.myModel.changeMoveAngle(1 + raceGame.backgroundSpeed / 2);
           break;
         case 40:
-          this.myModel.changeSpeed(-2);
+          this.myModel.changeSpeed(-2 - raceGame.backgroundSpeed / 2);
           break;
         case 38:
-          this.myModel.changeSpeed(4);
+          this.myModel.changeSpeed(4 + raceGame.backgroundSpeed / 2);
           break;
         default:
           break;

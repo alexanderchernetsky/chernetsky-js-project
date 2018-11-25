@@ -1,4 +1,3 @@
-
 // game area object
 const myGameArea = {
   canvas: document.createElement('canvas'),

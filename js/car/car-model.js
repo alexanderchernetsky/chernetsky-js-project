@@ -62,6 +62,36 @@
     changeSpeed(speed) {
       this.speed = speed;
     }
+
+    crashWith(obstacleObj) {
+      let myLeft;
+      let myRight;
+      let myTop;
+      let myBottom;
+      if (((this.actualAngle > -45) && (this.actualAngle < 45)) || ((this.actualAngle > 135) && (this.actualAngle < 225))
+          || ((this.actualAngle < -135) && (this.actualAngle > -225)) || (this.actualAngle > 315)) {
+        myLeft = this.posX - this.width / 2;
+        myRight = this.posX + this.width / 2;
+        myTop = this.posY - this.height / 2;
+        myBottom = this.posY + this.height / 2;
+      } else {
+        myLeft = this.posX - this.height / 2;
+        myRight = this.posX + this.height / 2;
+        myTop = this.posY - this.width / 2;
+        myBottom = this.posY + this.width / 2;
+      }
+      const obstacleBottom = obstacleObj.posY + obstacleObj.height;
+      const obstacleTop = obstacleObj.posY;
+      const obstacleRight = obstacleObj.posX + obstacleObj.width;
+      const obstacleLeft = obstacleObj.posX;
+      let crash = false;
+      if ((myTop < obstacleBottom) && (myBottom > obstacleTop)) {
+        if ((myRight > obstacleLeft) && (myLeft < obstacleRight)) {
+          crash = true;
+        }
+      }
+      return crash;
+    }
   }
 
   window.raceGame = window.raceGame || {};

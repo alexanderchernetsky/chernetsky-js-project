@@ -30,8 +30,8 @@
       this.updateView();
     }
 
-    increseSpeedY() {
-      this.speedY += 0.001;
+    increseSpeedY(speed) {
+      this.speedY = speed;
       this.updateView();
     }
   }

@@ -13,8 +13,8 @@
       // назначаем обработчики событий
     }
 
-    increaseBackgroundSpeed() {
-      this.myModel.increseSpeedY();
+    increaseBackgroundSpeed(speed) {
+      this.myModel.increseSpeedY(speed);
     }
   }
 
