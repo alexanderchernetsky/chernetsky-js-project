@@ -299,7 +299,7 @@ function updateGameArea() {
     obstacle.move(raceGame.obstacleSpeed);
     obstacle.update();
   });
-
+  //updating score
   raceGame.playerScore.text = `SCORE:${Math.floor(myGameArea.frameNo / 10)}`; // define the speed of score increase
   raceGame.playerScore.update();
 

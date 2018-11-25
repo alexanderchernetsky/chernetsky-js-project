@@ -11,4 +11,5 @@ const myGameArea = {
   clear() {
     this.context.clearRect(0, 0, raceGame.GAMEAREAWIDTH, raceGame.GAMEAREAHEIGHT);
   },
+  frameNo: 0, // every request animation frame it will increase by 1
 };
