@@ -1,8 +1,52 @@
+function startGame() {
+  myGameArea.start();
+  // настройка, инициализация
+  // создаём все три компонента
+  /* Создаём объекты модели, представления, контроллера.
+  Пока что они друг о друге ничего не знают. */
+  raceGame.playerCar = new raceGame.CarModel({
+    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
+  });
+  raceGame.playerCarView = new raceGame.CarView();
+  raceGame.playerCarController = new raceGame.CarController();
+  raceGame.background = new raceGame.BackgroundModel(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg');
+  raceGame.backgroundView = new raceGame.BackgroundView();
+  raceGame.backgroundController = new raceGame.BackgroundController();
+  raceGame.counter = new raceGame.CounterModel(20, 20, 20);
+  raceGame.counterView = new raceGame.CounterView();
+  raceGame.counterController = new raceGame.CounterController();
+
+  raceGame.playerCar.start(raceGame.playerCarView);
+  raceGame.playerCarView.start(raceGame.playerCar, myGameArea);
+  raceGame.playerCarController.start(raceGame.playerCar, myGameArea);
+  raceGame.background.start(raceGame.backgroundView);
+  raceGame.backgroundView.start(raceGame.background, myGameArea);
+  raceGame.backgroundController.start(raceGame.background, myGameArea);
+  raceGame.counter.start(raceGame.counterView);
+  raceGame.counterView.start(raceGame.counter, myGameArea);
+  raceGame.counterController.start(raceGame.counter, myGameArea);
+
+  raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
+  raceGame.song = new raceGame.Sound('sounds/song.mp3');
+  raceGame.song.listen();
+  // setting to default(initial) values is necessary when we start the game more than once
+  raceGame.obstacleModels = [];
+  raceGame.obstacleViews = [];
+  raceGame.obstacleControllers = [];
+  raceGame.obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
+  raceGame.backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
+  myGameArea.frameNo = 0; // every request animation frame it will increase by 1
+
+  document.querySelector('.game-end-background').style.display = 'none';
+  document.querySelector('.game-end-wrapper').style.display = 'none';
+  // update of our game field
+  requestAnimationFrame(updateGameArea);
+}
+
 function updateGameArea() {
   // check if player car crashed (it should be first to save last view when game stops)
   for (let i = 0; i < raceGame.obstacleModels.length; i += 1) {
     if (raceGame.playerCar.crashWith(raceGame.obstacleModels[i])) {
-      console.log('crash!');
       stopGame();
       return;
     }
@@ -41,44 +85,6 @@ function updateGameArea() {
   requestAnimationFrame(updateGameArea);
 }
 
-function startGame() {
-  myGameArea.start();
-  // настройка, инициализация
-  // создаём все три компонента
-  /* Создаём объекты модели, представления, контроллера.
-  Пока что они друг о друге ничего не знают. */
-  raceGame.playerCar = new raceGame.CarModel({
-    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
-  });
-  raceGame.playerCarView = new raceGame.CarView();
-  raceGame.playerCarController = new raceGame.CarController();
-  raceGame.background = new raceGame.BackgroundModel(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg');
-  raceGame.backgroundView = new raceGame.BackgroundView();
-  raceGame.backgroundController = new raceGame.BackgroundController();
-  raceGame.counter = new raceGame.CounterModel(20, 20, 20);
-  raceGame.counterView = new raceGame.CounterView();
-  raceGame.counterController = new raceGame.CounterController();
-
-  raceGame.playerCar.start(raceGame.playerCarView);
-  raceGame.playerCarView.start(raceGame.playerCar, myGameArea);
-  raceGame.playerCarController.start(raceGame.playerCar, myGameArea);
-  raceGame.background.start(raceGame.backgroundView);
-  raceGame.backgroundView.start(raceGame.background, myGameArea);
-  raceGame.backgroundController.start(raceGame.background, myGameArea);
-  raceGame.counter.start(raceGame.counterView);
-  raceGame.counterView.start(raceGame.counter, myGameArea);
-  raceGame.counterController.start(raceGame.counter, myGameArea);
-
-  raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
-  raceGame.song = new raceGame.Sound('sounds/song.mp3');
-
-  raceGame.song.listen();
-  // update of our game field
-  requestAnimationFrame(updateGameArea);
-}
-
-startGame();
-
 function stopGame() {
   raceGame.song.stopListening();
   raceGame.song.stop();
@@ -86,7 +92,7 @@ function stopGame() {
   window.removeEventListener('keydown', raceGame.playerCar.moveCar, false);
   window.removeEventListener('keyup', raceGame.playerCar.stopCar, false);
   cancelAnimationFrame(updateGameArea);
-  /*const scoreEl = document.getElementById('score');
+  const scoreEl = document.getElementById('score');
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
   $('.game-end-background').show();
   $('.game-end-wrapper').slideDown(1000);
@@ -97,5 +103,5 @@ function stopGame() {
   // vibration for mobile phones
   if (window.navigator.vibrate) {
     window.navigator.vibrate(300);
-  }*/
+  }
 }
