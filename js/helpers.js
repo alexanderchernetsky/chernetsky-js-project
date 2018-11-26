@@ -1,10 +1,10 @@
-function ajaxRequest(type, successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php', cache = false) {
+function ajaxRequest( successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php') {
   $.ajax(
     {
       url: url,
-      type: type,
+      type: 'POST',
       data: data,
-      cache: cache,
+      cache: false,
       dataType: dataType,
       success: successFunc,
       error: errorHandler,

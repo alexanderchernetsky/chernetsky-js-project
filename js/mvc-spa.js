@@ -1,4 +1,3 @@
-const loaded = false;
 let leaderboardArray;
 
 function switchToState(state) {
@@ -101,7 +100,7 @@ function createLeaderboardPage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 
-  ajaxRequest('POST', readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
+  ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
 
   function readReady(ResultH) {
     if (ResultH.error !== undefined) {
@@ -155,7 +154,7 @@ function pushResult() {
   const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
 
   const updatePassword = Math.random();
-  ajaxRequest('POST', lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
+  ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
 
   // to get relevant results array from server
   function lockGetReady(resultH) {
@@ -172,7 +171,7 @@ function pushResult() {
       }
     }
     // to send results to the server
-    ajaxRequest('POST', updateReady, {
+    ajaxRequest(updateReady, {
       f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword,
     });
   }
