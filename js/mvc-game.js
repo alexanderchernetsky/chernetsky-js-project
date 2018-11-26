@@ -3,7 +3,7 @@ function updateGameArea() {
   for (let i = 0; i < raceGame.obstacleModels.length; i += 1) {
     if (raceGame.playerCar.crashWith(raceGame.obstacleModels[i])) {
       console.log('crash!');
-      /* stopGame(); */
+      stopGame();
       return;
     }
   }
@@ -15,7 +15,6 @@ function updateGameArea() {
   raceGame.background.changePos();
   raceGame.backgroundSpeed += 0.001;
   raceGame.backgroundController.increaseBackgroundSpeed(raceGame.backgroundSpeed);
-
   // production of obstacles
   const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - 50) + 1); // for random x coordinate for obstacles, 50-obstacle width
   if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
@@ -38,6 +37,7 @@ function updateGameArea() {
   //  change player car position, check if it within the canvas borders and render it
   raceGame.playerCar.shift(raceGame);
   raceGame.counterController.changeScore();
+
   requestAnimationFrame(updateGameArea);
 }
 
@@ -58,10 +58,7 @@ function startGame() {
   raceGame.counter = new raceGame.CounterModel(20, 20, 20);
   raceGame.counterView = new raceGame.CounterView();
   raceGame.counterController = new raceGame.CounterController();
-  // увязываем компоненты друг с другом
-  // указываем компонентам, в каком DOM им работать
-  /* Увязываем все компоненты друг с другом, и сообщаем контроллеру
-  и представлению, в каком DOM-элементе содержится нужная им вёрстка. */
+
   raceGame.playerCar.start(raceGame.playerCarView);
   raceGame.playerCarView.start(raceGame.playerCar, myGameArea);
   raceGame.playerCarController.start(raceGame.playerCar, myGameArea);
@@ -72,13 +69,33 @@ function startGame() {
   raceGame.counterView.start(raceGame.counter, myGameArea);
   raceGame.counterController.start(raceGame.counter, myGameArea);
 
-  /* Это уже гибкая реализация активного MVC, которая
-  при желании легко будет работать с несколькими
-  представлениями одной модели, несколькими контроллерами
-  одной модели, или вообще с несколькими комплектами
-  всех компонентов на одной странице. */
+  raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
+  raceGame.song = new raceGame.Sound('sounds/song.mp3');
+
+  raceGame.song.listen();
   // update of our game field
   requestAnimationFrame(updateGameArea);
 }
 
 startGame();
+
+function stopGame() {
+  raceGame.song.stopListening();
+  raceGame.song.stop();
+  raceGame.crashSound.play();
+  window.removeEventListener('keydown', raceGame.playerCar.moveCar, false);
+  window.removeEventListener('keyup', raceGame.playerCar.stopCar, false);
+  cancelAnimationFrame(updateGameArea);
+  /*const scoreEl = document.getElementById('score');
+  scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
+  $('.game-end-background').show();
+  $('.game-end-wrapper').slideDown(1000);
+  document.querySelector('input[value=\'main menu\']').addEventListener('click', switchToMainPage, false);
+  document.querySelector('input[value=\'high scores\']').addEventListener('click', switchToLeaderboardPage, false);
+  document.querySelector('input[value=\'new game\']').addEventListener('click', startGame, false);
+  document.querySelector('input[value="save result"]').addEventListener('click', pushResult, false);
+  // vibration for mobile phones
+  if (window.navigator.vibrate) {
+    window.navigator.vibrate(300);
+  }*/
+}
