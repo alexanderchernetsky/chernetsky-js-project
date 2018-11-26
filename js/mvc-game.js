@@ -37,6 +37,7 @@ function updateGameArea() {
   });
   //  change player car position, check if it within the canvas borders and render it
   raceGame.playerCar.shift(raceGame);
+  raceGame.counterController.changeScore();
   requestAnimationFrame(updateGameArea);
 }
 
@@ -54,7 +55,9 @@ function startGame() {
   raceGame.background = new raceGame.BackgroundModel(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg');
   raceGame.backgroundView = new raceGame.BackgroundView();
   raceGame.backgroundController = new raceGame.BackgroundController();
-
+  raceGame.counter = new raceGame.CounterModel(20, 20, 20);
+  raceGame.counterView = new raceGame.CounterView();
+  raceGame.counterController = new raceGame.CounterController();
   // увязываем компоненты друг с другом
   // указываем компонентам, в каком DOM им работать
   /* Увязываем все компоненты друг с другом, и сообщаем контроллеру
@@ -65,6 +68,9 @@ function startGame() {
   raceGame.background.start(raceGame.backgroundView);
   raceGame.backgroundView.start(raceGame.background, myGameArea);
   raceGame.backgroundController.start(raceGame.background, myGameArea);
+  raceGame.counter.start(raceGame.counterView);
+  raceGame.counterView.start(raceGame.counter, myGameArea);
+  raceGame.counterController.start(raceGame.counter, myGameArea);
 
   /* Это уже гибкая реализация активного MVC, которая
   при желании легко будет работать с несколькими
