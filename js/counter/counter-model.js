@@ -1,7 +1,7 @@
 // model
 (function (window) {
   class CounterModel {
-    constructor(size, x, y) {
+    constructor({ size, x, y } = {}) {
       this.size = size;
       this.x = x;
       this.y = y;

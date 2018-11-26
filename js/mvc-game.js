@@ -9,10 +9,12 @@ function startGame() {
   });
   raceGame.playerCarView = new raceGame.CarView();
   raceGame.playerCarController = new raceGame.CarController();
-  raceGame.background = new raceGame.BackgroundModel(raceGame.GAMEAREAWIDTH, 1349, 0, 0, 'img/road.jpg');
+  raceGame.background = new raceGame.BackgroundModel({
+    width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg',
+  });
   raceGame.backgroundView = new raceGame.BackgroundView();
   raceGame.backgroundController = new raceGame.BackgroundController();
-  raceGame.counter = new raceGame.CounterModel(20, 20, 20);
+  raceGame.counter = new raceGame.CounterModel({ size: 20, x: 20, y: 20 });
   raceGame.counterView = new raceGame.CounterView();
   raceGame.counterController = new raceGame.CounterController();
 
@@ -62,7 +64,9 @@ function updateGameArea() {
   // production of obstacles
   const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - 50) + 1); // for random x coordinate for obstacles, 50-obstacle width
   if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
-    raceGame.obstacle = new raceGame.ObstaclesModel(50, 100, ObstaclePosX, -100); // -100 for smooth appearance of obstacles from top
+    raceGame.obstacle = new raceGame.ObstaclesModel({
+      width: 50, height: 100, x: ObstaclePosX, y: -100,
+    }); // -100 for smooth appearance of obstacles from top
     raceGame.obstacleView = new raceGame.ObstaclesView();
     raceGame.obstacleController = new raceGame.ObstaclesController();
     raceGame.obstacle.start(raceGame.obstacleView);

@@ -1,13 +1,15 @@
 // model
 (function (window) {
   class CarModel {
-    constructor(obj) {
+    constructor({
+      width, height, x, y, src,
+    } = {}) {
       this.image = new Image();
-      this.image.src = obj.src;
-      this.width = obj.width;
-      this.height = obj.height;
-      this.posX = obj.x;
-      this.posY = obj.y;
+      this.image.src = src;
+      this.width = width;
+      this.height = height;
+      this.posX = x;
+      this.posY = y;
       this.speed = 0;
       this.moveAngle = 0; // the rotation angle which we will change when push keyboard button left/right keys, in deg
       this.angle = 0; // the same angle,but in radians

@@ -1,7 +1,9 @@
 // model
 (function (window) {
   class BackgroundModel {
-    constructor(width, height, x, y, src) {
+    constructor({
+      width, height, x, y, src,
+    } = {}) {
       this.width = width;
       this.height = height;
       this.posX = x;

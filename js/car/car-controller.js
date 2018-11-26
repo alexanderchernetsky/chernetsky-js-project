@@ -59,6 +59,8 @@
   window.raceGame.CarController = CarController;
 }(window));
 
+
+/*
 if (window.navigator.maxTouchPoints) {
   // this code is necessary only for devices with touch
   raceGame.touch = true;
@@ -70,8 +72,6 @@ if (window.navigator.maxTouchPoints) {
   [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
 }
 
-
-/*
 // constructor for control buttons which are necessary to move car using touch device
 class ControlButton {
   constructor(width, height, x, y, color) {
