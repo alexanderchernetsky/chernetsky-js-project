@@ -17,6 +17,7 @@ function startGame() {
   raceGame.counter = new raceGame.CounterModel({ size: 20, x: 20, y: 20 });
   raceGame.counterView = new raceGame.CounterView();
   raceGame.counterController = new raceGame.CounterController();
+  raceGame.playerCarTouchController = new raceGame.CarTouchController();
 
   raceGame.playerCar.start(raceGame.playerCarView);
   raceGame.playerCarView.start(raceGame.playerCar, myGameArea);
@@ -27,6 +28,26 @@ function startGame() {
   raceGame.counter.start(raceGame.counterView);
   raceGame.counterView.start(raceGame.counter, myGameArea);
   raceGame.counterController.start(raceGame.counter, myGameArea);
+  raceGame.playerCarTouchController.start(raceGame.playerCar, myGameArea);
+
+  if (window.navigator.maxTouchPoints) {
+    // this code is necessary only for devices with touch
+    raceGame.touch = true;
+    raceGame.myUpBtn = new raceGame.ControlButton({
+      width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)',
+    }); // 50 - the size of buttons that are visible only when you use devices with touch
+    raceGame.myDownBtn = new raceGame.ControlButton({
+      width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)',
+    });
+    raceGame.myLeftBtn = new raceGame.ControlButton({
+      width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)',
+    });
+    raceGame.myRightBtn = new raceGame.ControlButton({
+      width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)',
+    });
+    const canvas = document.querySelector('canvas');
+    [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
+  }
 
   raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
   raceGame.song = new raceGame.Sound('sounds/song.mp3');
@@ -86,6 +107,14 @@ function updateGameArea() {
   raceGame.playerCar.shift(raceGame);
   raceGame.counterController.changeScore();
 
+  // render buttons if we use device with touch
+  if (raceGame.touch) {
+    raceGame.myUpBtn.update();
+    raceGame.myDownBtn.update();
+    raceGame.myLeftBtn.update();
+    raceGame.myRightBtn.update();
+    raceGame.playerCarTouchController.controlCar();
+  }
   requestAnimationFrame(updateGameArea);
 }
 
