@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8">
@@ -9,9 +9,32 @@
     <title>racing game project</title>
   </head>
   <body>
-    <script src="js/variables.js"></script>
+
     <script src="js/gamearea.js"></script>
+    <script src="js/variables.js"></script>
     <script src="js/helpers.js"></script>
+
+    <script src="js/car/car-model.js"></script>
+    <script src="js/car/car-view.js"></script>
+    <script src="js/car/car-controller.js"></script>
+    <script src="js/car/car-controller-touch.js"></script>
+    <script src="js/control-buttons.js"></script>
+
+    <script src="js/background/background-model.js"></script>
+    <script src="js/background/background-view.js"></script>
+    <script src="js/background/background-controller.js"></script>
+
+    <script src="js/obstacles/obstacles-model.js"></script>
+    <script src="js/obstacles/obstacles-view.js"></script>
+    <script src="js/obstacles/obstacles-controller.js"></script>
+
+    <script src="js/counter/counter-model.js"></script>
+    <script src="js/counter/counter-view.js"></script>
+    <script src="js/counter/counter-controller.js"></script>
+
+    <script src="js/sound.js"></script>
+
+    <script src="js/game.js"></script>
 
     <div class="game-end-wrapper">
       <p class="info">
@@ -46,54 +69,24 @@
           <th>Score</th>
         </tr>
         <tr id="place-1">
-          <!--<td>1</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-2">
-          <!--<td>2</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-3">
-          <!--<td>3</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-4">
-          <!--<td>4</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-5">
-          <!--<td>5</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-6">
-          <!--<td>6</td>-->
-          <!--<td></td>-->
-          <!--<td></td>-->
         </tr>
         <tr id="place-7">
-          <!--<td>7</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-8">
-          <!--<td>8</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-9">
-          <!--<td>9</td>
-          <td></td>
-          <td></td>-->
         </tr>
         <tr id="place-10">
-          <!--<td>10</td>
-          <td></td>
-          <td></td>-->
         </tr>
       </table>
     </section>
@@ -112,6 +105,6 @@
     </div>
 
     <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="js/spa.js"></script>
+    <script src="js/spa.js"></script> <!--it should be after the markup-->
   </body>
 </html>

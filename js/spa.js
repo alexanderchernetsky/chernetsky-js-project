@@ -1,4 +1,3 @@
-let loaded = false;
 let leaderboardArray;
 
 function switchToState(state) {
@@ -6,23 +5,23 @@ function switchToState(state) {
 }
 
 function switchToMainPage() {
-  switchToState({page: 'main'});
+  switchToState({ page: 'main' });
 }
 
 function switchToGamePage() {
-  switchToState({page: 'game'});
+  switchToState({ page: 'game' });
 }
 
 function switchToControlsPage() {
-  switchToState({page: 'controls'});
+  switchToState({ page: 'controls' });
 }
 
 function switchToLeaderboardPage() {
-  switchToState({page: 'leaderboard'});
+  switchToState({ page: 'leaderboard' });
 }
 
 function switchToAboutPage() {
-  switchToState({page: 'about'});
+  switchToState({ page: 'about' });
 }
 
 $(window).bind('hashchange', renderNewState);
@@ -35,10 +34,15 @@ $('#about').bind('click', switchToAboutPage);
 function renderNewState() {
   const hash = window.location.hash;
   let state = decodeURIComponent(hash.substr(1));
-  (state === '') ? (state = {page: 'main'}) : (state = JSON.parse(state));
+  (state === '') ? (state = { page: 'main' }) : (state = JSON.parse(state));
   switch (state.page) {
     case 'main':
-      createMainPage();
+      if (raceGame.playing) {
+        stopGame();
+        createMainPage();
+      } else {
+        createMainPage();
+      }
       break;
     case 'game':
       createGamePage();
@@ -68,6 +72,7 @@ function createMainPage() {
   if (canvas) {
     canvas.remove();
   }
+
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 }
@@ -81,15 +86,7 @@ function createGamePage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 
-  if (loaded) {
-    startGame();
-    return;
-  }
-
-  ajaxRequest('GET', () => {
-    loaded = true;
-    startGame();
-  }, {}, 'script', 'js/game.js', true);
+  startGame();
 }
 
 function createControlsPage() {
@@ -109,7 +106,7 @@ function createLeaderboardPage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 
-  ajaxRequest('POST', readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
+  ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
 
   function readReady(ResultH) {
     if (ResultH.error !== undefined) {
@@ -141,7 +138,7 @@ function createAboutPage() {
 
   let fontSize = parseInt($('body').css('font-size'));
   fontSize += 8;
-  $('.about p').first().animate({'font-size': fontSize}, 2000);
+  $('.about p').first().animate({ 'font-size': fontSize }, 2000);
 }
 
 function errorHandler(jqXHR, StatusStr, ErrorStr) {
@@ -157,13 +154,13 @@ function pushResult() {
     });
     return;
   }
-  if (playerName.length > 10) {
-    playerName = playerName.substr(0, 10);
+  if (playerName.length > 12) {
+    playerName = playerName.substr(0, 12);
   }
-  const newResultHash = {name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}`};
+  const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
 
   const updatePassword = Math.random();
-  ajaxRequest('POST', lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
+  ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
 
   // to get relevant results array from server
   function lockGetReady(resultH) {
@@ -180,7 +177,7 @@ function pushResult() {
       }
     }
     // to send results to the server
-    ajaxRequest('POST', updateReady, {
+    ajaxRequest(updateReady, {
       f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword,
     });
   }
