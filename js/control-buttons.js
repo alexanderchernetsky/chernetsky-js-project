@@ -1,6 +1,14 @@
 (function (window) {
-  // constructor for control buttons, which are necessary to move car using touch device
+  /** Class representing control buttons, which are necessary to move the car using touch device */
   class ControlButton {
+    /**
+     * Create a control button. Destructuring assignment is used to pass parameters.
+     * @param {number} width - The width of the button.
+     * @param {number} height - The height of the button.
+     * @param {number} x - The x coordinate of the button.
+     * @param {number} y - The y coordinate of the button.
+     * @param {string} color - The color of the button.
+     */
     constructor({
       width, height, x, y, color,
     } = {}) {
@@ -10,13 +18,18 @@
       this.y = y;
       this.color = color;
     }
-
+    /**
+     * Draw button on the canvas.
+     */
     update() {
       const ctx = myGameArea.context;
       ctx.fillStyle = this.color;
       ctx.fillRect(this.x, this.y, this.width, this.height);
     }
-
+    /**
+     * Check if button is clicked by user.
+     * @return {boolean} The answer. True - if user clicked the button.
+     */
     clicked() {
       let clicked = true;
       const myLeft = this.x * raceGame.ratioX;

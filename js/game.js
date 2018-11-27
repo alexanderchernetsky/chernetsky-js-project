@@ -1,5 +1,8 @@
 /**
- * start game function is necessary for creating new objects using classes, etc
+ *  Create new canvas element.Create model view controller for player car, background,
+ *  counter, and bind them to each other. Check if current device has touch and create 4 buttons,
+ *  define ratioX,Y. Create audio files. Set initial values for many variables that will change
+ *  during the game. Call updateGameArea function.
  */
 function startGame() {
   myGameArea.start();
@@ -58,14 +61,22 @@ function startGame() {
   raceGame.obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
   raceGame.backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
   myGameArea.frameNo = 0; // every request animation frame it will increase by 1
-
   document.querySelector('.game-end-background').style.display = 'none';
   document.querySelector('.game-end-wrapper').style.display = 'none';
-  // update of our game field
   raceGame.playing = true;
   requestAnimationFrame(updateGameArea);
 }
 
+/**
+ * updateGameArea function is a game cycle. It checks if player car is crashed,
+ * clears the whole canvas element, increase frame № by 1 every time. Increases background speed
+ * and obstacles speed to create effect of game speed increase. Calls background controller
+ * methods to change its position and increases its moving speed.
+ * Creates obstacles models,views, controllers, connects them to each other and pushes to
+ * proper array. Invoke player car model method to check if it's within the canvas area and draw it.
+ * Changes score. Draws 4 control buttons. Invoke itself again.
+ * It would stop in 2 cases: if player car crashed or if user clicked go back arrow in browser.
+ */
 function updateGameArea() {
   if (raceGame.playing) {
     // check if player car crashed (it should be first to save last view when game stops)
@@ -80,8 +91,8 @@ function updateGameArea() {
     // we increase frame number by one every requestAnimationFrame
     myGameArea.frameNo += 1;
     // background
-    raceGame.background.changePos();
     raceGame.backgroundSpeed += 0.001;
+    raceGame.backgroundController.moveBackground();
     raceGame.backgroundController.increaseBackgroundSpeed(raceGame.backgroundSpeed);
     // production of obstacles
     const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - 50) + 1); // for random x coordinate for obstacles, 50-obstacle width
@@ -104,10 +115,10 @@ function updateGameArea() {
     raceGame.obstacleControllers.forEach((obstacleController) => {
       obstacleController.increaseObstacleSpeed(raceGame.obstacleSpeed);
     });
-    //  change player car position, check if it within the canvas borders and render it
+    // check if player car position within the canvas borders and render it
     raceGame.playerCar.shift(raceGame);
+    // change score
     raceGame.counterController.changeScore();
-
     // render buttons if we use device with touch
     if (raceGame.touch) {
       raceGame.myUpBtn.update();
@@ -120,6 +131,9 @@ function updateGameArea() {
   }
 }
 
+/**
+ * updateGameArea function is necessary to stop game cycle.
+ */
 function stopGame() {
   cancelAnimationFrame(updateGameArea);
   raceGame.playing = false;
@@ -128,7 +142,6 @@ function stopGame() {
   raceGame.crashSound.play();
   window.removeEventListener('keydown', raceGame.playerCar.moveCar, false);
   window.removeEventListener('keyup', raceGame.playerCar.stopCar, false);
-
   const scoreEl = document.getElementById('score');
   scoreEl.innerHTML = ` Score: ${Math.floor(myGameArea.frameNo / 10)}`;
   $('.game-end-background').show();

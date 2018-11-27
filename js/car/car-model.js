@@ -22,9 +22,6 @@
     }
 
     updateView() {
-      // при любых изменениях модели попадаем сюда
-      // представление может быть любым,
-      // лишь бы имело метод Update()
       if (this.myView) {
         this.myView.update();
       }
@@ -53,8 +50,7 @@
       this.angle += this.moveAngle * Math.PI / 180;
       this.posX += this.speed * Math.sin(this.angle);
       this.posY -= this.speed * Math.cos(this.angle);
-      this.updateView(); // модель при любых изменениях
-      // вызывает обновление представления
+      this.updateView();
     }
 
     changeMoveAngle(angle) {

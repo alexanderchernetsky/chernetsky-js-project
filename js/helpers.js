@@ -1,11 +1,17 @@
-function ajaxRequest( successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php') {
+/** This function is a template for jQuery ajax HTTP request and helps us to shorten code in spa.js file
+ * @param {function} successFunc - If the request was successful this function would be executed
+ * @param {object} data - It's the object with properties that are necessary for the request.
+ * @param {string} dataType - type of transferring data.
+ * @param {string} url - web address of backend script.
+ * */
+function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php') {
   $.ajax(
     {
-      url: url,
+      url,
       type: 'POST',
-      data: data,
+      data,
       cache: false,
-      dataType: dataType,
+      dataType,
       success: successFunc,
       error: errorHandler,
     },
