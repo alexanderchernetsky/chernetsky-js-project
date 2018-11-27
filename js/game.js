@@ -1,3 +1,6 @@
+/**
+ * start game function is necessary for creating new objects using classes, etc
+ */
 function startGame() {
   myGameArea.start();
   raceGame.playerCar = new raceGame.CarModel({
