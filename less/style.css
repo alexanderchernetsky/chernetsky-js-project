@@ -161,6 +161,25 @@ table {
   font-weight: normal;
   font-style: italic;
 }
+.center-pos-mix {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+}
+.yellow-bordered-mix {
+  background-color: yellow;
+  border: 2px solid black;
+  box-shadow: 0 0 0 3px #ffffff;
+}
+.wrapper-mix {
+  opacity: 1;
+  text-align: center;
+  border-radius: 20px;
+  text-transform: uppercase;
+  z-index: 3;
+  display: none;
+}
 html,
 body {
   margin: 0;
@@ -448,7 +467,7 @@ canvas {
   position: absolute;
   left: 50%;
   top: 50%;
-  transform: translate(-50%, -60%);
+  transform: translate(-50%, -50%);
   opacity: 1;
   text-align: center;
   border-radius: 20px;
@@ -506,12 +525,12 @@ canvas {
   flex-direction: column;
   height: 50%;
   font-weight: bold;
-  background-color: yellow;
   color: white;
   font-size: 36px;
   text-shadow: 2px 2px 1px black;
   border-radius: 10px;
   margin: 0;
+  background-color: yellow;
   border: 2px solid black;
   box-shadow: 0 0 0 3px #ffffff;
 }
