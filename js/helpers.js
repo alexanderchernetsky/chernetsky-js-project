@@ -17,3 +17,9 @@ function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-a
     },
   );
 }
+/**
+ * Show error message if ajax request was failed
+ */
+function errorHandler(jqXHR, StatusStr, ErrorStr) {
+  alert(`${StatusStr} ${ErrorStr}`);
+}

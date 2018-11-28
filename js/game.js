@@ -132,7 +132,8 @@ function updateGameArea() {
 }
 
 /**
- * updateGameArea function is necessary to stop game cycle.
+ * updateGameArea function is necessary to stop game cycle. It stops playing song, plays crash sound.
+ * It removes event listeners. Shows us game end menu with our final score and etc
  */
 function stopGame() {
   cancelAnimationFrame(updateGameArea);

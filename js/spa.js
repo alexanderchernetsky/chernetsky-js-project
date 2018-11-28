@@ -1,25 +1,38 @@
 let leaderboardArray;
-
+/**
+ * Switch browser address bar after hash to some encoded state
+ * @param {Object} state - object with only one property name
+ */
 function switchToState(state) {
   location.hash = encodeURIComponent(JSON.stringify(state));
 }
-
+/**
+ * Switch browser address bar after hash to encoded state of main page
+ */
 function switchToMainPage() {
   switchToState({ page: 'main' });
 }
-
+/**
+ * Switch browser address bar after hash to encoded state of game page
+ */
 function switchToGamePage() {
   switchToState({ page: 'game' });
 }
-
+/**
+ * Switch browser address bar after hash to encoded state of controls page
+ */
 function switchToControlsPage() {
   switchToState({ page: 'controls' });
 }
-
+/**
+ * Switch browser address bar after hash to encoded state of leaderboard page
+ */
 function switchToLeaderboardPage() {
   switchToState({ page: 'leaderboard' });
 }
-
+/**
+ * Switch browser address bar after hash to encoded state of about page
+ */
 function switchToAboutPage() {
   switchToState({ page: 'about' });
 }
@@ -30,7 +43,10 @@ $('#game').bind('click', switchToGamePage);
 $('#controls').bind('click', switchToControlsPage);
 $('#leaderboard').bind('click', switchToLeaderboardPage);
 $('#about').bind('click', switchToAboutPage);
-
+/**
+ * Decode state from browser address bar, define which page should be rendered
+ * and invoke proper function.
+ */
 function renderNewState() {
   const hash = window.location.hash;
   let state = decodeURIComponent(hash.substr(1));
@@ -60,23 +76,24 @@ function renderNewState() {
 }
 
 renderNewState();
-
+/**
+ * Show main menu section and hide all other blocks
+ */
 function createMainPage() {
   $('.buttons-container').fadeIn(1000);
   $('.controls').hide();
   $('.leaderboard').hide();
   $('.about').hide();
-
   const canvas = $('canvas').first();
-
   if (canvas) {
     canvas.remove();
   }
-
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 }
-
+/**
+ * Hide all blocks and invoke startGame function from game.js file
+ */
 function createGamePage() {
   $('.buttons-container').hide();
   const canvas = $('canvas').first();
@@ -88,13 +105,19 @@ function createGamePage() {
 
   startGame();
 }
-
+/**
+ * Show main menu controls section and hide all other blocks
+ */
 function createControlsPage() {
   $('.buttons-container').hide();
   $('.controls').fadeIn(1000);
   $('.controls input').bind('click', switchToMainPage);
 }
-
+/**
+ * Show main menu leaderboard section and hide all other blocks.
+ * Send ajax request to the server to get json with all names and scores, parse it,
+ * sort it and show 10 highest results in table.
+ */
 function createLeaderboardPage() {
   $('.buttons-container').hide();
   $('.leaderboard').fadeIn(1000);
@@ -107,7 +130,11 @@ function createLeaderboardPage() {
   $('.game-end-background').hide();
 
   ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
-
+  /**
+   * This function would be invoked if the ajaxRequest was successful. It should
+   * parse json Array(ResultH.result) or show an error message.
+   * @param {Object} ResultH -  json object with only one property (result or error)
+   */
   function readReady(ResultH) {
     if (ResultH.error !== undefined) {
       alert(ResultH.error);
@@ -122,7 +149,13 @@ function createLeaderboardPage() {
       showLeaderboard();
     }
   }
-
+  /**
+   * Sort leanderboard array (it's an array with a lot of objects with names and scores).
+   * Slice sorted array to have only 10 objects inside it. Then we choose all table tr(table row)
+   * elements and create array from it.
+   * Slice this array with tr elements(first tr element is for table header).
+   * And insert markup with scores and names into the tr elements.
+   */
   function showLeaderboard() {
     const ordered = leaderboardArray.sort((first, second) => ((+first.score <= +second.score) ? 1 : -1));
     const cutted = ordered.slice(0, 10);
@@ -130,7 +163,9 @@ function createLeaderboardPage() {
     trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${cutted[i].name}</td><td>${cutted[i].score}</td>`);
   }
 }
-
+/**
+ * Show main menu about section with animation and hide all other blocks
+ */
 function createAboutPage() {
   $('.buttons-container').hide();
   $('.about').fadeIn(1000);
@@ -140,13 +175,15 @@ function createAboutPage() {
   fontSize += 8;
   $('.about p').first().animate({ 'font-size': fontSize }, 2000);
 }
-
-function errorHandler(jqXHR, StatusStr, ErrorStr) {
-  alert(`${StatusStr} ${ErrorStr}`);
-}
-
+/**
+ * Validate user name input, cut long user name, create new object with player score and name.
+ * Send ajax request to the server to get results and block them. Push new hash
+ * with player score an name to the leaderboard array that we got from the server.
+ * Send ajax request to push changed array with results to the server.
+ */
 function pushResult() {
-  let playerName = $('#player-name').val();
+  let playerName = $('#player-name').val(); // Get the current value
+  // of the first element in the set of matched elements (to get player name from input)
   if (playerName === '') {
     $('.result-noname-window').show();
     $('.result-noname-window input').bind('click', () => {
@@ -161,8 +198,9 @@ function pushResult() {
 
   const updatePassword = Math.random();
   ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
-
-  // to get relevant results array from server
+  /**
+   * Get relevant array with results from the server and push new hash to this array
+   */
   function lockGetReady(resultH) {
     if (resultH.error !== undefined) {
       alert(resultH.error);
@@ -182,7 +220,9 @@ function pushResult() {
     });
   }
 }
-
+/**
+ * Show message that results have been recorded or show alert with error.
+ */
 function updateReady(resultH) {
   if (resultH.error != undefined) {
     alert(resultH.error);
@@ -194,11 +234,9 @@ function updateReady(resultH) {
   }
 }
 
-
 /* //the code below is necessary only for the first time to push array with some random players and scores to the server
 
 let updatePassword;
-
 
 function sendMessage() {
   updatePassword = Math.random();
