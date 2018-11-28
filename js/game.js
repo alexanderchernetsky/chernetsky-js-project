@@ -93,12 +93,12 @@ function updateGameArea() {
     // background
     raceGame.backgroundSpeed += 0.001;
     raceGame.backgroundController.moveBackground();
-    raceGame.backgroundController.increaseBackgroundSpeed(raceGame.backgroundSpeed);
+    raceGame.backgroundController.changeBackgroundSpeed(raceGame.backgroundSpeed);
     // production of obstacles
     const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - 50) + 1); // for random x coordinate for obstacles, 50-obstacle width
     if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
       raceGame.obstacle = new raceGame.ObstaclesModel({
-        width: 50, height: 100, x: ObstaclePosX, y: -100,
+        width: 50, height: 100, x: ObstaclePosX, y: -100, src: 'img/obstacles/car',
       }); // -100 for smooth appearance of obstacles from top
       raceGame.obstacleView = new raceGame.ObstaclesView();
       raceGame.obstacleController = new raceGame.ObstaclesController();

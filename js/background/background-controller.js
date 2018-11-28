@@ -1,5 +1,5 @@
-/** Class representing the background controller */
 (function (window) {
+  /** Class representing the background controller */
   class BackgroundController {
     /**
      * Create a background controller object.
@@ -8,6 +8,7 @@
       this.myModel = null;
       this.myField = null;
     }
+
     /**
      * Add links to the background model object and our game area object.
      * @param {object} model - The background model object.
@@ -17,13 +18,15 @@
       this.myModel = model;
       this.myField = field;
     }
+
     /**
      * Invoke the background model object method which changes the speed of background move.
-     * @param {number} speed - it's the value of background speed.
+     * @param {number} speed - it's current value of background speed.
      */
-    increaseBackgroundSpeed(speed) {
-      this.myModel.increseSpeedY(speed);
+    changeBackgroundSpeed(speed) {
+      this.myModel.changeSpeedY(speed);
     }
+
     /**
      * Invoke the background model object method which changes the coordinates of background image.
      */

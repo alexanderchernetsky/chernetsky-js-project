@@ -1,6 +1,9 @@
-// controller
 (function (window) {
+  /** Class representing the player car controller */
   class CarController {
+    /**
+     * Create player car controller object.
+     */
     constructor() {
       this.myModel = null;
       this.myField = null; // внутри какого элемента DOM наша вёрстка
@@ -8,6 +11,12 @@
       this.stopCar = this.stopCar.bind(this);
     }
 
+    /**
+     * Add links to the player car model object and our game area object.
+     * Add event listeners to have an ability to control the car.
+     * @param {object} model - The player car model object.
+     * @param {object} field - Our game area object.
+     */
     start(model, field) {
       this.myModel = model;
       this.myField = field;
@@ -17,6 +26,10 @@
       window.addEventListener('keyup', this.stopCar, false);
     }
 
+    /**
+     * Check which arrow key was pushed by user and invoke proper model methods.
+     * @param {Object} EO - event object
+     */
     moveCar(EO) {
       EO = EO || window.event; // there is no preventDefault because we need f12 default behavior
       switch (EO.which) {
@@ -37,6 +50,10 @@
       }
     }
 
+    /**
+     * Check which arrow key was unpressed by user and invoke proper model methods.
+     * @param {Object} EO - event object
+     */
     stopCar(EO) {
       EO = EO || window.event;
       EO.preventDefault();
