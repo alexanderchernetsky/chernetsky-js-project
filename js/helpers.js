@@ -17,9 +17,22 @@ function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-a
     },
   );
 }
+
 /**
  * Show error message if ajax request was failed
  */
 function errorHandler(jqXHR, StatusStr, ErrorStr) {
   alert(`${StatusStr} ${ErrorStr}`);
+}
+
+/**
+ * Ask user if he really want to close the whole browser tab. This function is used
+ * with the beforeunload event listener and only while user is playing the game.
+ * @param {Object} EO - the event object
+ */
+function askUser(EO) {
+  EO = EO || window.event;
+  const dialogText = 'Do you want to exit the game?';
+  EO.returnValue = dialogText;
+  return dialogText;
 }

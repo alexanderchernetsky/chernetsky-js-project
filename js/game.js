@@ -64,6 +64,7 @@ function startGame() {
   document.querySelector('.game-end-background').style.display = 'none';
   document.querySelector('.game-end-wrapper').style.display = 'none';
   raceGame.playing = true;
+  window.addEventListener('beforeunload', askUser, false);
   requestAnimationFrame(updateGameArea);
 }
 
@@ -137,6 +138,7 @@ function updateGameArea() {
  */
 function stopGame() {
   cancelAnimationFrame(updateGameArea);
+  window.removeEventListener('beforeunload', askUser, false);
   raceGame.playing = false;
   raceGame.song.stopListening();
   raceGame.song.stop();
