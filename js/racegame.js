@@ -27,5 +27,5 @@ window.raceGame = {
   touch: undefined,
   ratioX: undefined,
   ratioY: undefined,
-  playing: false,
+  playing: false
 };

@@ -7,12 +7,12 @@
 function startGame() {
   myGameArea.start();
   raceGame.playerCar = new raceGame.CarModel({
-    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
+    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png'
   });
   raceGame.playerCarView = new raceGame.CarView();
   raceGame.playerCarController = new raceGame.CarController();
   raceGame.background = new raceGame.BackgroundModel({
-    width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg',
+    width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg'
   });
   raceGame.backgroundView = new raceGame.BackgroundView();
   raceGame.backgroundController = new raceGame.BackgroundController();
@@ -36,16 +36,16 @@ function startGame() {
     // this code is necessary only for devices with touch
     raceGame.touch = true;
     raceGame.myUpBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)',
+      width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)'
     }); // 50 - the size of buttons that are visible only when you use devices with touch
     raceGame.myDownBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)',
+      width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)'
     });
     raceGame.myLeftBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)',
+      width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)'
     });
     raceGame.myRightBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)',
+      width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)'
     });
     const canvas = document.querySelector('canvas');
     [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
@@ -96,10 +96,11 @@ function updateGameArea() {
     raceGame.backgroundController.moveBackground();
     raceGame.backgroundController.changeBackgroundSpeed(raceGame.backgroundSpeed);
     // production of obstacles
-    const ObstaclePosX = Math.floor(Math.random() * (raceGame.GAMEAREAWIDTH - 50) + 1); // for random x coordinate for obstacles, 50-obstacle width
-    if ((myGameArea.frameNo === 1) || ((myGameArea.frameNo / 100) % 1 === 0)) { // would return true if (myGameArea.frameNo / n) was an integer, a%b returns surplus of the division of 2 operands
+    const ObstaclePosX = randomObstacleXCoordinate(raceGame.GAMEAREAWIDTH, 50);
+    // for random x coordinate for obstacles, 50-obstacle width
+    if (checkFrameNo(myGameArea.frameNo)) {
       raceGame.obstacle = new raceGame.ObstaclesModel({
-        width: 50, height: 100, x: ObstaclePosX, y: -100, src: 'img/obstacles/car',
+        width: 50, height: 100, x: ObstaclePosX, y: -100, src: 'img/obstacles/car'
       }); // -100 for smooth appearance of obstacles from top
       raceGame.obstacleView = new raceGame.ObstaclesView();
       raceGame.obstacleController = new raceGame.ObstaclesController();
@@ -133,7 +134,8 @@ function updateGameArea() {
 }
 
 /**
- * updateGameArea function is necessary to stop game cycle. It stops playing song, plays crash sound.
+ * updateGameArea function is necessary to stop game cycle.
+ * It stops playing song, plays crash sound.
  * It removes event listeners. Shows us game end menu with our final score and etc
  */
 function stopGame() {

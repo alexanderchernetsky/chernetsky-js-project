@@ -1,4 +1,5 @@
 let leaderboardArray;
+
 /**
  * Switch browser address bar after hash to some encoded state
  * @param {Object} state - object with only one property name
@@ -6,30 +7,35 @@ let leaderboardArray;
 function switchToState(state) {
   location.hash = encodeURIComponent(JSON.stringify(state));
 }
+
 /**
  * Switch browser address bar after hash to encoded state of main page
  */
 function switchToMainPage() {
   switchToState({ page: 'main' });
 }
+
 /**
  * Switch browser address bar after hash to encoded state of game page
  */
 function switchToGamePage() {
   switchToState({ page: 'game' });
 }
+
 /**
  * Switch browser address bar after hash to encoded state of controls page
  */
 function switchToControlsPage() {
   switchToState({ page: 'controls' });
 }
+
 /**
  * Switch browser address bar after hash to encoded state of leaderboard page
  */
 function switchToLeaderboardPage() {
   switchToState({ page: 'leaderboard' });
 }
+
 /**
  * Switch browser address bar after hash to encoded state of about page
  */
@@ -43,6 +49,7 @@ $('#game').bind('click', switchToGamePage);
 $('#controls').bind('click', switchToControlsPage);
 $('#leaderboard').bind('click', switchToLeaderboardPage);
 $('#about').bind('click', switchToAboutPage);
+
 /**
  * Decode state from browser address bar, define which page should be rendered
  * and invoke proper function.
@@ -52,35 +59,36 @@ function renderNewState() {
   let state = decodeURIComponent(hash.substr(1));
   (state === '') ? (state = { page: 'main' }) : (state = JSON.parse(state));
   switch (state.page) {
-    case 'main':
-      if (raceGame.playing) {
-        const doYouWantToStopGame = confirm('Do you want to finish the game?');
-        if (doYouWantToStopGame) {
-          stopGame();
-          createMainPage();
-        } else {
-          switchToGamePage();
-        }
-      } else {
+  case 'main':
+    if (raceGame.playing) {
+      const doYouWantToStopGame = confirm('Do you want to finish the game?');
+      if (doYouWantToStopGame) {
+        stopGame();
         createMainPage();
+      } else {
+        switchToGamePage();
       }
-      break;
-    case 'game':
-      createGamePage();
-      break;
-    case 'controls':
-      createControlsPage();
-      break;
-    case 'leaderboard':
-      createLeaderboardPage();
-      break;
-    case 'about':
-      createAboutPage();
-      break;
+    } else {
+      createMainPage();
+    }
+    break;
+  case 'game':
+    createGamePage();
+    break;
+  case 'controls':
+    createControlsPage();
+    break;
+  case 'leaderboard':
+    createLeaderboardPage();
+    break;
+  case 'about':
+    createAboutPage();
+    break;
   }
 }
 
 renderNewState();
+
 /**
  * Show main menu section and hide all other blocks
  */
@@ -96,6 +104,7 @@ function createMainPage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 }
+
 /**
  * Hide all blocks and invoke startGame function from game.js file
  */
@@ -114,6 +123,7 @@ function createGamePage() {
 
   startGame();
 }
+
 /**
  * Show main menu controls section and hide all other blocks
  */
@@ -122,6 +132,7 @@ function createControlsPage() {
   $('.controls').fadeIn(1000);
   $('.controls input').bind('click', switchToMainPage);
 }
+
 /**
  * Show main menu leaderboard section and hide all other blocks.
  * Send ajax request to the server to get json with all names and scores, parse it,
@@ -139,6 +150,7 @@ function createLeaderboardPage() {
   $('.game-end-background').hide();
 
   ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
+
   /**
    * This function would be invoked if the ajaxRequest was successful. It should
    * parse json Array(ResultH.result) or show an error message.
@@ -158,6 +170,7 @@ function createLeaderboardPage() {
       showLeaderboard();
     }
   }
+
   /**
    * Sort leanderboard array (it's an array with a lot of objects with names and scores).
    * Slice sorted array to have only 10 objects inside it. Then we choose all table tr(table row)
@@ -172,6 +185,7 @@ function createLeaderboardPage() {
     trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${cutted[i].name}</td><td>${cutted[i].score}</td>`);
   }
 }
+
 /**
  * Show main menu about section with animation and hide all other blocks
  */
@@ -184,6 +198,7 @@ function createAboutPage() {
   fontSize += 8;
   $('.about p').first().animate({ 'font-size': fontSize }, 2000);
 }
+
 /**
  * Validate user name input, cut long user name, create new object with player score and name.
  * Send ajax request to the server to get results and block them. Push new hash
@@ -207,6 +222,7 @@ function pushResult() {
 
   const updatePassword = Math.random();
   ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
+
   /**
    * Get relevant array with results from the server and push new hash to this array
    */
@@ -225,10 +241,11 @@ function pushResult() {
     }
     // to send results to the server
     ajaxRequest(updateReady, {
-      f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword,
+      f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword
     });
   }
 }
+
 /**
  * Show message that results have been recorded or show alert with error.
  */
