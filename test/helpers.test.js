@@ -2,6 +2,7 @@ const exportedObj = require('../js/helpers.js');
 
 const checkFrameNo = exportedObj.checkFrameNo;
 const randomObstacleXCoordinate = exportedObj.randomObstacleXCoordinate;
+const prepareLeaderboardArr = exportedObj.prepareLeaderboardArr;
 
 describe('function checkFrameNo test', () => {
   it('should return true for frame number 1', () => {
@@ -36,5 +37,22 @@ describe('function randomObstacleXCoordinate test', () => {
 
   it('should return number less than 8 or equal', () => {
     expect(randomObstacleXCoordinate(10, 2)).toBeLessThanOrEqual(450);
+  });
+});
+
+describe('function prepareLeaderboardArr test', () => {
+  const someArr = [{ name: 'vasia', score: 20 }, { name: 'petia', score: 1 }, { name: 'gena', score: 900 },
+    { name: 'vadim', score: 2 }, { name: 'alexander', score: 9999 }, { name: 'alex', score: 200 },
+    { name: 'nadia', score: 30 }, { name: 'dima', score: 300 }, { name: 'sveta', score: 390 },
+    { name: 'volodia', score: 40 }, { name: 'anna', score: 90 }, { name: 'boris', score: 22 },
+    { name: 'pavel', score: 500 }, { name: 'artur', score: 700 }, { name: 'zina', score: 70 }];
+
+  const resultArr = [{ name: 'alexander', score: 9999 }, { name: 'gena', score: 900 }, { name: 'artur', score: 700 },
+    { name: 'pavel', score: 500 }, { name: 'sveta', score: 390 }, { name: 'dima', score: 300 },
+    { name: 'alex', score: 200 }, { name: 'anna', score: 90 }, { name: 'zina', score: 70 },
+    { name: 'volodia', score: 40 }];
+
+  it('function should return array', () => {
+    expect(prepareLeaderboardArr(someArr)).toEqual(resultArr);
   });
 });

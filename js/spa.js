@@ -167,22 +167,19 @@ function createLeaderboardPage() {
           leaderboardArray = [];
         }
       }
-      showLeaderboard();
+      showLeaderboard(prepareLeaderboardArr(leaderboardArray));
     }
   }
 
   /**
-   * Sort leanderboard array (it's an array with a lot of objects with names and scores).
-   * Slice sorted array to have only 10 objects inside it. Then we choose all table tr(table row)
-   * elements and create array from it.
+   * Choose all table tr(table row) elements and create array from it.
    * Slice this array with tr elements(first tr element is for table header).
    * And insert markup with scores and names into the tr elements.
+   * @param {Array} arr -  prepared array
    */
-  function showLeaderboard() {
-    const ordered = leaderboardArray.sort((first, second) => ((+first.score <= +second.score) ? 1 : -1));
-    const cutted = ordered.slice(0, 10);
+  function showLeaderboard(arr) {
     const trElArray = Array.from(document.querySelectorAll('#score-table tr'));
-    trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${cutted[i].name}</td><td>${cutted[i].score}</td>`);
+    trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${arr[i].name}</td><td>${arr[i].score}</td>`);
   }
 }
 

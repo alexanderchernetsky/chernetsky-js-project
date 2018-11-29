@@ -61,5 +61,18 @@ function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
   return Math.floor(Math.random() * (gameAreaWidth - obstacleWidth) + 1);
 }
 
+/**
+ * Would return array with 10 objects containing the highest scores from the highest to the lowest.
+ * This function is used inside createLeaderboard function.
+ * @param {Array} arr - we put here leaderboardArray recieved from server
+ * @return {Array} this prepared array will be used in showLeaderboard function
+ */
+function prepareLeaderboardArr(arr) {
+  return arr
+    .sort((first, second) => ((+first.score <= +second.score) ? 1 : -1))
+    .slice(0, 10);
+}
+
 module.exports.checkFrameNo = checkFrameNo;
 module.exports.randomObstacleXCoordinate = randomObstacleXCoordinate;
+module.exports.prepareLeaderboardArr = prepareLeaderboardArr;
