@@ -54,8 +54,13 @@ function renderNewState() {
   switch (state.page) {
     case 'main':
       if (raceGame.playing) {
-        stopGame();
-        createMainPage();
+        const doYouWantToStopGame = confirm('Do you want to finish the game?');
+        if (doYouWantToStopGame) {
+          stopGame();
+          createMainPage();
+        } else {
+          switchToGamePage();
+        }
       } else {
         createMainPage();
       }
@@ -95,6 +100,10 @@ function createMainPage() {
  * Hide all blocks and invoke startGame function from game.js file
  */
 function createGamePage() {
+  if (raceGame.playing) { // this check if necessary for case when we pushed go back browser arrow,
+    // but changed our mind
+    return;
+  }
   $('.buttons-container').hide();
   const canvas = $('canvas').first();
   if (canvas) {
