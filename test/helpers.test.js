@@ -1,8 +1,6 @@
 const exportedObj = require('../js/helpers.js');
 
-const checkFrameNo = exportedObj.checkFrameNo;
-const randomObstacleXCoordinate = exportedObj.randomObstacleXCoordinate;
-const prepareLeaderboardArr = exportedObj.prepareLeaderboardArr;
+const { checkFrameNo, randomObstacleXCoordinate, prepareLeaderboardArr } = exportedObj;
 
 describe('function checkFrameNo test', () => {
   it('should return true for frame number 1', () => {
@@ -17,8 +15,8 @@ describe('function checkFrameNo test', () => {
     expect(checkFrameNo(2)).toBeFalsy();
   });
 
-  it('should return false for frame number 499', () => {
-    expect(checkFrameNo(499)).toBeFalsy();
+  it('should return false for frame number 250', () => {
+    expect(checkFrameNo(250)).toBeFalsy();
   });
 });
 
@@ -52,7 +50,7 @@ describe('function prepareLeaderboardArr test', () => {
     { name: 'alex', score: 200 }, { name: 'anna', score: 90 }, { name: 'zina', score: 70 },
     { name: 'volodia', score: 40 }];
 
-  it('function should return array', () => {
+  it('function should return sorted and cutted array', () => {
     expect(prepareLeaderboardArr(someArr)).toEqual(resultArr);
   });
 });

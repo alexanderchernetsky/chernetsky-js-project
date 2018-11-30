@@ -5,12 +5,12 @@
      * Create a background model. Destructuring assignment is used to pass parameters.
      * @param {number} width - the width of the background image
      * @param {number} height - the height of the background image
-     * @param {number} x - the x coordinate of the background image
-     * @param {number} y - the y coordinate of the background image
+     * @param {number} x - the x coordinate of top-left corner of the background image
+     * @param {number} y - the y coordinate of top-left corner of the background image
      * @param {string} src - the source to the image
      */
     constructor({
-      width, height, x, y, src,
+      width, height, x, y, src
     } = {}) {
       this.width = width;
       this.height = height;
@@ -54,7 +54,7 @@
 
     /**
      * Change background movement speed.
-     * @param {number} speed - it's current value of background speed.
+     * @param {number} speed - current value of background speed.
      */
     changeSpeedY(speed) {
       this.speedY = speed;

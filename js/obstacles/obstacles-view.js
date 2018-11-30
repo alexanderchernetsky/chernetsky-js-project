@@ -1,8 +1,8 @@
 (function (window) {
-  /** Class representing the obstacles views */
+  /** Class representing obstacles views */
   class ObstaclesView {
     /**
-     * Create a obstacle view object.
+     * Create the obstacle view object.
      */
     constructor() {
       this.myModel = null;

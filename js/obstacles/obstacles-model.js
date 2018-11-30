@@ -1,5 +1,5 @@
 (function (window) {
-  /** Class representing the obstacles models */
+  /** Class representing obstacles models */
   class ObstaclesModel {
     /**
      * Create a obstacle model. Destructuring assignment is used to pass parameters.

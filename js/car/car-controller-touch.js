@@ -1,11 +1,20 @@
-// touch controller
 (function (window) {
+  /** Class representing the player car touch controller */
   class CarTouchController {
+    /**
+     * Create player car controller object.
+     */
     constructor() {
       this.myModel = null;
       this.myField = null;
     }
 
+    /**
+     * Add links to the player car model object and our game area object.
+     * Add event listeners to have an ability to control the car using touch.
+     * @param {object} model - The player car model object.
+     * @param {object} field - Our game area object.
+     */
     start(model, field) {
       this.myModel = model;
       this.myField = field;
@@ -25,6 +34,9 @@
       }
     }
 
+    /**
+     * Check which button was clicked by user and invoke proper model methods.
+     */
     controlCar() {
       // the code below is necessary to control car movement using touch
       if (raceGame.touch) {

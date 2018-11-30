@@ -136,7 +136,7 @@ function createControlsPage() {
 /**
  * Show main menu leaderboard section and hide all other blocks.
  * Send ajax request to the server to get json with all names and scores, parse it,
- * sort it and show 10 highest results in table.
+ * sort it and show 10 highest results in the table.
  */
 function createLeaderboardPage() {
   $('.buttons-container').hide();
@@ -190,7 +190,6 @@ function createAboutPage() {
   $('.buttons-container').hide();
   $('.about').fadeIn(1000);
   $('.about input').bind('click', switchToMainPage);
-
   let fontSize = parseInt($('body').css('font-size'));
   fontSize += 8;
   $('.about p').first().animate({ 'font-size': fontSize }, 2000);
@@ -199,7 +198,7 @@ function createAboutPage() {
 /**
  * Validate user name input, cut long user name, create new object with player score and name.
  * Send ajax request to the server to get results and block them. Push new hash
- * with player score an name to the leaderboard array that we got from the server.
+ * with player score and name to the leaderboard array that we got from the server.
  * Send ajax request to push changed array with results to the server.
  */
 function pushResult() {
@@ -216,12 +215,11 @@ function pushResult() {
     playerName = playerName.substr(0, 12);
   }
   const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
-
   const updatePassword = Math.random();
   ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
 
   /**
-   * Get relevant array with results from the server and push new hash to this array
+   * Get relevant array with results from the server and push newResultHash to this array
    */
   function lockGetReady(resultH) {
     if (resultH.error !== undefined) {

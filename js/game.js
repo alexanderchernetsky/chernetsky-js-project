@@ -6,6 +6,7 @@
  */
 function startGame() {
   myGameArea.start();
+
   raceGame.playerCar = new raceGame.CarModel({
     width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png'
   });
@@ -49,34 +50,39 @@ function startGame() {
     });
     const canvas = document.querySelector('canvas');
     [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
+    // ratioX is the coefficient that shows quotient of canvas.offsetWidth to GAMEAREAWIDTH
+    // (it's value will be different on different devices)
   }
 
+  raceGame.Sound.removeFormerAudio();
   raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
   raceGame.song = new raceGame.Sound('sounds/song.mp3');
   raceGame.song.listen();
-  // setting to default(initial) values is necessary when we start the game more than once
+
+  // setting to default(initial) values (it's necessary if we start the game more than once)
   raceGame.obstacleModels = [];
   raceGame.obstacleViews = [];
   raceGame.obstacleControllers = [];
-  raceGame.obstacleSpeed = 2; // initial value of obstacle speed (it will increase in course of time)
-  raceGame.backgroundSpeed = 1; // initial value of background speed (it will increase in course of time)
-  myGameArea.frameNo = 0; // every request animation frame it will increase by 1
+  raceGame.obstacleSpeed = 2;
+  raceGame.backgroundSpeed = 1;
+  myGameArea.frameNo = 0;
+
   document.querySelector('.game-end-background').style.display = 'none';
   document.querySelector('.game-end-wrapper').style.display = 'none';
-  raceGame.playing = true;
   window.addEventListener('beforeunload', askUser, false);
+  raceGame.playing = true;
   requestAnimationFrame(updateGameArea);
 }
 
 /**
  * updateGameArea function is a game cycle. It checks if player car is crashed,
  * clears the whole canvas element, increase frame № by 1 every time. Increases background speed
- * and obstacles speed to create effect of game speed increase. Calls background controller
- * methods to change its position and increases its moving speed.
+ * and obstacles speed to create effect of game speed increase.
  * Creates obstacles models,views, controllers, connects them to each other and pushes to
  * proper array. Invoke player car model method to check if it's within the canvas area and draw it.
  * Changes score. Draws 4 control buttons. Invoke itself again.
- * It would stop in 2 cases: if player car crashed or if user clicked go back arrow in browser.
+ * Game cycle would stop in 2 cases:
+ * if player car crashed or if user clicked go back arrow in browser(and confirmed).
  */
 function updateGameArea() {
   if (raceGame.playing) {
@@ -107,7 +113,6 @@ function updateGameArea() {
       raceGame.obstacle.start(raceGame.obstacleView);
       raceGame.obstacleView.start(raceGame.obstacle, myGameArea);
       raceGame.obstacleController.start(raceGame.obstacle, myGameArea);
-
       raceGame.obstacleModels.push(raceGame.obstacle);
       raceGame.obstacleViews.push(raceGame.obstacleView);
       raceGame.obstacleControllers.push(raceGame.obstacleController);
@@ -134,17 +139,17 @@ function updateGameArea() {
 }
 
 /**
- * updateGameArea function is necessary to stop game cycle.
+ * updateGameArea function is necessary to stop the game.
  * It stops playing song, plays crash sound.
- * It removes event listeners. Shows us game end menu with our final score and etc
+ * It removes event listeners. Shows us game end menu with our final score and etc.
  */
 function stopGame() {
   cancelAnimationFrame(updateGameArea);
-  window.removeEventListener('beforeunload', askUser, false);
   raceGame.playing = false;
   raceGame.song.stopListening();
   raceGame.song.stop();
   raceGame.crashSound.play();
+  window.removeEventListener('beforeunload', askUser, false);
   window.removeEventListener('keydown', raceGame.playerCar.moveCar, false);
   window.removeEventListener('keyup', raceGame.playerCar.stopCar, false);
   const scoreEl = document.getElementById('score');

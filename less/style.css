@@ -187,11 +187,13 @@ body {
   min-width: 300px;
 }
 .wallpaper {
-  background-image: url("../img/menu/menu.jpg");
-  height: 100%;
+  background: url("../img/menu/menu.jpg") center / cover no-repeat;
+  /* background-image: url("../img/menu/menu.jpg");
+
   background-position: center;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: cover;*/
+  height: 100%;
 }
 .buttons-container {
   min-width: 300px;

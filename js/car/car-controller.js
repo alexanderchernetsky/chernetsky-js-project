@@ -33,20 +33,20 @@
     moveCar(EO) {
       EO = EO || window.event; // there is no preventDefault because we need f12 default behavior
       switch (EO.which) {
-        case 37:
-          this.myModel.changeMoveAngle(-1 - raceGame.backgroundSpeed / 2); // контроллер вызывает только методы модели
-          break;
-        case 39:
-          this.myModel.changeMoveAngle(1 + raceGame.backgroundSpeed / 2);
-          break;
-        case 40:
-          this.myModel.changeSpeed(-2 - raceGame.backgroundSpeed / 2);
-          break;
-        case 38:
-          this.myModel.changeSpeed(4 + raceGame.backgroundSpeed / 2);
-          break;
-        default:
-          break;
+      case 37:
+        this.myModel.changeMoveAngle(-1 - raceGame.backgroundSpeed / 2);
+        break;
+      case 39:
+        this.myModel.changeMoveAngle(1 + raceGame.backgroundSpeed / 2);
+        break;
+      case 40:
+        this.myModel.changeSpeed(-2 - raceGame.backgroundSpeed / 2);
+        break;
+      case 38:
+        this.myModel.changeSpeed(4 + raceGame.backgroundSpeed / 2);
+        break;
+      default:
+        break;
       }
     }
 
@@ -58,16 +58,16 @@
       EO = EO || window.event;
       EO.preventDefault();
       switch (EO.which) {
-        case 39:
-        case 37:
-          this.myModel.changeMoveAngle(0);// контроллер вызывает только методы модели
-          break;
-        case 40:
-        case 38:
-          this.myModel.changeSpeed(0);
-          break;
-        default:
-          break;
+      case 39:
+      case 37:
+        this.myModel.changeMoveAngle(0);
+        break;
+      case 40:
+      case 38:
+        this.myModel.changeSpeed(0);
+        break;
+      default:
+        break;
       }
     }
   }

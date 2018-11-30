@@ -10,7 +10,7 @@
      * @param {string} src - the source to the image of user car
      */
     constructor({
-      width, height, x, y, src,
+      width, height, x, y, src
     } = {}) {
       this.image = new Image();
       this.image.src = src;
@@ -44,9 +44,9 @@
     }
 
     /**
-     * Restrict car movement within canvas element,calculate actual angle and angle(in radians),
+     * Restrict car movement within canvas element, calculate actual angle and angle(in radians),
      * change player car position.
-     * @param {object} raceGameObj - object with all game variables and constants
+     * @param {object} raceGameObj - object with all game variables and constants.
      */
     shift(raceGameObj) {
       const raceGame = raceGameObj;

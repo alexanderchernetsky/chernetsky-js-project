@@ -2,7 +2,7 @@
   /** Class representing the score counter controller */
   class CounterController {
     /**
-     * Create a counter controller object.
+     * Create a counter controller object
      */
     constructor() {
       this.myModel = null;
@@ -20,7 +20,7 @@
     }
 
     /**
-     * Invoke the counter model object method which changes the score to the current value.
+     * Invoke the counter model object method which changes the score to the current value
      */
     changeScore() {
       this.myModel.changeText(this.myField);
