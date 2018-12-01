@@ -3,6 +3,7 @@ let leaderboardArray;
 /**
  * Switch browser address bar after hash to some encoded state
  * @param {Object} state - object with only one property name
+ * @return {undefined}
  */
 function switchToState(state) {
   location.hash = encodeURIComponent(JSON.stringify(state));
@@ -91,6 +92,7 @@ renderNewState();
 
 /**
  * Show main menu section and hide all other blocks
+ * @return {undefined}
  */
 function createMainPage() {
   $('.buttons-container').fadeIn(1000);
@@ -185,12 +187,13 @@ function createLeaderboardPage() {
 
 /**
  * Show main menu about section with animation and hide all other blocks
+ * @return {undefined}
  */
 function createAboutPage() {
   $('.buttons-container').hide();
   $('.about').fadeIn(1000);
   $('.about input').bind('click', switchToMainPage);
-  let fontSize = parseInt($('body').css('font-size'));
+  let fontSize = parseInt($('body').css('font-size'), 10);
   fontSize += 8;
   $('.about p').first().animate({ 'font-size': fontSize }, 2000);
 }

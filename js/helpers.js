@@ -4,6 +4,7 @@
  * @param {object} data - It's the object with properties that are necessary for the request.
  * @param {string} dataType - type of transferring data.
  * @param {string} url - web address of backend script.
+ * @return {undefined}
  * */
 function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php') {
   $.ajax(
