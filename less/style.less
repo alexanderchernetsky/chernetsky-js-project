@@ -1,0 +1,276 @@
+@import "css-reset";
+@import "fonts";
+@import "mixins";
+
+html, body {
+  margin: 0;
+  height: 100%;
+  min-width: 300px;
+}
+
+.wallpaper {
+  background: url("../img/menu/menu.jpg") center /cover no-repeat;
+  height: 100%;
+}
+
+.buttons-container  {
+  min-width: 300px;
+  width: 50%;
+  height: 50%;
+  .center-pos-mix();
+  .wrapper-mix();
+  display: none;
+  @media (max-width: 768px) {
+    width: 60%;
+  }
+  @media (max-width: 300px) {
+    width: 90%;
+  }
+}
+
+.buttons-container  > input[type='button'], .controls > input, .leaderboard > input,
+.about > input, .result-save-window > input, .result-noname-window > input {
+  font-family: "Josefin Sans", 'sans-serif';
+  width: 64%;
+  height: 20%;
+  font-size: 20px;
+  cursor:url('../img/menu/hand.png'), default;
+  &:hover {
+    background-color: lightskyblue;
+  }
+  @media (max-width: 768px) {
+    font-size: 16px;
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    font-size: 14px;
+    width: 80%;
+  }
+}
+
+.buttons-container  > input, .leaderboard > input {
+  border-radius: 10px;
+  height: 12%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  .yellow-bordered-mix();
+}
+
+.controls, .about {
+  font-family: "Amatic SC", serif;
+  min-width: 300px;
+  font-size: 22px;
+  font-weight: bold;
+  .yellow-bordered-mix();
+  width: 50%;
+  height: 30%;
+  .center-pos-mix();
+  .wrapper-mix();
+  @media (max-width: 768px) {
+    width: 60%;
+  }
+  @media (max-width: 300px) {
+    width: 90%;
+  }
+  p {
+    margin: 20px 5px;
+    @media (max-width: 768px) {
+      font-size: 18px;
+    }
+    @media (max-width: 576px) {
+      font-size: 16px;
+    }
+  }
+}
+
+.controls {
+  @media (max-width: 992px) {
+    width: 70%;
+  }
+}
+
+.controls > input, .about > input, .result-save-window > input, .result-noname-window > input {
+  border-radius: 10px;
+  height: 20%;
+  margin-top: 3%;
+  text-transform: uppercase;
+  font-weight: bold;
+  .yellow-bordered-mix();
+}
+
+.leaderboard {
+  min-width: 300px;
+  font-size: 22px;
+  font-weight: bold;
+  .yellow-bordered-mix();
+  width: 50%;
+  height: 80%;
+  .center-pos-mix();
+  .wrapper-mix();
+  @media (max-width: 1200px) {
+    width: 60%;
+  }
+  @media (max-width: 992px) {
+    width: 70%;
+  }
+  @media (max-width: 768px) {
+    width: 80%;
+    height: 70%;
+    font-size: 18px;
+  }
+  @media (max-width: 576px) {
+    width: 90%;
+    height: 70%;
+    font-size: 16px;
+  }
+}
+
+#score-table {
+  font-family: "Amatic SC", serif;
+  min-width: 300px;
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 10px;
+  th {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #A8D39B;;
+    color: white;
+  }
+  td, th {
+    border: 1px solid #A8D39B;
+    padding: 6px;
+  }
+  tr:nth-child(even) {
+    background-color: #95E6F9;
+  }
+  tr:hover {
+    background-color: #A8D39B;
+  }
+}
+
+canvas {
+  min-width: 300px;
+  border: 1px solid #d3d3d3;
+  .center-pos-mix();
+  width: 38%;
+  height: 90%;
+  cursor: none;
+  @media (max-width: 1200px) {
+    width: 50%;
+  }
+  @media (max-width: 992px) {
+    width: 56%;
+  }
+  @media (max-width: 768px) {
+    width: 70%;
+  }
+  @media (max-width: 576px) {
+    width: 100%;
+  }
+  @media (max-width: 400px) {
+    height: 80%;
+  }
+  @media (max-width: 350px) {
+    height: 70%;
+  }
+}
+
+.game-end-background {
+  min-width: 300px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  background-color: black;
+  opacity: 0.5;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  display: none;
+}
+
+.game-end-wrapper {
+  min-width: 300px;
+  width: 50%;
+  height: 50%;
+  .center-pos-mix();
+  .wrapper-mix();
+  @media (max-width: 576px) {
+    width: 70%;
+  }
+  input[type='button'] {
+    width: 60%;
+  }
+  input[type='text'] {
+    width: 60%;
+    &:focus {
+      background-color: lightskyblue;
+    }
+  }
+  input {
+    font-family: "Josefin Sans", 'sans-serif';
+    font-size: 20px;
+    border-radius: 10px;
+    height: 12%;
+    margin-top: 3%;
+    text-transform: uppercase;
+    font-weight: bold;
+    .yellow-bordered-mix();
+    cursor:url('../img/menu/hand.png'), default;
+    &:hover {
+      background-color: lightskyblue;
+    }
+    @media (max-width: 768px) {
+      font-size: 16px;
+    }
+    @media (max-width: 576px) {
+      font-size: 14px;
+    }
+    &::placeholder {
+      padding-left: 10px;
+    }
+  }
+  .info {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    height: 50%;
+    font-weight: bold;
+    color: white;
+    font-size: 36px;
+    text-shadow: 2px 2px 1px black;
+    border-radius: 10px;
+    margin: 0;
+    .yellow-bordered-mix();
+    @media (max-width: 768px) {
+      font-size: 26px;
+    }
+  }
+}
+
+.result-save-window, .result-noname-window {
+  min-width: 90px;
+  font-family: "Josefin Sans", 'sans-serif';
+  font-size: 20px;
+  font-weight: bold;
+  .yellow-bordered-mix();
+  width: 30%;
+  height: 30%;
+  .center-pos-mix();
+  .wrapper-mix();
+  p {
+    margin-top: 20px;
+  }
+  @media (max-width: 768px) {
+    font-size: 16px;
+    width: 50%;
+    height: 20%;
+  }
+  @media (max-width: 576px) {
+    font-size: 14px;
+    width: 50%;
+    height: 20%;
+  }
+}
