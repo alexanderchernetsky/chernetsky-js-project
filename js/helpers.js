@@ -74,6 +74,6 @@ function prepareLeaderboardArr(arr) {
     .slice(0, 10);
 }
 
-module.exports.checkFrameNo = checkFrameNo;
+/*module.exports.checkFrameNo = checkFrameNo;
 module.exports.randomObstacleXCoordinate = randomObstacleXCoordinate;
-module.exports.prepareLeaderboardArr = prepareLeaderboardArr;
+module.exports.prepareLeaderboardArr = prepareLeaderboardArr;*/
