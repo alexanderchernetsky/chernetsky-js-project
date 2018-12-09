@@ -68,10 +68,10 @@ function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
  * @param {Array} arr - we put here leaderboardArray recieved from the server.
  * @return {Array} this prepared array will be used in showLeaderboard function.
  */
-function prepareLeaderboardArr(arr) {
+function prepareLeaderboardArr(arr, resQuantity) {
   return arr
     .sort((first, second) => ((+first.score <= +second.score) ? 1 : -1))
-    .slice(0, 10);
+    .slice(0, resQuantity);
 }
 
 /*module.exports.checkFrameNo = checkFrameNo;

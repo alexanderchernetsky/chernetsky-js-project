@@ -169,7 +169,7 @@ function createLeaderboardPage() {
           leaderboardArray = [];
         }
       }
-      showLeaderboard(prepareLeaderboardArr(leaderboardArray));
+      showLeaderboard(prepareLeaderboardArr(leaderboardArray, 15), 15);
     }
   }
 
@@ -179,9 +179,22 @@ function createLeaderboardPage() {
    * And insert markup with scores and names into the tr elements.
    * @param {Array} arr -  prepared array
    */
-  function showLeaderboard(arr) {
-    const trElArray = Array.from(document.querySelectorAll('#score-table tr'));
-    trElArray.slice(1).forEach((trEl, i) => trEl.innerHTML = `<td>${i + 1}</td><td>${arr[i].name}</td><td>${arr[i].score}</td>`);
+  function showLeaderboard(arr, resQuantity) {
+    const tableEl = document.querySelector('#score-table');
+    if(tableEl.children.length > 1) {
+      Array.from(tableEl.children)
+          .slice(1)
+          .forEach((elem) => tableEl.removeChild(elem))
+    }
+    for (let i = 0; i < resQuantity; i++) {
+      tableEl.insertAdjacentHTML("beforeend", `
+        <tr>
+          <td>${i + 1}</td>
+          <td>${arr[i].name}</td>
+          <td>${arr[i].score}</td>
+        </tr>
+      `)
+    }
   }
 }
 

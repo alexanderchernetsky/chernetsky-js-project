@@ -188,11 +188,6 @@ body {
 }
 .wallpaper {
   background: url("../img/menu/menu.jpg") center / cover no-repeat;
-  /* background-image: url("../img/menu/menu.jpg");
-
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;*/
   height: 100%;
 }
 .buttons-container {
@@ -360,6 +355,7 @@ body {
   text-transform: uppercase;
   z-index: 3;
   display: none;
+  overflow-y: scroll;
 }
 @media (max-width: 1200px) {
   .leaderboard {
@@ -582,4 +578,18 @@ canvas {
     width: 50%;
     height: 20%;
   }
+}
+::-webkit-scrollbar {
+  width: 15px;
+}
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: #C1C1C1;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: darkgrey;
 }

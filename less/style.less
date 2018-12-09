@@ -108,6 +108,7 @@ html, body {
   height: 80%;
   .center-pos-mix();
   .wrapper-mix();
+  overflow-y: scroll;
   @media (max-width: 1200px) {
     width: 60%;
   }
@@ -272,5 +273,22 @@ canvas {
     font-size: 14px;
     width: 50%;
     height: 20%;
+  }
+}
+
+::-webkit-scrollbar {
+  width: 15px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #C1C1C1;
+  border-radius: 10px;
+  &:hover {
+    background: darkgrey;
   }
 }
