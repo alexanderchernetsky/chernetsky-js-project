@@ -179,22 +179,21 @@ function createLeaderboardPage() {
    * And insert markup with scores and names into the tr elements.
    * @param {Array} arr -  prepared array
    */
-  function showLeaderboard(arr, resQuantity) {
+  function showLeaderboard(arr) {
     const tableEl = document.querySelector('#score-table');
-    if(tableEl.children.length > 1) {
-      Array.from(tableEl.children)
-          .slice(1)
-          .forEach((elem) => tableEl.removeChild(elem))
-    }
-    for (let i = 0; i < resQuantity; i++) {
-      tableEl.insertAdjacentHTML("beforeend", `
+    tableEl.innerHTML = `
+      <tr>
+        <th>Place</th>
+        <th>Name</th>
+        <th>Score</th>
+      </tr>
+      ${arr.map((result,pos) => `
         <tr>
-          <td>${i + 1}</td>
-          <td>${arr[i].name}</td>
-          <td>${arr[i].score}</td>
-        </tr>
-      `)
-    }
+            <td>${pos+1}</td>
+            <td>${result.name}</td>
+            <td>${result.score}</td>
+         </tr>
+      `).join('')}`
   }
 }
 
