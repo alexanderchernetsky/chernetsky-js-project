@@ -60,31 +60,31 @@ function renderNewState() {
   let state = decodeURIComponent(hash.substr(1));
   (state === '') ? (state = { page: 'main' }) : (state = JSON.parse(state));
   switch (state.page) {
-  case 'main':
-    if (raceGame.playing) {
-      const doYouWantToStopGame = confirm('Do you want to finish the game?');
-      if (doYouWantToStopGame) {
-        stopGame();
-        createMainPage();
+    case 'main':
+      if (raceGame.playing) {
+        const doYouWantToStopGame = confirm('Do you want to finish the game?');
+        if (doYouWantToStopGame) {
+          stopGame();
+          createMainPage();
+        } else {
+          switchToGamePage();
+        }
       } else {
-        switchToGamePage();
+        createMainPage();
       }
-    } else {
-      createMainPage();
-    }
-    break;
-  case 'game':
-    createGamePage();
-    break;
-  case 'controls':
-    createControlsPage();
-    break;
-  case 'leaderboard':
-    createLeaderboardPage();
-    break;
-  case 'about':
-    createAboutPage();
-    break;
+      break;
+    case 'game':
+      createGamePage();
+      break;
+    case 'controls':
+      createControlsPage();
+      break;
+    case 'leaderboard':
+      createLeaderboardPage();
+      break;
+    case 'about':
+      createAboutPage();
+      break;
   }
 }
 
@@ -151,14 +151,30 @@ function createLeaderboardPage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 
-  ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });
+  /*ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });*/
+
+  const stringStoragePromise = fetch('http://fe.it-academy.by/AjaxStringStorage2.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+    },
+    body: 'f=READ&n=CHERNETSKY_RACING_LEADERBOARD',
+  });
+
+  stringStoragePromise
+    .then(response => response.json())
+    .then((data) => {
+      leaderboardArray = JSON.parse(data.result);
+      showLeaderboard(prepareLeaderboardArr(leaderboardArray, 15));
+    })
+    .catch(err => alert(err));
 
   /**
    * This function would be invoked if the ajaxRequest was successful. It should
    * parse json Array(ResultH.result) or show an error message.
    * @param {Object} ResultH -  json object with only one property (result or error)
    */
-  function readReady(ResultH) {
+  /*function readReady(ResultH) {
     if (ResultH.error !== undefined) {
       alert(ResultH.error);
     } else {
@@ -171,7 +187,7 @@ function createLeaderboardPage() {
       }
       showLeaderboard(prepareLeaderboardArr(leaderboardArray, 15), 15);
     }
-  }
+  }*/
 
   /**
    * Choose all table tr(table row) elements and create array from it.
@@ -187,13 +203,13 @@ function createLeaderboardPage() {
         <th>Name</th>
         <th>Score</th>
       </tr>
-      ${arr.map((result,pos) => `
+      ${arr.map((result, pos) => `
         <tr>
-            <td>${pos+1}</td>
-            <td>${result.name}</td>
-            <td>${result.score}</td>
+          <td>${pos + 1}</td>
+          <td>${result.name}</td>
+          <td>${result.score}</td>
          </tr>
-      `).join('')}`
+      `).join('')}`;
   }
 }
 
@@ -251,7 +267,7 @@ function pushResult() {
     }
     // to send results to the server
     ajaxRequest(updateReady, {
-      f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword
+      f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword,
     });
   }
 }

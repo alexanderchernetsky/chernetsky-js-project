@@ -15,7 +15,7 @@ function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-a
       cache: false,
       dataType,
       success: successFunc,
-      error: errorHandler
+      error: errorHandler,
     },
   );
 }
@@ -74,6 +74,6 @@ function prepareLeaderboardArr(arr, resQuantity) {
     .slice(0, resQuantity);
 }
 
-/*module.exports.checkFrameNo = checkFrameNo;
+/* module.exports.checkFrameNo = checkFrameNo;
 module.exports.randomObstacleXCoordinate = randomObstacleXCoordinate;
-module.exports.prepareLeaderboardArr = prepareLeaderboardArr;*/
+module.exports.prepareLeaderboardArr = prepareLeaderboardArr; */
