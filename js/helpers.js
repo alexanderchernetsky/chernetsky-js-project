@@ -1,30 +1,16 @@
-/** This function is a template for jQuery ajax HTTP request
+/** This function is a template for fetch request
  *  and helps us to shorten code in spa.js file.
- * @param {function} successFunc - If the request was successful this function would be executed
- * @param {object} data - It's the object with properties that are necessary for the request.
- * @param {string} dataType - type of transferring data.
- * @param {string} url - web address of backend script.
- * @return {undefined}
+ * @param {string} bodyStr - the body of the request, is an instance of the FormData type
+ * @return {object} - promise
  * */
-function ajaxRequest(successFunc, data, dataType = 'json', url = 'http://fe.it-academy.by/AjaxStringStorage2.php') {
-  $.ajax(
-    {
-      url,
-      type: 'POST',
-      data,
-      cache: false,
-      dataType,
-      success: successFunc,
-      error: errorHandler,
+function fetchRequest(bodyStr) {
+  return fetch('http://fe.it-academy.by/AjaxStringStorage2.php', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
     },
-  );
-}
-
-/**
- * Show error message if ajax request was failed.
- */
-function errorHandler(jqXHR, StatusStr, ErrorStr) {
-  alert(`${StatusStr} ${ErrorStr}`);
+    body: bodyStr,
+  });
 }
 
 /**

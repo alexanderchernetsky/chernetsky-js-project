@@ -137,8 +137,8 @@ function createControlsPage() {
 
 /**
  * Show main menu leaderboard section and hide all other blocks.
- * Send ajax request to the server to get json with all names and scores, parse it,
- * sort it and show 10 highest results in the table.
+ * Send fetch request to the server to get json with all names and scores, parse it,
+ * sort it and show the highest results in the table.
  */
 function createLeaderboardPage() {
   $('.buttons-container').hide();
@@ -151,17 +151,9 @@ function createLeaderboardPage() {
   $('.game-end-wrapper').hide();
   $('.game-end-background').hide();
 
-  /*ajaxRequest(readReady, { f: 'READ', n: 'CHERNETSKY_RACING_LEADERBOARD' });*/
+  const stringStorageReadPromise = fetchRequest('f=READ&n=CHERNETSKY_RACING_LEADERBOARD');
 
-  const stringStoragePromise = fetch('http://fe.it-academy.by/AjaxStringStorage2.php', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
-    },
-    body: 'f=READ&n=CHERNETSKY_RACING_LEADERBOARD',
-  });
-
-  stringStoragePromise
+  stringStorageReadPromise
     .then(response => response.json())
     .then((data) => {
       leaderboardArray = JSON.parse(data.result);
@@ -170,29 +162,7 @@ function createLeaderboardPage() {
     .catch(err => alert(err));
 
   /**
-   * This function would be invoked if the ajaxRequest was successful. It should
-   * parse json Array(ResultH.result) or show an error message.
-   * @param {Object} ResultH -  json object with only one property (result or error)
-   */
-  /*function readReady(ResultH) {
-    if (ResultH.error !== undefined) {
-      alert(ResultH.error);
-    } else {
-      leaderboardArray = [];
-      if (ResultH.result !== '') {
-        leaderboardArray = JSON.parse(ResultH.result);
-        if (!leaderboardArray.length) {
-          leaderboardArray = [];
-        }
-      }
-      showLeaderboard(prepareLeaderboardArr(leaderboardArray, 15), 15);
-    }
-  }*/
-
-  /**
-   * Choose all table tr(table row) elements and create array from it.
-   * Slice this array with tr elements(first tr element is for table header).
-   * And insert markup with scores and names into the tr elements.
+   * Insert markup with scores and names into the table element.
    * @param {Array} arr -  prepared array
    */
   function showLeaderboard(arr) {
@@ -228,9 +198,9 @@ function createAboutPage() {
 
 /**
  * Validate user name input, cut long user name, create new object with player score and name.
- * Send ajax request to the server to get results and block them. Push new hash
+ * Send fetch request to the server to get results and block them. Push new hash
  * with player score and name to the leaderboard array that we got from the server.
- * Send ajax request to push changed array with results to the server.
+ * Send fetch request to push changed array with results to the server.
  */
 function pushResult() {
   let playerName = $('#player-name').val(); // Get the current value
@@ -247,41 +217,21 @@ function pushResult() {
   }
   const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
   const updatePassword = Math.random();
-  ajaxRequest(lockGetReady, { f: 'LOCKGET', n: 'CHERNETSKY_RACING_LEADERBOARD', p: updatePassword });
 
-  /**
-   * Get relevant array with results from the server and push newResultHash to this array
-   */
-  function lockGetReady(resultH) {
-    if (resultH.error !== undefined) {
-      alert(resultH.error);
-    } else {
-      leaderboardArray = [];
-      if (resultH.result != '') {
-        leaderboardArray = JSON.parse(resultH.result);
-        leaderboardArray.push(newResultHash);
-        if (!leaderboardArray.length) { // if there is a garbage instead of CHERNETSKY_RACING_LEADERBOARD
-          leaderboardArray = [];
-        }
-      }
-    }
-    // to send results to the server
-    ajaxRequest(updateReady, {
-      f: 'UPDATE', n: 'CHERNETSKY_RACING_LEADERBOARD', v: JSON.stringify(leaderboardArray), p: updatePassword,
-    });
-  }
-}
+  const stringStorageLockgetPromise = fetchRequest(`f=LOCKGET&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}`);
 
-/**
- * Show message that results have been recorded or show alert with error.
- */
-function updateReady(resultH) {
-  if (resultH.error != undefined) {
-    alert(resultH.error);
-  } else {
-    $('.result-save-window').show();
-    $('.result-save-window input').bind('click', () => {
-      $('.result-save-window').hide();
-    });
-  }
+  stringStorageLockgetPromise
+    .then(response => response.json())
+    .then((data) => {
+      leaderboardArray = JSON.parse(data.result);
+      leaderboardArray.push(newResultHash);
+      fetchRequest(`f=UPDATE&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}&v=${JSON.stringify(leaderboardArray)}`);
+    })
+    .then(() => {
+      $('.result-save-window').show();
+      $('.result-save-window input').bind('click', () => {
+        $('.result-save-window').hide();
+      });
+    })
+    .catch(err => alert(err));
 }
