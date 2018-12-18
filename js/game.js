@@ -1,26 +1,47 @@
+import $ from 'jquery';
+import { myGameArea } from './gamearea';
+import { raceGame } from './racegame';
+import CarModel from './car/car-model';
+import CarController from './car/car-controller';
+import CarTouchController from './car/car-controller-touch';
+import CarView from './car/car-view';
+import ControlButton from './control-buttons';
+import BackgroundModel from './background/background-model';
+import BackgroundController from './background/background-controller';
+import BackgroundView from './background/background-view';
+import ObstaclesModel from './obstacles/obstacles-model';
+import ObstaclesView from './obstacles/obstacles-view';
+import ObstaclesController from './obstacles/obstacles-controller';
+import CounterModel from './counter/counter-model';
+import CounterController from './counter/counter-controller';
+import CounterView from './counter/counter-view';
+import Sound from './sound';
+import { askUser, checkFrameNo, randomObstacleXCoordinate } from './helpers';
+import { switchToLeaderboardPage, switchToMainPage, pushResult } from '../src/index';
+
 /**
  *  Create new canvas element.Create model view controller for player car, background,
  *  counter, and bind them to each other. Check if current device has touch and create 4 buttons,
  *  define ratioX,Y. Create audio files. Set initial values for many variables that will change
  *  during the game. Call updateGameArea function.
  */
-function startGame() {
+export function startGame() {
   myGameArea.start();
 
-  raceGame.playerCar = new raceGame.CarModel({
+  raceGame.playerCar = new CarModel({
     width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
   });
-  raceGame.playerCarView = new raceGame.CarView();
-  raceGame.playerCarController = new raceGame.CarController();
-  raceGame.background = new raceGame.BackgroundModel({
+  raceGame.playerCarView = new CarView();
+  raceGame.playerCarController = new CarController();
+  raceGame.background = new BackgroundModel({
     width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg',
   });
-  raceGame.backgroundView = new raceGame.BackgroundView();
-  raceGame.backgroundController = new raceGame.BackgroundController();
-  raceGame.counter = new raceGame.CounterModel({ size: 20, x: 20, y: 20 });
-  raceGame.counterView = new raceGame.CounterView();
-  raceGame.counterController = new raceGame.CounterController();
-  raceGame.playerCarTouchController = new raceGame.CarTouchController();
+  raceGame.backgroundView = new BackgroundView();
+  raceGame.backgroundController = new BackgroundController();
+  raceGame.counter = new CounterModel({ size: 20, x: 20, y: 20 });
+  raceGame.counterView = new CounterView();
+  raceGame.counterController = new CounterController();
+  raceGame.playerCarTouchController = new CarTouchController();
 
   raceGame.playerCar.start(raceGame.playerCarView);
   raceGame.playerCarView.start(raceGame.playerCar, myGameArea);
@@ -36,16 +57,16 @@ function startGame() {
   if (window.navigator.maxTouchPoints) {
     // this code is necessary only for devices with touch
     raceGame.touch = true;
-    raceGame.myUpBtn = new raceGame.ControlButton({
+    raceGame.myUpBtn = new ControlButton({
       width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)',
     }); // 50 - the size of buttons that are visible only when you use devices with touch
-    raceGame.myDownBtn = new raceGame.ControlButton({
+    raceGame.myDownBtn = new ControlButton({
       width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)',
     });
-    raceGame.myLeftBtn = new raceGame.ControlButton({
+    raceGame.myLeftBtn = new ControlButton({
       width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)',
     });
-    raceGame.myRightBtn = new raceGame.ControlButton({
+    raceGame.myRightBtn = new ControlButton({
       width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)',
     });
     const canvas = document.querySelector('canvas');
@@ -54,9 +75,9 @@ function startGame() {
     // (it's value will be different on different devices)
   }
 
-  raceGame.Sound.removeFormerAudio();
-  raceGame.crashSound = new raceGame.Sound('sounds/crash.mp3');
-  raceGame.song = new raceGame.Sound('sounds/song.mp3');
+  Sound.removeFormerAudio();
+  raceGame.crashSound = new Sound('sounds/crash.mp3');
+  raceGame.song = new Sound('sounds/song.mp3');
   raceGame.song.listen();
 
   // setting to default(initial) values (it's necessary if we start the game more than once)
@@ -84,7 +105,7 @@ function startGame() {
  * Game cycle would stop in 2 cases:
  * if player car crashed or if user clicked go back arrow in browser(and confirmed).
  */
-function updateGameArea() {
+export function updateGameArea() {
   if (raceGame.playing) {
     // check if player car crashed (it should be first to save last view when game stops)
     for (let i = 0; i < raceGame.obstacleModels.length; i += 1) {
@@ -105,11 +126,11 @@ function updateGameArea() {
     const ObstaclePosX = randomObstacleXCoordinate(raceGame.GAMEAREAWIDTH, 50);
     // for random x coordinate for obstacles, 50-obstacle width
     if (checkFrameNo(myGameArea.frameNo)) {
-      raceGame.obstacle = new raceGame.ObstaclesModel({
-        width: 50, height: 100, x: ObstaclePosX, y: -100, src: 'img/obstacles/car'
+      raceGame.obstacle = new ObstaclesModel({
+        width: 50, height: 100, x: ObstaclePosX, y: -100, src: 'img/obstacles/car',
       }); // -100 for smooth appearance of obstacles from top
-      raceGame.obstacleView = new raceGame.ObstaclesView();
-      raceGame.obstacleController = new raceGame.ObstaclesController();
+      raceGame.obstacleView = new ObstaclesView();
+      raceGame.obstacleController = new ObstaclesController();
       raceGame.obstacle.start(raceGame.obstacleView);
       raceGame.obstacleView.start(raceGame.obstacle, myGameArea);
       raceGame.obstacleController.start(raceGame.obstacle, myGameArea);
@@ -143,7 +164,7 @@ function updateGameArea() {
  * It stops playing song, plays crash sound.
  * It removes event listeners. Shows us game end menu with our final score and etc.
  */
-function stopGame() {
+export function stopGame() {
   cancelAnimationFrame(updateGameArea);
   raceGame.playing = false;
   raceGame.song.stopListening();

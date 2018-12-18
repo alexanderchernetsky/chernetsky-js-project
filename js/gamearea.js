@@ -1,3 +1,4 @@
+import { raceGame } from './racegame';
 /**
  * @namespace
  * @property {HTMLElement} canvas - Create html element canvas.
@@ -6,7 +7,7 @@
  * @property {void}  clear() - Clear the whole canvas.
  * @property {number}  frameNo - It's the counter of frames, it is used for user score and etc
  */
-const myGameArea = {
+export const myGameArea = {
   canvas: document.createElement('canvas'),
   start() {
     this.canvas.width = raceGame.GAMEAREAWIDTH;
@@ -17,5 +18,5 @@ const myGameArea = {
   clear() {
     this.context.clearRect(0, 0, raceGame.GAMEAREAWIDTH, raceGame.GAMEAREAHEIGHT);
   },
-  frameNo: 0 // every request animation frame it will increase by 1
+  frameNo: 0, // every request animation frame it will increase by 1
 };

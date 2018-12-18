@@ -187,7 +187,7 @@ body {
   min-width: 300px;
 }
 .wallpaper {
-  background: url("../img/menu/menu.jpg") center / cover no-repeat;
+  background: url("../dist/img/menu/menu.jpg") center / cover no-repeat;
   height: 100%;
 }
 .buttons-container {
@@ -225,7 +225,7 @@ body {
   width: 64%;
   height: 20%;
   font-size: 20px;
-  cursor: url('../img/menu/hand.png'), default;
+  cursor: url('../dist/img/menu/hand.png'), default;
 }
 .buttons-container > input[type='button']:hover,
 .controls > input:hover,
@@ -498,7 +498,7 @@ canvas {
   background-color: yellow;
   border: 2px solid black;
   box-shadow: 0 0 0 3px #ffffff;
-  cursor: url('../img/menu/hand.png'), default;
+  cursor: url('../dist/img/menu/hand.png'), default;
 }
 .game-end-wrapper input:hover {
   background-color: lightskyblue;

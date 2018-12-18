@@ -1,3 +1,9 @@
+import $ from 'jquery';
+import { myGameArea } from '../js/gamearea';
+import { raceGame } from '../js/racegame';
+import { fetchRequest, prepareLeaderboardArr } from '../js/helpers';
+import { startGame, stopGame } from '../js/game';
+
 let leaderboardArray;
 
 /**
@@ -12,7 +18,7 @@ function switchToState(state) {
 /**
  * Switch browser address bar after hash to encoded state of main page
  */
-function switchToMainPage() {
+export function switchToMainPage() {
   switchToState({ page: 'main' });
 }
 
@@ -33,7 +39,7 @@ function switchToControlsPage() {
 /**
  * Switch browser address bar after hash to encoded state of leaderboard page
  */
-function switchToLeaderboardPage() {
+export function switchToLeaderboardPage() {
   switchToState({ page: 'leaderboard' });
 }
 
@@ -202,7 +208,7 @@ function createAboutPage() {
  * with player score and name to the leaderboard array that we got from the server.
  * Send fetch request to push changed array with results to the server.
  */
-function pushResult() {
+export function pushResult() {
   let playerName = $('#player-name').val(); // Get the current value
   // of the first element in the set of matched elements (to get player name from input)
   if (playerName === '') {

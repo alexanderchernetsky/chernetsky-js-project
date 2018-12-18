@@ -1,9 +1,9 @@
 /** This function is a template for fetch request
- *  and helps us to shorten code in spa.js file.
+ *  and helps us to shorten code in index.js file.
  * @param {string} bodyStr - the body of the request, is an instance of the FormData type
  * @return {object} - promise
  * */
-function fetchRequest(bodyStr) {
+export function fetchRequest(bodyStr) {
   return fetch('http://fe.it-academy.by/AjaxStringStorage2.php', {
     method: 'POST',
     headers: {
@@ -19,7 +19,7 @@ function fetchRequest(bodyStr) {
  * @param {Object} EO - the event object.
  * @return {string} this string is necessary for custom message.
  */
-function askUser(EO) {
+export function askUser(EO) {
   EO = EO || window.event;
   const dialogText = 'Do you want to exit the game?';
   EO.returnValue = dialogText;
@@ -33,7 +33,7 @@ function askUser(EO) {
  * @return {boolean} true if frameNo equals 1 or (frameNo / 100) is an integer,
  * a%b returns surplus of the division of 2 operands.
  */
-function checkFrameNo(frameNo) {
+export function checkFrameNo(frameNo) {
   return (frameNo === 1) || ((frameNo / 100) % 1 === 0);
 }
 
@@ -44,7 +44,7 @@ function checkFrameNo(frameNo) {
  * @param {number} obstacleWidth - width of obstacles.
  * @return {number} random x coordinate of obstacle, which will be created later.
  */
-function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
+export function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
   return Math.floor(Math.random() * (gameAreaWidth - obstacleWidth) + 1);
 }
 
@@ -55,7 +55,7 @@ function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
  * @param {number} resQuantity - number of results we want to show.
  * @return {Array} this prepared array will be used in showLeaderboard function.
  */
-function prepareLeaderboardArr(arr, resQuantity) {
+export function prepareLeaderboardArr(arr, resQuantity) {
   return arr
     .sort((first, second) => ((+first.score <= +second.score) ? 1 : -1))
     .slice(0, resQuantity);

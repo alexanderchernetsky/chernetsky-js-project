@@ -11,7 +11,7 @@
  * @property {number}  obstacleSpeed - initial value of obstacles speed.
  * @property {boolean}  playing - it's true while user is playing the game.
  */
-window.raceGame = {
+export const raceGame = {
   GAMEAREAWIDTH: 500,
   GAMEAREAHEIGHT: 600,
   backgroundSpeed: 1,
@@ -19,5 +19,5 @@ window.raceGame = {
   obstacleViews: [],
   obstacleControllers: [],
   obstacleSpeed: 2,
-  playing: false
+  playing: false,
 };
