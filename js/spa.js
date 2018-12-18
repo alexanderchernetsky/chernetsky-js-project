@@ -6,7 +6,7 @@ let leaderboardArray;
  * @return {undefined}
  */
 function switchToState(state) {
-  location.hash = encodeURIComponent(JSON.stringify(state));
+  window.location.hash = encodeURIComponent(JSON.stringify(state));
 }
 
 /**

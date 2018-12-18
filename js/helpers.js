@@ -49,9 +49,10 @@ function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
 }
 
 /**
- * Would return array with 10 objects containing scores from the highest to the lowest.
+ * Would return array with specified number objects containing scores from the highest to the lowest.
  * This function is used inside createLeaderboard function.
  * @param {Array} arr - we put here leaderboardArray recieved from the server.
+ * @param {number} resQuantity - number of results we want to show.
  * @return {Array} this prepared array will be used in showLeaderboard function.
  */
 function prepareLeaderboardArr(arr, resQuantity) {

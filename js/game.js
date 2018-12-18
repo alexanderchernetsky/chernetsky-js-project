@@ -8,12 +8,12 @@ function startGame() {
   myGameArea.start();
 
   raceGame.playerCar = new raceGame.CarModel({
-    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png'
+    width: 50, height: 100, x: 230, y: 500, src: 'img/player-car.png',
   });
   raceGame.playerCarView = new raceGame.CarView();
   raceGame.playerCarController = new raceGame.CarController();
   raceGame.background = new raceGame.BackgroundModel({
-    width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg'
+    width: raceGame.GAMEAREAWIDTH, height: 1349, x: 0, y: 0, src: 'img/road.jpg',
   });
   raceGame.backgroundView = new raceGame.BackgroundView();
   raceGame.backgroundController = new raceGame.BackgroundController();
@@ -37,16 +37,16 @@ function startGame() {
     // this code is necessary only for devices with touch
     raceGame.touch = true;
     raceGame.myUpBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)'
+      width: 50, height: 50, x: 225, y: 450, color: 'rgba(98,198,222,0.5)',
     }); // 50 - the size of buttons that are visible only when you use devices with touch
     raceGame.myDownBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)'
+      width: 50, height: 50, x: 225, y: 550, color: 'rgba(98,198,222,0.5)',
     });
     raceGame.myLeftBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)'
+      width: 50, height: 50, x: 30, y: 500, color: 'rgba(98,198,222,0.5)',
     });
     raceGame.myRightBtn = new raceGame.ControlButton({
-      width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)'
+      width: 50, height: 50, x: 420, y: 500, color: 'rgba(98,198,222,0.5)',
     });
     const canvas = document.querySelector('canvas');
     [raceGame.ratioX, raceGame.ratioY] = [canvas.offsetWidth / raceGame.GAMEAREAWIDTH, canvas.offsetHeight / raceGame.GAMEAREAHEIGHT];
