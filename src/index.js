@@ -3,6 +3,7 @@ import { myGameArea } from '../js/gamearea';
 import { raceGame } from '../js/racegame';
 import { fetchRequest, prepareLeaderboardArr } from '../js/helpers';
 import { startGame, stopGame } from '../js/game';
+import '@babel/polyfill';
 
 let leaderboardArray;
 
@@ -224,14 +225,18 @@ export function pushResult() {
   const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
   const updatePassword = Math.random();
 
-  const stringStorageLockgetPromise = fetchRequest(`f=LOCKGET&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}`);
+  function* steps() {
+    yield fetchRequest(`f=LOCKGET&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}`);
+    yield fetchRequest(`f=UPDATE&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}&v=${JSON.stringify(leaderboardArray)}`);
+  }
 
-  stringStorageLockgetPromise
+  const dataGenIterator = steps();
+  dataGenIterator.next().value
     .then(response => response.json())
     .then((data) => {
       leaderboardArray = JSON.parse(data.result);
       leaderboardArray.push(newResultHash);
-      fetchRequest(`f=UPDATE&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}&v=${JSON.stringify(leaderboardArray)}`);
+      dataGenIterator.next();
     })
     .then(() => {
       $('.result-save-window').show();
