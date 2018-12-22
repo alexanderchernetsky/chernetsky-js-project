@@ -1,5 +1,5 @@
 /**
- * @namespace
+ * @namespace raceGame
  * @property {number} GAMEAREAWIDTH - width of our game area canvas.
  * @property {number}  GAMEAREAHEIGHT - height of our game area.
  * @property {number}  backgroundSpeed - initial value of background speed, it will

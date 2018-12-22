@@ -1,3 +1,5 @@
+import $ from "jquery";
+
 /** This function is a template for fetch request
  *  and helps us to shorten code in index.js file.
  * @param {string} bodyStr - the body of the request, is an instance of the FormData type
@@ -49,7 +51,8 @@ export function randomObstacleXCoordinate(gameAreaWidth, obstacleWidth) {
 }
 
 /**
- * Would return array with specified number objects containing scores from the highest to the lowest.
+ * Would return array with specified number objects containing
+ * scores from the highest to the lowest.
  * This function is used inside createLeaderboard function.
  * @param {Array} arr - we put here leaderboardArray recieved from the server.
  * @param {number} resQuantity - number of results we want to show.
@@ -60,6 +63,36 @@ export function prepareLeaderboardArr(arr, resQuantity) {
     .sort((first, second) => ((+first.score <= +second.score) ? 1 : -1))
     .slice(0, resQuantity);
 }
+
+/**
+ * @namespace validateUserName
+ */
+export const validateUserName = {
+  /**
+   * This method is necessary to validate user name.
+   * @memberof validateUserName
+   * @method set
+   */
+  set(target, key, value) {
+    if (key === 'name') {
+      if (value === '') {
+        $('#prompt').html('Please type your name!');
+        throw new TypeError('Please type your name!');
+      }
+      if (value.match(/[0-9]/) || value.match(/\s/)) {
+        $('#prompt').html('Name must not contain numbers and spaces!');
+        throw new TypeError('Name must not contain numbers and spaces!');
+      }
+      if (value.length > 12) {
+        $('#prompt').html('The length must be less than 12 characters!');
+        throw new TypeError('The length must be less than 12 characters!');
+      }
+    }
+    $('#prompt').html('');
+    target[key] = value;
+    return true;
+  },
+};
 
 /* module.exports.checkFrameNo = checkFrameNo;
 module.exports.randomObstacleXCoordinate = randomObstacleXCoordinate;

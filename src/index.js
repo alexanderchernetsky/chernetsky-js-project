@@ -1,9 +1,9 @@
 import $ from 'jquery';
+import '@babel/polyfill';
 import { myGameArea } from '../js/gamearea';
 import { raceGame } from '../js/racegame';
-import { fetchRequest, prepareLeaderboardArr } from '../js/helpers';
+import { fetchRequest, prepareLeaderboardArr, validateUserName } from '../js/helpers';
 import { startGame, stopGame } from '../js/game';
-import '@babel/polyfill';
 
 let leaderboardArray;
 
@@ -210,19 +210,15 @@ function createAboutPage() {
  * Send fetch request to push changed array with results to the server.
  */
 export function pushResult() {
-  let playerName = $('#player-name').val(); // Get the current value
+  const playerName = $('#player-name').val();// Get the current value
   // of the first element in the set of matched elements (to get player name from input)
-  if (playerName === '') {
-    $('.result-noname-window').show();
-    $('.result-noname-window input').bind('click', () => {
-      $('.result-noname-window').hide();
-    });
-    return;
-  }
-  if (playerName.length > 12) {
-    playerName = playerName.substr(0, 12);
-  }
-  const newResultHash = { name: `${playerName}`, score: `${Math.floor(myGameArea.frameNo / 10)}` };
+
+  const newResultHash = { name: '', score: `${Math.floor(myGameArea.frameNo / 10)}` };
+
+  const resultProxy = new Proxy(newResultHash, validateUserName);
+
+  resultProxy.name = playerName;
+
   const updatePassword = Math.random();
 
   function* steps() {
