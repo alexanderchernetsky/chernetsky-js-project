@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest",
+    "test": "jest --coverage",
     "lint": "eslint",
     "dev": "webpack --mode development",
     "build": "webpack --mode production"
@@ -39,6 +39,7 @@
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.2.3"
+    "@babel/polyfill": "^7.2.3",
+    "babel-core": "^7.0.0-bridge.0"
   }
 }

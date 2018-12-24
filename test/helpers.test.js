@@ -1,6 +1,7 @@
-const exportedObj = require('../js/helpers.js');
+/*const exportedObj = require('../js/helpers.js');
 
-const { checkFrameNo, randomObstacleXCoordinate, prepareLeaderboardArr } = exportedObj;
+const { checkFrameNo, randomObstacleXCoordinate, prepareLeaderboardArr } = exportedObj;*/
+import { checkFrameNo, randomObstacleXCoordinate, prepareLeaderboardArr } from "../js/helpers";
 
 describe('function checkFrameNo test', () => {
   it('should return true for frame number 1', () => {
@@ -51,6 +52,6 @@ describe('function prepareLeaderboardArr test', () => {
     { name: 'volodia', score: 40 }];
 
   it('function should return sorted and cutted array', () => {
-    expect(prepareLeaderboardArr(someArr)).toEqual(resultArr);
+    expect(prepareLeaderboardArr(someArr, 10)).toEqual(resultArr);
   });
 });

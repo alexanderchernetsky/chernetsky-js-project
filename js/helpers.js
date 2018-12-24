@@ -93,7 +93,3 @@ export const validateUserName = {
     return true;
   },
 };
-
-/* module.exports.checkFrameNo = checkFrameNo;
-module.exports.randomObstacleXCoordinate = randomObstacleXCoordinate;
-module.exports.prepareLeaderboardArr = prepareLeaderboardArr; */
