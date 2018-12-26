@@ -221,24 +221,26 @@ export function pushResult() {
 
   const updatePassword = Math.random();
 
-  function* steps() {
-    yield fetchRequest(`f=LOCKGET&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}`);
-    yield fetchRequest(`f=UPDATE&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}&v=${JSON.stringify(leaderboardArray)}`);
+  async function go() {
+    try {
+      await fetchRequest(`f=LOCKGET&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}`)
+        .then(res => res.json())
+        .then((data) => {
+          leaderboardArray = JSON.parse(data.result);
+          leaderboardArray.push(newResultHash);
+        });
+      await fetchRequest(`f=UPDATE&n=CHERNETSKY_RACING_LEADERBOARD&p=${updatePassword}&v=${JSON.stringify(leaderboardArray)}`)
+        .then(
+          () => {
+            $('.result-save-window').show();
+            $('.result-save-window input').bind('click', () => {
+              $('.result-save-window').hide();
+            });
+          },
+        );
+    } catch (err) {
+      alert(`Something went wrong: ${err}`);
+    }
   }
-
-  const dataGenIterator = steps();
-  dataGenIterator.next().value
-    .then(response => response.json())
-    .then((data) => {
-      leaderboardArray = JSON.parse(data.result);
-      leaderboardArray.push(newResultHash);
-      dataGenIterator.next();
-    })
-    .then(() => {
-      $('.result-save-window').show();
-      $('.result-save-window input').bind('click', () => {
-        $('.result-save-window').hide();
-      });
-    })
-    .catch(err => alert(err));
+  go();
 }
